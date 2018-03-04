@@ -66,10 +66,12 @@ body {
 }
 
 .panel-title > a:before {
+  padding: .75rem 1.25rem;
   float: right !important;
   font-family: FontAwesome;
   content: "\f068";
-  padding-right: 5px;
+  padding-left: 0px;
+  padding-right: 10px;
 }
 
 .panel-title > a.collapsed:before {
@@ -78,8 +80,11 @@ body {
 }
 
 .card-header {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding: 0px;
+}
+
+.card-header .row{
+  padding: .75rem 1.25rem;
 }
 
 .card-header:hover {
@@ -88,7 +93,7 @@ body {
 
 .card-header a {
   color: black;
-  line-height: 50px;
+/*  line-height: 50px;*/
 }
 
 .card-header a:hover {
@@ -105,6 +110,7 @@ body {
 
 .table-heading {
   padding: 0px 20px;
+  padding-right: 25px;
   width: 98%;
   font-size: 20px;
   font-weight: bold;
