@@ -33,7 +33,6 @@ body {
   padding: 20px;
   float: right;
   width: 30%;
-  height: 100%;
   position: fixed;
   z-index: 1;
   display: inline-block;
@@ -93,7 +92,6 @@ body {
 
 .card-header a {
   color: black;
-/*  line-height: 50px;*/
 }
 
 .card-header a:hover {
@@ -122,6 +120,7 @@ body {
 
 .card-block {
   padding: 20px;
+  background-color: #fdfdfd;
 }
 
 span {
@@ -140,4 +139,20 @@ span {
 
 .btn:hover {
   background-color: #a80903;
+}
+
+#social {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.social-icons {
+  font-size: 40px;
+  color: white;
+  padding: 10px;
+}
+
+.social-icons:hover {
+  color: lightgray;
+  text-decoration: none;
 }
