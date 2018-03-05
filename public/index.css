@@ -36,7 +36,7 @@ body {
   position: fixed;
   z-index: 1;
   display: inline-block;
-  position: absolute;
+  position: relative;
   background-color: #383838;
   color: white;
 }
@@ -165,4 +165,15 @@ span {
 
 .payment-method-label {
   display: inline-block;
+}
+
+@media screen and (max-width: 800px) {
+  #sidebar {
+    display: none;
+  }
+  
+  #content {
+    width: 100%;
+    float: none;
+  }
 }
