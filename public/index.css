@@ -156,3 +156,13 @@ span {
   color: lightgray;
   text-decoration: none;
 }
+
+.payment-method {
+  display: inline-block;
+  width: auto;
+  margin-right: 20px;
+}
+
+.payment-method-label {
+  display: inline-block;
+}

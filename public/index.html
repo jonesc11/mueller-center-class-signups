@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="mueller-sign-up">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <title>Mueller Center</title>
   </head>
-  <body>
+  <body ng-controller="controller">
     <div id="header-container">
       <img id="banner" src="banner.jpg"/>
       <nav class="header">
@@ -43,7 +43,7 @@
               </div>
               <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="card-block">
-                  <button class='btn'>Sign Up</button>
+                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
 				  <span><strong>Instructor:</strong> Deb DerGurahian</span>
                   <span><strong>Email:</strong> deb@gmail.com</span>
                   <span><strong>Room:</strong> 2</span>
@@ -65,7 +65,7 @@
               </div>
               <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="card-block">
-                  <button class='btn'>Sign Up</button>
+                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Midday Yoga')">Sign Up</button>
 				  <span><strong>Instructor:</strong> Jennifer Karius</span>
                   <span><strong>Email:</strong> jen@gmail.com</span>
                   <span><strong>Room:</strong> 3</span>
@@ -87,7 +87,7 @@
               </div>
               <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="card-block">
-                  <button class='btn'>Sign Up</button>
+                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Zumba')">Sign Up</button>
 				  <span><strong>Instructor:</strong> Karen Stern</span>
                   <span><strong>Email:</strong> karen@gmail.com</span>
                   <span><strong>Room:</strong> 1</span>
@@ -98,6 +98,50 @@
           </div>
         </div>
       </div>
+      <div class="modal fade" id="sign-up">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Sign up for {{class_name}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="sign-up-form">
+                <div class="form-group">
+                  <label for="first-name" class="form-control-label">First Name:</label>
+                  <input type="text" class="form-control" id="first-name" name="first-name" required>
+                </div>
+                <div class="form-group">
+                  <label for="last-name" class="form-control-label">Last Name:</label>
+                  <input type="text" class="form-control" id="last-name" name="last-name" required>
+                </div>
+                <div class="form-group">
+                  <label for="email" class="form-control-label">Email:</label>
+                  <input type="text" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                  <span class='form-control-label'>Payment Method:</span>
+                  <label for="cash" class="payment-method-label form-control-label">Cash</label>
+                  <input type="radio" class="payment-method form-control" id="cash" value="cash" name="payment" ng-model="payment" checked="checked" required>
+                  <label for="credit" class="payment-method-label form-control-label">Credit</label>
+                  <input type="radio" class="payment-method form-control" id="credit" value="credit" name="payment" ng-model="payment">
+                  <label for="bursar" class="payment-method-label form-control-label">Bursar</label>
+                  <input type="radio" class="payment-method form-control" id="bursar" value="bursar" name="payment" ng-model="payment">
+                  <div class="form-group" ng-show="payment=='bursar'">
+                    <label for="rin" class="form-control-label">RIN:</label>
+                    <input type="text" class="form-control" id="rin" name="rin">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn" id="login-submit">Sign up</button>
+            </div>
+          </div>
+        </div>
+    </div>
       <aside id="sidebar">
         <h3 class="align-center">Spring 2018 Classes</h3>
         <h5 class="align-center">New Classes Every Semester!<br/>Open to the public.</h5>
@@ -125,10 +169,10 @@
       </aside>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+    <script src='index.js'></script>
   </body>
 </html>
