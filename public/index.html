@@ -21,6 +21,9 @@
       </nav>
     </div>
     <div id="container">
+      <div id="more-info">
+        <h4 class="align-center">Spring 2018 Classes<button id="details-btn" class="btn btn-sm" ng-click="toggle_show()">{{detail_text}}</button></h4>
+      </div>
       <aside id="sidebar">
         <h3 class="align-center">Spring 2018 Classes</h3>
         <h5 class="align-center">New Classes Every Semester!<br/>Open to the public.</h5>
@@ -50,8 +53,8 @@
         <div id="classes">
           <div class='row table-heading'>
             <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Class Name</div>
-            <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>Day(s)</div>
-            <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>Time</div>
+            <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Day(s)</div>
+            <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Time</div>
           </div>
           <div id="accordion" role="tablist" aria-multiselectable="true">
             <div class="card">
@@ -60,15 +63,17 @@
                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     <div class='row'>
                       <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Pilates</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>Monday &amp; Thursday</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday &amp; Thursday</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
                     </div>
                   </a>
                 </h5>
               </div>
               <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="card-block">
-                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
+                  <span class="mobile-show"><strong>Day(s):</strong> Monday &amp; Thursday</span>
+                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
 				  <span><strong>Instructor:</strong> Deb DerGurahian</span>
                   <span><strong>Email:</strong> deb@gmail.com</span>
                   <span><strong>Room:</strong> 2</span>
@@ -82,15 +87,17 @@
                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                     <div class='row'>
                       <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Midday Yoga</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>Monday</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
                     </div>
                   </a>
                 </h5>
               </div>
               <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="card-block">
-                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Midday Yoga')">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Midday Yoga')">Sign Up</button>
+                  <span class="mobile-show"><strong>Day(s):</strong> Monday</span>
+                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
 				  <span><strong>Instructor:</strong> Jennifer Karius</span>
                   <span><strong>Email:</strong> jen@gmail.com</span>
                   <span><strong>Room:</strong> 3</span>
@@ -104,15 +111,17 @@
                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     <div class='row'>
                       <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Zumba</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>Thursday</div>
-                      <div class='class-info-header align-right col-sm-4 col-md-4 col-lg-4'>5:00pm</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Thursday</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>5:00pm</div>
                     </div>
                   </a>
                 </h5>
               </div>
               <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
                 <div class="card-block">
-                  <button class='btn' data-toggle="modal" data-target="#sign-up" ng-click="class('Zumba')">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Zumba')">Sign Up</button>
+                  <span class="mobile-show"><strong>Day(s):</strong> Thursday</span>
+                  <span class="mobile-show"><strong>Time:</strong> 5:00pm</span>
 				  <span><strong>Instructor:</strong> Karen Stern</span>
                   <span><strong>Email:</strong> karen@gmail.com</span>
                   <span><strong>Room:</strong> 1</span>
@@ -162,7 +171,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn" id="login-submit">Sign up</button>
+              <button type="button" class="btn signup" id="login-submit">Sign up</button>
             </div>
           </div>
         </div>
