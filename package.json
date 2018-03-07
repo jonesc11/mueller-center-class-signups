@@ -1,0 +1,17 @@
+{
+  "name": "mueller-center-signups",
+  "version": "1.0.0",
+  "description": "A web application to aid people in signing up for and managing RPI's Mueller Center classes.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Collin Jones, Jason Lee, Yarden Neeman, Sydney Ruzicka, Kamil Smyzd",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}
