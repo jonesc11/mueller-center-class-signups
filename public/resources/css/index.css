@@ -190,6 +190,37 @@ h4 {
   display: show;
 }
 
+#instructors {
+  width: 90%;
+  margin: auto;
+}
+.instructor {
+  background-color:#f7f7f7;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.instructor_img {
+  width: 150px;
+  height: 150px;
+  margin:25px;
+  display: inline-block;
+}
+
+.i_info {
+  margin-left: 25px;
+}
+
+.i_name {
+  margin-top:5px;
+  font-size:20px;
+  margin-left:100px;
+}
+
+.i_bio {
+  margin-bottom:10px;
+}
+
 @media screen and (max-width: 800px) {
   #sidebar {
     width: 100%;
@@ -226,37 +257,4 @@ h4 {
   .signup {
     font-size: 14px;
   }
-}
-
-
-.instructor {
-	background-color:#f7f7f7;
-	height:200px;
-	margin-left:40px;
-	margin-right:40px;
-	border-radius: 5px;
-}
-
-.instructor_img {
-	height:150px;
-	width:150px;
-	margin:25px;
-	display: inline-block;
-}
-
-.i_info {
-	margin-left: 25px;
-}
-
-.i_name {
-	margin-top:1px;
-	font-size:20px;
-	margin-left:100px;
-}
-
-.i_bio {
-	width:500px;
-	height: 100px;
-	margin-bottom:1px;
-	overflow: scroll;
 }
