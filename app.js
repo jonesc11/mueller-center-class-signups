@@ -12,4 +12,4 @@ app.get ('/instructors', function (req, res) {
   res.sendFile (__dirname + "/pages/instructor_list.html");
 });
 
-app.listen (80);
+app.listen (3000);
