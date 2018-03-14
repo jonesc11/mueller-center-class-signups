@@ -203,18 +203,19 @@ h4 {
 .instructor_img {
   width: 150px;
   height: 150px;
-  margin:25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   display: inline-block;
 }
 
-.i_info {
-  margin-left: 25px;
+.i_image_container {
+  text-align: center;
 }
 
 .i_name {
   margin-top:5px;
   font-size:20px;
-  margin-left:100px;
+  text-align: center;
 }
 
 .i_bio {
