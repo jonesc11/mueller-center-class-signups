@@ -35,7 +35,7 @@ header {
   border-radius: 0px;
 }
 
-.add {
+.add, .add-inst {
   float: right;
 }
 
@@ -109,4 +109,62 @@ textarea {
 
 #description {
   width: 100%;
+}
+
+.modal-body .form-control {
+  width: 100%;
+}
+
+.modal-body .form-group {
+  display: block;
+}
+
+.form-control-label {
+  font-weight: bold;
+}
+
+.account {
+  background-color:#f7f7f7;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  margin-top: 5px;
+}
+
+.flag {
+  float: right;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.float {
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+.classes {
+  display: block;
+  margin: 0px;
+}
+
+@media screen and (max-width: 768px) {
+  .float {
+    text-align: left;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  
+  .add-inst {
+    float: none;
+    margin-bottom: 10px;
+  }
 }

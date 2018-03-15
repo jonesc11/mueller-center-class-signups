@@ -14,13 +14,13 @@
   <body ng-controller="controller">
     <header>Mueller Center Fitness Admin Panel</header>
     <nav class="nav nav-pills nav-fill">
-      <a class="nav-item nav-link active" href="#">Classes</a>
-      <a class="nav-item nav-link" href="#">Instructors</a>
-      <a class="nav-item nav-link" href="#">Members</a>
+      <div class="nav-item nav-link active" ng-model="classes" ng-click="changeTab($event, 'c')">Classes</div>
+      <div class="nav-item nav-link" ng-model="instructors" ng-click="changeTab($event, 'i')">Instructors</div>
+      <div class="nav-item nav-link" ng-model="members" ng-click="changeTab($event, 'm')">Members</div>
     </nav>
-    <div id="classes" class="container">
+    <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
-      <button class="btn btn-primary add">Add</button>
+      <button class="btn btn-primary add" data-toggle="modal" data-target="#add-class">Add Class</button>
       <div id="accordion" role="tablist" aria-multiselectable="true">
         <div class="card">
           <div class="card-header" role="tab" id="headingOne">
@@ -53,9 +53,9 @@
                 </div>
                 <br/>
                 <div class="form-group">
-                  Day(s):
+                  <strong>Day(s):</strong><br/>
                   <div class="day" ng-repeat="day in weekdays">
-                    <label for="{{day}}" class="form-control-label">{{day}}</label>
+                    <label for="{{day}}">{{day}}</label>
                     <input type="checkbox" value="{{day}}" name="{{day}}">
                   </div>
                 </div>
@@ -105,9 +105,106 @@
         </div>
       </div>
     </div>
-    <div id="instructors">
+    <div id="instructors" class="container tab" ng-show="instructors">
+      <h1>Instructor Accounts</h1>
+      <button class="btn btn-primary add-inst" data-toggle="modal" data-target="#add-account">Create New Instructor Account</button>
+      <div class='account row border' ng-repeat='account in instructor_accounts'>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <div><strong>Name: </strong>{{account.name}}</div>
+          <div><strong>Email: </strong>{{account.email}}</div>
+          <strong>Classes:</strong>
+          <ul class='inst-classes'>
+            <li ng-repeat='class in account.classes'>{{class}}</li>
+          </ul>
+        </div>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <strong>Bio: </strong>
+          <button class="btn btn-sm btn-danger flag">Flag Bio</button>
+          <p>{{account.bio}}</p>
+          <strong>Image: </strong>
+          <button class="btn btn-sm btn-danger flag">Flag Image</button>
+          <br/>
+          <img src="{{account.image}}" class='image'>
+        </div>
+      </div>
     </div>
-    <div id="members">
+    <div id="members" class="container tab" ng-show="members">
+      <h1>Members</h1>
+      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
+      <div class="account row" ng-repeat="member in member_accounts">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <div><strong>Name: </strong>{{member.name}}</div>
+          <div><strong>Email: </strong>{{member.email}}</div>
+          <div><strong>RIN: </strong>{{member.rin}}</div>
+          <div><strong>Payment Method: </strong>{{member.payment_method}}</div>
+          <div><strong>Payment Status: </strong>{{member.payment_status}}</div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <strong>Classes Enrolled:</strong>
+          <form class='member-classes'>
+            <div class="form-group classes" ng-repeat='class in member.classes'>
+              <input type='checkbox' value='{{class}}' name='{{class}}'>
+              <label for='{{class}}'>{{class}}</label>
+            </div>
+            <button class="btn btn-sm btn-secondary">Remove selected classes</button>
+          </form>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <div class="float"><button class="btn btn-sm btn-danger">Delete</button></div>
+          <div class="float"><button class="btn btn-sm btn-secondary">Update Payment Status</button></div>
+          <div class="float"><button class="btn btn-sm btn-secondary">Email member</button></div>
+        </div>
+      </div>
+    </div>
+    <!--    Modals -->
+    <div class="modal fade" id="add-class">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add a new class</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="add-class-form">
+              <div class="form-group">
+                <label for="class-name" class="form-control-label">Class:</label>
+                <input type="text" class="form-control" id="class-name" name="class-name" required>
+              </div>
+              <div class="form-group">
+                <label for="instructor-name" class="form-control-label">Instructor:</label>
+                <input type="text" class="form-control" id="instructor-name" name="instructor-name" required>
+              </div>
+              <div class="form-group">
+                <label for="start-time" class="form-control-label">Start Time:</label>
+                <input type="time" class="form-control" id="start-time" name="start-time" required>
+              </div>
+              <div class="form-group">
+                <label for="end-time" class="form-control-label">End Time:</label>
+                <input type="time" class="form-control" id="end-time" name="end-time" required>
+              </div>
+              <div class="form-group">
+                <strong>Day(s):</strong><br/>
+                <div class="day" ng-repeat="day in weekdays">
+                  <label for="{{day}}">{{day}}</label>
+                  <input type="checkbox" value="{{day}}" name="{{day}}">
+                </div>
+              </div>
+              <div class="form-group pl-0">
+                <label for="description" class="form-control-label">Description:</label>
+                <textarea type="text" class="form-control" id="description" name="description" required></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div class="btn-container">
+                <button class="btn btn-primary">Add Class</button>
+                <button class="btn" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
