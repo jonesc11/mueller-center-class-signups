@@ -16,4 +16,8 @@ app.get ('/admin', function (req, res) {
   res.sendFile (__dirname + "/pages/admin.html");
 });
 
+app.get ('/instructor', function (req, res) {
+  res.sendFile (__dirname + "/pages/instructor.html");
+});
+
 app.listen(3000, () => console.log('Server listening on port 3000.'));
