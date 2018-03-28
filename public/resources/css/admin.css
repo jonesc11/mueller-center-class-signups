@@ -152,8 +152,31 @@ textarea {
 }
 
 .classes {
-  display: block;
+  display: block!important;
   margin: 0px;
+}
+
+.form-group {
+  display: inline-block;
+}
+
+.desc-container {
+  width: 100%;
+}
+
+@media screen and (min-width: 676px) {
+  .modal-dialog {
+    max-width: 600px;
+  }
+  
+  .modal-body .form-group {
+    display: inline-block;
+  }
+  
+  .input-text {
+    width: 265px!important;
+    margin-right: 15px;
+  }
 }
 
 @media screen and (max-width: 768px) {

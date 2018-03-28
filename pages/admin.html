@@ -55,8 +55,8 @@
                 <div class="form-group">
                   <strong>Day(s):</strong><br/>
                   <div class="day" ng-repeat="day in weekdays">
-                    <label for="{{day}}">{{day}}</label>
                     <input type="checkbox" value="{{day}}" name="{{day}}">
+                    <label for="{{day}}">{{day}}</label>
                   </div>
                 </div>
                 <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
@@ -170,28 +170,28 @@
             <form id="add-class-form">
               <div class="form-group">
                 <label for="class-name" class="form-control-label">Class:</label>
-                <input type="text" class="form-control" id="class-name" name="class-name" required>
+                <input type="text" class="form-control input-text" id="class-name" name="class-name" required>
               </div>
               <div class="form-group">
                 <label for="instructor-name" class="form-control-label">Instructor:</label>
-                <input type="text" class="form-control" id="instructor-name" name="instructor-name" required>
+                <input type="text" class="form-control input-text" id="instructor-name" name="instructor-name" required>
               </div>
               <div class="form-group">
                 <label for="start-time" class="form-control-label">Start Time:</label>
-                <input type="time" class="form-control" id="start-time" name="start-time" required>
+                <input type="time" class="form-control input-text" id="start-time" name="start-time" required>
               </div>
               <div class="form-group">
                 <label for="end-time" class="form-control-label">End Time:</label>
-                <input type="time" class="form-control" id="end-time" name="end-time" required>
+                <input type="time" class="form-control input-text" id="end-time" name="end-time" required>
               </div>
               <div class="form-group">
                 <strong>Day(s):</strong><br/>
                 <div class="day" ng-repeat="day in weekdays">
-                  <label for="{{day}}">{{day}}</label>
                   <input type="checkbox" value="{{day}}" name="{{day}}">
+                  <label for="{{day}}">{{day}}</label>
                 </div>
               </div>
-              <div class="form-group pl-0">
+              <div class="form-group pl-0 desc-container">
                 <label for="description" class="form-control-label">Description:</label>
                 <textarea type="text" class="form-control" id="description" name="description" required></textarea>
               </div>

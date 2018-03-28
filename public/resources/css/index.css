@@ -81,6 +81,7 @@ body {
 
 .card-header .row{
   padding: .75rem 1.25rem;
+  width: 90%;
 }
 
 .card-header:hover {
@@ -105,7 +106,7 @@ body {
 
 .table-heading {
   padding-right: 25px;
-  width: 98%;
+  width: 90%;
   font-size: 20px;
   font-weight: bold;
 }
@@ -153,14 +154,21 @@ span {
   text-decoration: none;
 }
 
-.payment-method {
+.radio-btn {
   display: inline-block;
   width: auto;
+}
+
+.radio-btn-label {
+  display: inline-block;
+}
+
+.form-control-label {
   margin-right: 20px;
 }
 
-.payment-method-label {
-  display: inline-block;
+.modal-body {
+  padding: 2rem;
 }
 
 .details {
@@ -220,6 +228,21 @@ h4 {
 
 .i_bio {
   margin-bottom:10px;
+}
+
+.input-text {
+  width: 265px;
+  margin-right: 15px;
+}
+
+.form-group {
+  display: inline-block;
+}
+
+@media screen and (min-width: 676px) {
+  .modal-dialog {
+    max-width: 600px;
+  }
 }
 
 @media screen and (max-width: 800px) {
