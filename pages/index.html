@@ -161,12 +161,18 @@
                 </div>
                 <div class="form-group">
                   <span class='form-control-label'>Affiliation:</span>
-                  <input type="radio" class="radio-btn form-control" id="student" value="student" name="affiliation" ng-model="affiliation" checked="checked" required>
-                  <label for="student" class="radio-btn-label form-control-label">Student</label>
-                  <input type="radio" class="radio-btn form-control" id="faculty" value="faculty" name="affiliation" ng-model="affiliation">
-                  <label for="faculty" class="radio-btn-label form-control-label">Faculty</label>
-                  <input type="radio" class="radio-btn form-control" id="community" value="community" name="affiliation" ng-model="affiliation">
-                  <label for="community" class="radio-btn-label form-control-label">Community Member</label>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="student" value="student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="student" class="radio-btn-label form-control-label">Student</label>
+                  </div>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="faculty" value="faculty" name="affiliation" ng-model="affiliation">
+                    <label for="faculty" class="radio-btn-label form-control-label">Faculty</label>
+                  </div>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="community" value="community" name="affiliation" ng-model="affiliation">
+                    <label for="community" class="radio-btn-label form-control-label">Community Member</label>
+                  </div>
                   <div class="form-group" ng-show="affiliation=='student' || affiliation=='faculty'">
                     <label for="rin" class="form-control-label">RIN:</label>
                     <input type="text" class="form-control input-text" id="rin" name="rin">

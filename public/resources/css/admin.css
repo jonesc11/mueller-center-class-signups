@@ -164,6 +164,11 @@ textarea {
   width: 100%;
 }
 
+
+.dropdown {
+  width: 100%;
+}
+
 @media screen and (min-width: 676px) {
   .modal-dialog {
     max-width: 600px;

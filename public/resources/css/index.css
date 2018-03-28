@@ -230,18 +230,24 @@ h4 {
   margin-bottom:10px;
 }
 
-.input-text {
-  width: 265px;
-  margin-right: 15px;
-}
-
-.form-group {
+.modal-body .form-group {
   display: inline-block;
+  width: 100%;
 }
 
 @media screen and (min-width: 676px) {
   .modal-dialog {
     max-width: 600px;
+  }
+  
+  .input-text {
+    width: 245px;
+    margin-right: 15px;
+  }
+  
+  .modal-body .form-group {
+    display: inline-block;
+    width: auto;
   }
 }
 

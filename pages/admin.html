@@ -137,7 +137,14 @@
           <div><strong>Email: </strong>{{member.email}}</div>
           <div><strong>RIN: </strong>{{member.rin}}</div>
           <div><strong>Payment Method: </strong>{{member.payment_method}}</div>
-          <div><strong>Payment Status: </strong>{{member.payment_status}}</div>
+          <div><strong>Payment Status: </strong>
+            <div class='form-group'>
+              <select ng-model="payment" name='payment' class='dropdown form-control'>
+                <option class="form-control" ng-selected="!{{member.payment_method}}" value="0">Unpaid</option>
+                <option class="form-control" ng-selected="{{member.payment_method}}" value="1">Paid</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-4">
           <strong>Classes Enrolled:</strong>
