@@ -87,12 +87,18 @@ async function emailMatchesObject (email, objectId) {
  * Returns the account object associated with a specified email address.
  * email is the email address that we are querying for.
  */
-async function getUser (email) {
+async function getUserByEmail (email) {
   var queryObject = { email: email };
   
-  var instructorObject = await accountsCollection.findOne (queryObject);
-  
-  return instructorObject;
+  return await accountsCollection.findOne ({ email: email });
+}
+
+/**
+ * Returns the account object associated with a specified object id.
+ * objectId is the ObjectId that we are querying for.
+ */
+async function getUserById (objectId) {
+  return await accountsCollection.findOne ({ _id: objectId });
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));
