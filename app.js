@@ -42,7 +42,7 @@ mongo.connect (mongoUrl, function (err, client) {
  * Returns true if the user is admin, false otherwise.
  * identifier can either be an email address (noted by an '@' symbol) or an ObjectId (from Mongo)
  */
-function userIsAdmin (identifier) {
+async function userIsAdmin (identifier) {
   var queryObject = {};
   if (identifier.indexOf('@') !== -1) {
     queryObject['email'] = identifier;
@@ -50,7 +50,7 @@ function userIsAdmin (identifier) {
     queryObject['_id'] = identifier;
   }
   
-  var obj = yield accountsCollection.findOne (queryObject, {is_admin: 1});
+  var obj = await accountsCollection.findOne (queryObject, {is_admin: 1});
   
   return obj.is_admin;
 }
@@ -60,13 +60,63 @@ function userIsAdmin (identifier) {
  * instructor is the instructor ObjectId
  * course is the course ObjectId
  */
-function userIsInstructor (instructor, course) {
+async function userIsInstructor (instructor, course) {
   var queryObject = { _id: course };
   var queryOptions = { instructors: 1 };
   
-  var courseObject = yield accountsCollection.findOne (queryObject, queryOptions);
+  var courseObject = await coursesCollection.findOne (queryObject, queryOptions);
   
   return courseObject.instructors.indexOf (instructor) !== -1;
 }
 
+/**
+ * Returns true if the instructor's email matches an ObjectId
+ * email is the instructor's email
+ * objectId is the instructor's ObjectId
+ */
+async function emailMatchesObject (email, objectId) {
+  var queryObject = { _id: objectId };
+  var queryOptions = { email: 1 };
+  
+  var instructorObject = await accountsCollection.findOne (queryObject, queryOptions);
+  
+  return instructorObject.email = email;
+}
+
+/**
+ * Returns the account object associated with a specified email address.
+ * email is the email address that we are querying for.
+ */
+async function getUser (email) {
+  var queryObject = { email: email };
+  
+  var instructorObject = await accountsCollection.findOne (queryObject);
+  
+  return instructorObject;
+}
+
 app.listen(3000, () => console.log('Server listening on port 3000.'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
