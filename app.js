@@ -101,6 +101,27 @@ async function getUserById (objectId) {
   return await accountsCollection.findOne ({ _id: objectId });
 }
 
+/**
+ * Returns a list of all users in the database.
+ */
+async function getAllAccounts () {
+  return await accountsCollection.find().toArray();
+}
+
+/**
+ * Returns a list of all instructors in the database
+ */
+async function getAllInstructors () {
+  return await accountsCollection.find({ is_instructor: true }).toArray();
+}
+
+/**
+ * Returns a list of all admins in the database
+ */
+async function getAllAdmins () {
+  return await accountsCollection.find({ is_admin: true }).toArray();
+}
+
 app.listen(3000, () => console.log('Server listening on port 3000.'));
 
 
