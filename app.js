@@ -50,9 +50,23 @@ function userIsAdmin (identifier) {
     queryObject['_id'] = identifier;
   }
   
-  var obj = yield accountsCollection.findOne(queryObject, {is_admin: 1});
+  var obj = yield accountsCollection.findOne (queryObject, {is_admin: 1});
   
   return obj.is_admin;
+}
+
+/**
+ * Returns true if the instructor is an instructor for the course, false otherwise.
+ * instructor is the instructor ObjectId
+ * course is the course ObjectId
+ */
+function userIsInstructor (instructor, course) {
+  var queryObject = { _id: course };
+  var queryOptions = { instructors: 1 };
+  
+  var courseObject = yield accountsCollection.findOne (queryObject, queryOptions);
+  
+  return courseObject.instructors.indexOf (instructor) !== -1;
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));
