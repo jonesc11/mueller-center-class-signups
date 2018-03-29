@@ -122,6 +122,26 @@ async function getAllAdmins () {
   return await accountsCollection.find({ is_admin: true }).toArray();
 }
 
+/**
+ * Updates a user based on an ObjectId.
+ * objectId is the ObjectId of the user that we are updating
+ * updateObject is the object to send in
+ *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
+ */
+function updateUserById (objectId, updateObject) {
+  accountsCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+}
+
+/**
+ * Updates a user based on an email address
+ * email is the email of the user that we are updating
+ * updateObject is the object to send in
+ *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
+ */
+function updateUserByEmail (email, updateObject) {
+  accountsCollection.updateOne ({ email: email }, { $set: updateObject });
+}
+
 app.listen(3000, () => console.log('Server listening on port 3000.'));
 
 
