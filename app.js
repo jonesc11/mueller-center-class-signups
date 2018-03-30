@@ -142,6 +142,21 @@ function updateUserByEmail (email, updateObject) {
   accountsCollection.updateOne ({ email: email }, { $set: updateObject });
 }
 
+/**
+ * Adds a user to the database with the given items
+ * object represents the object to insert. Email must be included, otherwise -1 is returned.
+ * Returns 1 if insertion was successful, 0 otherwise.
+ */
+async function createUser (object) {
+  if (object.email === undefined)
+    return -1;
+  
+  if (getUserByEmail (object.email) !== null)
+    return 0;
+  
+  return await accountsCollection.insertOne (object);
+}
+
 app.listen(3000, () => console.log('Server listening on port 3000.'));
 
 
