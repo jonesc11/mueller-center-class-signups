@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" ng-app="instructor-acc">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/resources/css/instructor.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <title>Mueller Center</title>
+  </head>
+  <body ng-controller="controller">
+    <header>Mueller Center Fitness Instructor Panel</header>
+    <div class="container">
+      <div class="acc-info" class="border">
+        <h3 align="center">Account Information</h3>
+        <div ng-hide="editorEnabled">
+            <div class="left-info">
+              <div class="info"><strong>Name: </strong>{{account.name}}</div>
+              <div class="info"><strong>Email: </strong>{{account.email}}</div>
+              <div class="info"><strong>Password: </strong>*******</div>
+              <div class="info"><strong>Bio: </strong><br>{{account.bio}}</div>
+            </div>
+            <div class="right-info">
+              <div><img ng-src="{{account.image}}" class='image'></div>
+            </div>
+            <button type="button" ng-click="enableEditor()" class="btn btn-success">Edit Info</button>
+        </div>
+        <div ng-show="editorEnabled">
+          <div class="left-info">
+            <div class="info"><strong>Name:</strong> <input ng-model="editableName" ng-show="editorEnabled"></div>
+            <div class="info"><strong>Email: </strong>{{account.email}}</div>
+            <div class="info"><strong>Password: </strong>*******</div>
+            <button type="button" class="btn btn-info">Change Password</button>
+            <div class="info"><strong>Bio: </strong><br><textarea rows="7" cols="30" ng-model="editableBio" ng-show="editorEnabled"></textarea></div>
+          </div>
+          <div class="right-info">
+              <div><img ng-src="{{account.image}}" class='image'></div>
+              <button type="button" class="btn btn-info">Upload Image</button>
+          </div>
+          <button type="button" ng-click="save()" class="btn btn-success">Save Info</button>
+          <button type="button" ng-click="disableEditor()" class="btn btn-danger">Cancel</button>
+        </div>
+      </div>
+
+      <div id="all-classes">
+        <h3 align="center">Your Classes</h3>
+        <div class="class-info border" ng-repeat="class in account.classes">
+          <h4 align="center">{{class}}<br></h4>
+          <button class="email btn btn-primary" data-toggle="collapse" data-target="#email-{{$index}}">Email Members</button>
+          <div id="email-{{$index}}" class="collapse">
+            <div class="message"><strong>Message: </strong><br><textarea rows="8" cols="60"></textarea></div>
+            <button type="button" class="btn btn-success">Send Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div ng-app>
+  <div ng-controller="ClickToEditCtrl">
+    <div ng-hide="editorEnabled">
+      {{title}}
+      <a href="#" ng-click="enableEditor()">Edit title</a>
+    </div>
+    <div ng-show="editorEnabled">
+      <input ng-model="editableTitle" ng-show="editorEnabled">
+      <a href="#" ng-click="save()">Save</a>
+      or
+      <a href="#" ng-click="disableEditor()">cancel</a>.
+    </div>
+  </div>
+</div>-->
+    
+
+    <!-- jQuery, Bootstrap JS, angular -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+    <script src="/resources/js/instructor.js"></script>
+  </body>
+</html>

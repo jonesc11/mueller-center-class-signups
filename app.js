@@ -21,6 +21,10 @@ app.get ('/admin', function (req, res) {
   res.sendFile (__dirname + "/pages/admin.html");
 });
 
+app.get ('/instructor', function (req, res) {
+  res.sendFile (__dirname + "/pages/instructor.html");
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
