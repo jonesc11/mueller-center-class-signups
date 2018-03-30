@@ -2,6 +2,7 @@ var path = require ('path');
 var express = require ('express');
 var app = express();
 var mongo = require ('mongodb').MongoClient;
+var bcryptjs = require ('bcryptjs');
 
 var accountsCollection = null;
 var classesCollection = null;
@@ -37,6 +38,32 @@ mongo.connect (mongoUrl, function (err, client) {
   
   console.log ('Successfully created collection objects');
 });
+
+/**
+ * Returns a randomly generated salt.
+ */
+function getSalt () {
+  return bcrypt.genSaltSync (16);
+}
+
+/**
+ * Returns a hashed password based on a salt.
+ */
+function getHashedPassword (passwd, salt) {
+  return bcrypt.hashSync (passwd, salt);
+}
+
+/**
+ * Given an email and password, returns true if the password matches the username in the database
+ */
+function verifyLogin (email, passwd) {
+  var userObject = getUserByEmail (email);
+  
+  if (user == null)
+    return false;
+  
+  return userObject.password === getHashedPassword (passwd, userObject.salt);
+}
 
 /**
  * Returns true if the user is admin, false otherwise.
@@ -144,7 +171,7 @@ function updateUserByEmail (email, updateObject) {
 
 /**
  * Adds a user to the database with the given items
- * object represents the object to insert. Email must be included, otherwise -1 is returned.
+ * object represents the object to insert. Email must be included, otherwise -1 is returned. Also, password must already be hashed.
  * Returns 1 if insertion was successful, 0 otherwise.
  */
 async function createUser (object) {
@@ -158,27 +185,3 @@ async function createUser (object) {
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
