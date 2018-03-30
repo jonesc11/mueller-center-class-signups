@@ -75,8 +75,19 @@ body {
   content: "\f067";
 }
 
+.card {
+  margin-bottom: 10px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08),0 1px 5px 0 rgba(0,0,0,0.06)!important;
+  border: 1px solid rgba(0, 0, 0, .25);
+}
+
+.card-border {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
 .card-header {
   padding: 0px;
+  background-color: #e8e8e8;
 }
 
 .card-header .row{

@@ -27,12 +27,12 @@
             <h5 class="mb-0 panel-title">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 <div class='row'>
-                  <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Pilates</div>
+                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Pilates</div>
                 </div>
               </a>
             </h5>
           </div>
-          <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div id="collapseOne" class="collapse card-border" role="tabpanel" aria-labelledby="headingOne">
             <div class="card-block">
               <form>
                 <div class="form-group">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="btn-container">
                   <button class="btn btn-primary">Save Changes</button>
-                  <button class="btn btn-danger">Delete</button>
+                  <button class="btn btn-danger" ng-click="deleteObject('Pilates')" data-toggle="modal" data-target="#confirm-delete">Delete</button>
                 </div>
               </form>
             </div>
@@ -76,12 +76,12 @@
             <h5 class="mb-0 panel-title">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <div class='row'>
-                  <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Midday Yoga</div>
+                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Midday Yoga</div>
                 </div>
               </a>
             </h5>
           </div>
-          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div id="collapseTwo" class="collapse card-border" role="tabpanel" aria-labelledby="headingTwo">
             <div class="card-block">
               blank
             </div>
@@ -92,12 +92,12 @@
             <h5 class="mb-0 panel-title">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 <div class='row'>
-                  <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Zumba</div>
+                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Zumba</div>
                 </div>
               </a>
             </h5>
           </div>
-          <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div id="collapseThree" class="collapse card-border" role="tabpanel" aria-labelledby="headingThree">
             <div class="card-block">
               blank
             </div>
@@ -132,21 +132,31 @@
       <h1>Members</h1>
       <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
       <div class="account row" ng-repeat="member in member_accounts">
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-sm-12 col-md-4 col-lg-5">
           <div><strong>Name: </strong>{{member.name}}</div>
           <div><strong>Email: </strong>{{member.email}}</div>
           <div><strong>RIN: </strong>{{member.rin}}</div>
-          <div><strong>Payment Method: </strong>{{member.payment_method}}</div>
-          <div><strong>Payment Status: </strong>
+          <div>
+            <strong>Payment Method: </strong>
+            <div class='form-group'>
+              <select ng-model="method" name='method' class='dropdown form-control'>
+                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Cash'" value="Cash">Cash</option>
+                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Check'" value="Check">Check</option>
+                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Bursar'" value="Bursar">Bursar</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <strong>Payment Status: </strong>
             <div class='form-group'>
               <select ng-model="payment" name='payment' class='dropdown form-control'>
-                <option class="form-control" ng-selected="!{{member.payment_method}}" value="0">Unpaid</option>
-                <option class="form-control" ng-selected="{{member.payment_method}}" value="1">Paid</option>
+                <option class="form-control" ng-selected="!{{member.payment_status}}" value="0">Unpaid</option>
+                <option class="form-control" ng-selected="{{member.payment_status}}" value="1">Paid</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-sm-12 col-md-4 col-lg-5">
           <strong>Classes Enrolled:</strong>
           <form class='member-classes'>
             <div class="form-group classes" ng-repeat='class in member.classes'>
@@ -156,14 +166,14 @@
             <button class="btn btn-sm btn-secondary">Remove selected classes</button>
           </form>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
-          <div class="float"><button class="btn btn-sm btn-danger">Delete</button></div>
-          <div class="float"><button class="btn btn-sm btn-secondary">Update Payment Status</button></div>
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <div class="float"><button class="btn btn-sm btn-danger" ng-click="deleteObject(member.name)" data-toggle="modal" data-target="#confirm-delete">Delete</button></div>
           <div class="float"><button class="btn btn-sm btn-secondary">Email member</button></div>
         </div>
       </div>
     </div>
-    <!--    Modals -->
+    <!-- Modals -->
+    <!-- Add class modal -->
     <div class="modal fade" id="add-class">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -209,6 +219,52 @@
                 <button class="btn btn-primary">Add Class</button>
                 <button class="btn" data-dismiss="modal">Cancel</button>
               </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Create Account Modal  -->
+    <div class="modal fade" id="add-account">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create new Instructor Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="sign-up-form">
+              <div class="form-group">
+                <label for="first-name" class="form-control-label">First Name:</label>
+                <input type="text" class="form-control input-text" id="first-name" name="first-name" required>
+              </div>
+              <div class="form-group">
+                <label for="last-name" class="form-control-label">Last Name:</label>
+                <input type="text" class="form-control input-text" id="last-name" name="last-name" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-control-label">Email:</label>
+                <input type="email" class="form-control input-text" id="email" name="email" required>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary signup" id="login-submit" data-dismiss="modal">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Delete Modal  -->
+    <div class="modal fade" id="confirm-delete">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete {{delete_object}}?
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>
       </div>
