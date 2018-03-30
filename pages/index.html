@@ -145,28 +145,47 @@
               <form id="sign-up-form">
                 <div class="form-group">
                   <label for="first-name" class="form-control-label">First Name:</label>
-                  <input type="text" class="form-control" id="first-name" name="first-name" required>
+                  <input type="text" class="form-control input-text" id="first-name" name="first-name" required>
                 </div>
                 <div class="form-group">
                   <label for="last-name" class="form-control-label">Last Name:</label>
-                  <input type="text" class="form-control" id="last-name" name="last-name" required>
+                  <input type="text" class="form-control input-text" id="last-name" name="last-name" required>
                 </div>
                 <div class="form-group">
                   <label for="email" class="form-control-label">Email:</label>
-                  <input type="text" class="form-control" id="email" name="email" required>
+                  <input type="email" class="form-control input-text" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                  <label for="phone" class="form-control-label">Phone:</label>
+                  <input type="tel" class="form-control input-text" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                  <span class='form-control-label'>Affiliation:</span>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="student" value="student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="student" class="radio-btn-label form-control-label">Student</label>
+                  </div>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="faculty" value="faculty" name="affiliation" ng-model="affiliation">
+                    <label for="faculty" class="radio-btn-label form-control-label">Faculty</label>
+                  </div>
+                  <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="community" value="community" name="affiliation" ng-model="affiliation">
+                    <label for="community" class="radio-btn-label form-control-label">Community Member</label>
+                  </div>
+                  <div class="form-group" ng-show="affiliation=='student' || affiliation=='faculty'">
+                    <label for="rin" class="form-control-label">RIN:</label>
+                    <input type="text" class="form-control input-text" id="rin" name="rin">
+                  </div>
                 </div>
                 <div class="form-group">
                   <span class='form-control-label'>Payment Method:</span>
-                  <label for="cash" class="payment-method-label form-control-label">Cash</label>
-                  <input type="radio" class="payment-method form-control" id="cash" value="cash" name="payment" ng-model="payment" checked="checked" required>
-                  <label for="credit" class="payment-method-label form-control-label">Check</label>
-                  <input type="radio" class="payment-method form-control" id="credit" value="credit" name="payment" ng-model="payment">
-                  <label for="bursar" class="payment-method-label form-control-label">Bursar</label>
-                  <input type="radio" class="payment-method form-control" id="bursar" value="bursar" name="payment" ng-model="payment">
-                  <div class="form-group" ng-show="payment=='bursar'">
-                    <label for="rin" class="form-control-label">RIN:</label>
-                    <input type="text" class="form-control" id="rin" name="rin">
-                  </div>
+                  <input type="radio" class="radio-btn form-control" id="cash" value="cash" name="payment" ng-model="payment" checked="checked" required>
+                  <label for="cash" class="radio-btn-label form-control-label">Cash</label>
+                  <input type="radio" class="radio-btn form-control" id="credit" value="credit" name="payment" ng-model="payment">
+                  <label for="credit" class="radio-btn-label form-control-label">Check</label>
+                  <input type="radio" class="radio-btn form-control" id="bursar" value="bursar" name="payment" ng-model="payment" ng-show="affiliation=='student'">
+                  <label for="bursar" class="radio-btn-label form-control-label" ng-show="affiliation=='student'">Bursar</label>
                 </div>
               </form>
             </div>

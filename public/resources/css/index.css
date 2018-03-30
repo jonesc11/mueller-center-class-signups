@@ -75,12 +75,24 @@ body {
   content: "\f067";
 }
 
+.card {
+  margin-bottom: 10px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08),0 1px 5px 0 rgba(0,0,0,0.06)!important;
+  border: 1px solid rgba(0, 0, 0, .25);
+}
+
+.card-border {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
 .card-header {
   padding: 0px;
+  background-color: #e8e8e8;
 }
 
 .card-header .row{
   padding: .75rem 1.25rem;
+  width: 90%;
 }
 
 .card-header:hover {
@@ -105,7 +117,7 @@ body {
 
 .table-heading {
   padding-right: 25px;
-  width: 98%;
+  width: 90%;
   font-size: 20px;
   font-weight: bold;
 }
@@ -153,14 +165,21 @@ span {
   text-decoration: none;
 }
 
-.payment-method {
+.radio-btn {
   display: inline-block;
   width: auto;
+}
+
+.radio-btn-label {
+  display: inline-block;
+}
+
+.form-control-label {
   margin-right: 20px;
 }
 
-.payment-method-label {
-  display: inline-block;
+.modal-body {
+  padding: 2rem;
 }
 
 .details {
@@ -220,6 +239,27 @@ h4 {
 
 .i_bio {
   margin-bottom:10px;
+}
+
+.modal-body .form-group {
+  display: inline-block;
+  width: 100%;
+}
+
+@media screen and (min-width: 676px) {
+  .modal-dialog {
+    max-width: 600px;
+  }
+  
+  .input-text {
+    width: 245px;
+    margin-right: 15px;
+  }
+  
+  .modal-body .form-group {
+    display: inline-block;
+    width: auto;
+  }
 }
 
 @media screen and (max-width: 800px) {
