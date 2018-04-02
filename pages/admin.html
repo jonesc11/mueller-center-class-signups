@@ -42,10 +42,17 @@
                 <div class="form-group">
                   <label for="instructor-name" class="form-control-label">Instructor:</label>
                   <select ng-model="inst" name='inst' class='form-control'>
-                    <option class="form-control" selected="Pending=='{{class.instructors}}'">Pending</option>
-                    <option class="form-control" ng-repeat="instructor in instructor_names" ng-selected="'{{instructor.name}}'=='{{class.instructors}}'" value="instructor.name">{{instructor.name}}</option>
+                    <option class="form-control" selected="Pending=='{{class.instructor}}'">Pending</option>
+                    <option class="form-control" ng-repeat="instructor in instructor_names" ng-selected="'{{instructor.name}}'=='{{class.instructor}}'" value="instructor.name">{{instructor.name}}</option>
                   </select>
                 </div>
+                <div class="form-group">
+                  <label for="room" class="form-control-label">Room:</label>
+                  <select ng-model="roomNum" name='rooms' class='form-control'>
+                    <option class="form-control" ng-repeat="room in rooms" ng-selected="{{class.room}}=={{room}}" value="{{room}}" name="room{{room}}">Room {{room}}</option>
+                  </select>
+                </div>
+                <br/>
                 <div class="form-group">
                   <label for="start-time" class="form-control-label">Start Time:</label>
                   <input type="time" class="form-control" id="start-time" name="start-time" value="{{class.start_time}}" required>
@@ -58,7 +65,7 @@
                 <div class="form-group">
                   <strong>Day(s):</strong><br/>
                   <div class="day" ng-repeat="day in weekdays">
-                    <input type="checkbox" value="{{day}}" name="{{day}}">
+                    <input type="checkbox" value="{{day}}" name="{{day}}" ng-checked='checkArray({{class.days}}, "{{day}}")'>
                     <label for="{{day}}">{{day}}</label>
                   </div>
                 </div>
@@ -74,6 +81,7 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
     <div id="instructors" class="container tab" ng-show="instructors">
       <h1>Instructor Accounts</h1>
