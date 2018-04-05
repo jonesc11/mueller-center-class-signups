@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="instructor-acc">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <title>Mueller Center</title>
   </head>
-  <body>
+  <body ng-controller="controller">
     <div id="header-container">
       <img id="banner" src="/resources/img/banner.jpg"/>
       <nav class="header">
@@ -22,7 +22,7 @@
     </div>
     <div id="login-container">
       <h4 align="center">User Log In</h4>
-      <form ng-submit="login(username, password)">
+      <form>
         <label>Email</label>
         <input type="text" ng-model="email">
         <br/>
@@ -30,7 +30,7 @@
         <input type="password" ng-model="password" class="ng-pristine ng-valid">
         <br/>
           <!--{{loginError}}  {{loggedUser}} -->
-        <button class="btn btn-success" ng-click="">Submit</button>
+        <button class="btn btn-success">Submit</button>
         <a href="/" role="button" class="btn  btn-danger">Cancel</a>
       </form>
     </div>
@@ -40,6 +40,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-    <script src="/resources/js/index.js"></script>
+    <script src="/resources/js/instructor.js"></script>
   </body>
 </html>
