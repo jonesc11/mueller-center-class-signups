@@ -2,12 +2,10 @@
 
 body {
   font-family: 'Raleway', sans-serif;
-  height:100vh;
 }
 
 #banner {
   width: 100%;
-  position: fixed;
 }
 
 .header {
@@ -17,9 +15,6 @@ body {
   background-color: #e2231b;
   text-align: center;
   line-height: 50px;
-  position:fixed;
-  display: block;
-  margin-top:225px;
 }
 
 .header a {
@@ -32,32 +27,28 @@ body {
 
 #container {
   width: 100%;
-  position: fixed;
 }
 
 #sidebar {
-  margin-top:275px;
   padding: 20px;
   float: right;
-  height: 100%;
   width: 30%;
   position: fixed;
   z-index: 1;
+  display: inline-block;
+  position: relative;
   background-color: #383838;
   color: white;
-  right:0;
 }
 
 #content {
-  margin-top:280px;
   float: left;
   width: 70%;
-  overflow-y: scroll;
+  display: inline-block;
+  overflow-y: auto;
   padding: 30px;
   color: black;
-  max-height:700px;
 }
-
 
 .link {
   color: white;
