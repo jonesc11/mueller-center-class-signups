@@ -2,15 +2,25 @@
 
 body {
   font-family: 'Raleway', sans-serif;
+  height:100%;
+  width: 100%;
 }
 
 #banner {
   width: 100%;
+  height: 20vh;
+}
+
+#header-container {
+  position: fixed;
+  top:0;
+  left:0;
+
 }
 
 .header {
   width: 100%;
-  height: 50px;
+  height: 5vh;
   font-size: 30px;
   background-color: #e2231b;
   text-align: center;
@@ -35,7 +45,6 @@ body {
   width: 30%;
   position: fixed;
   z-index: 1;
-  display: inline-block;
   position: relative;
   background-color: #383838;
   color: white;
@@ -44,7 +53,6 @@ body {
 #content {
   float: left;
   width: 70%;
-  display: inline-block;
   overflow-y: auto;
   padding: 30px;
   color: black;
@@ -268,6 +276,19 @@ h4 {
     display: inline-block;
     width: auto;
   }
+
+  #sidebar {
+    right:0;
+    top:25vh;
+    height:75vh;
+    position: fixed;
+  }
+
+  #content {
+    height:75vh;
+    top:25vh;
+    position: fixed;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -291,6 +312,14 @@ h4 {
   
   h3 {
     display: none;
+  }
+
+  #header-container {
+    position:static;
+  }
+
+  .header {
+    height: 50px;
   }
 }
 
