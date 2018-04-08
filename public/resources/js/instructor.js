@@ -20,4 +20,17 @@ app.controller('controller', function ($scope, $http) {
     $scope.disableEditor();
   };
 
+  $scope.sendEmail = function() {
+    $http.post("/email/class", {
+        //send form parameters
+        params: {
+            subject: $scope.subject,
+            body: $scope.body,
+            //class_id: $scope.class_id 
+        }
+    }).then(function(){
+        alert("Email Sent");
+    });
+  };
+
 });

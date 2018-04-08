@@ -51,8 +51,15 @@
           <h4 align="center">{{class}}<br></h4>
           <button class="email btn btn-primary" data-toggle="collapse" data-target="#email-{{$index}}">Email Members</button>
           <div id="email-{{$index}}" class="collapse">
-            <div class="message"><strong>Message: </strong><br><textarea rows="8" cols="60"></textarea></div>
-            <button type="button" class="btn btn-success">Send Email</button>
+            <form id="send-email-{{$index}}" ng-submit="sendEmail()">
+              <div class="message">
+                <strong>Subject: </strong><br/>
+                <textarea ng-model="subject" rows="1" cols="60"></textarea>
+                <strong>Message: </strong><br/>
+                <textarea ng-model="message" rows="8" cols="60"></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Send Email</button>
+            </form>
           </div>
         </div>
       </div>
