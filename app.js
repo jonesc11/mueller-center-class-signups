@@ -56,10 +56,17 @@ async function getClass (objectId) {
 }
 
 /**
- * Returns all class objects
+ * Returns all non-archived class objects
  */
 async function getAllCourses () {
-  return await coursesCollection.find().toArray();
+  return await coursesCollection.find({ is_archived: false }).toArray();
+}
+
+/**
+ * Returns all archived class objects
+ */
+async function getAllArchivedCourses () {
+  return await coursesCollection.find({ is_archived: true }).toArray();
 }
 
 /**
