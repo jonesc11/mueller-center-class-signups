@@ -48,6 +48,7 @@ body {
   position: relative;
   background-color: #383838;
   color: white;
+  overflow: scroll;
 }
 
 #content {
