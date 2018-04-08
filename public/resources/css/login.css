@@ -2,14 +2,16 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-#banner {
-  width: 100%;
+#header-logo {
+  float:left;
+  height:50px;
 }
 
 .header {
+  padding:10px;
   width: 100%;
-  height: 50px;
-  font-size: 30px;
+  height: 70px;
+  font-size: 40px;
   background-color: #e2231b;
   text-align: center;
   line-height: 50px;
@@ -25,13 +27,15 @@ body {
 
 #login-container {
 	margin:auto;
-	width:300px;
+	width:400px;
 	padding: 10px;
+	font-size:18px;
 }
 
 #login-container button,a {
 	margin-top:20px;
 	margin-left:20px;
+	width:150px;
 }
 
 label {
@@ -41,7 +45,7 @@ label {
 }
 
 input {
-	width:180px;
+	width:250px;
 }
 
 form {
