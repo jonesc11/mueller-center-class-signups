@@ -63,6 +63,29 @@ async function getAllCourses () {
 }
 
 /**
+ * Returns all member objects unique on email address
+ */
+async function getAllMembers () {
+  var courses = getAllCourses ();
+  var members = [];
+
+  for (var i = 0; i < courses.length; ++i) {
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      var inArray = false;
+      for (var k = 0; k < members.length; ++k)
+        if (members[i].email_address.toLowerCase() === courses[i].persons_enrolled[j].email_address.toLowerCase()) {
+          inArray = true;
+          break;
+        }
+      if (!inArray)
+        members.push (courses[i].persons_enrolled[j]);
+    }
+  }
+
+  return members;
+}
+
+/**
  * Updates a specified class object
  * objectId is the ObjectId of the course we are trying to update
  * updateObject is the key-value pairs of objects we are updating
