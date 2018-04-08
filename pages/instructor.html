@@ -12,7 +12,7 @@
     <title>Mueller Center</title>
   </head>
   <body ng-controller="controller">
-    <header>Mueller Center Fitness Instructor Panel</header>
+    <header>Mueller Center Fitness Account Panel</header>
     <div class="container">
       <div class="acc-info" class="border">
         <h3 align="center">Account Information</h3>
@@ -33,7 +33,7 @@
             <div class="info"><strong>Name:</strong> <input ng-model="editableName" ng-show="editorEnabled"></div>
             <div class="info"><strong>Email: </strong>{{account.email}}</div>
             <div class="info"><strong>Password: </strong>*******</div>
-            <button type="button" class="btn btn-info">Change Password</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordModal">Change Password</button>
             <div class="info"><strong>Bio: </strong><br><textarea rows="7" cols="30" ng-model="editableBio" ng-show="editorEnabled"></textarea></div>
           </div>
           <div class="right-info">
@@ -53,6 +53,27 @@
           <div id="email-{{$index}}" class="collapse">
             <div class="message"><strong>Message: </strong><br><textarea rows="8" cols="60"></textarea></div>
             <button type="button" class="btn btn-success">Send Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+          </div>
+          <div class="modal-body">
+            <form id="change-pass" ng-submit="changePass()" onsubmit="this.reset()">
+              <label>Old Password: </label><input type="password" ng-model="oldpass"><br/>
+              <label>New Password: </label><input type="password" ng-model="newpass"><br/>
+              <label>Re-type New Password: </label><input type="password" ng-model="rtnewpass"><br/>
+              <button class="btn btn-success" type="submit" id="submit">Change Password</button>
+              <button type="button" class="btn btn-default" onclick="this.reset()" data-dismiss="modal">Cancel</button><br>
+            </form>
           </div>
         </div>
       </div>

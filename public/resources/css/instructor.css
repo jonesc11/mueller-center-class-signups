@@ -11,6 +11,20 @@ header {
   font-size: 30px;
 }
 
+#passwordModal input {
+	width:250px;
+	margin:10px;
+}
+
+#passwordModal label {
+	width:190px;
+}
+
+#passwordModal button {
+	margin-top:30px;
+	margin-right:20px;
+}
+
 .container {
 	margin-top: 20px;
 }
