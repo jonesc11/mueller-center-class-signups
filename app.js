@@ -166,6 +166,34 @@ async function addSession (objectId, startDate, endDate, instructor, sessionId, 
 }
 
 /**
+ * Adds a user to a specified course
+ * objectId is the ObjectId of the class that we are adding the person to
+ * emailAddress is the email address of the user that we are adding to the class
+ * fullName is the full name of the user that we are adding to the class
+ * paymentMethod is the payment method that the user we are adding is using
+ * paid is whether or not the person we are adding has paid
+ */
+async function addMember (objectId, emailAddress, fullName, paymentMethod, paid) {
+  var toAdd = {
+    email_address: emailAddress.toLowerCase(),
+    name: fullName,
+    payment_method: paymentMethod,
+    paid: paid
+  };
+
+  accountsCollection.updateOne ({ _id: objectId }, { $push: { enrolled_persons: toAdd } });
+}
+
+/**
+ * Removes a user to a specified course
+ * objectId is the ObjectId of the class that we are removing the person from
+ * emailAddress is the email address of the user that we are removing from the class
+ */
+async function removeMember (objectId, emailAddress) {
+  accountsCollection.updateOne ({ _id: objectId }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+}
+
+/**
  * Adds a member to the specified course. Returns 1 on success, 0 on failure, -1 on user already a member of the course or bad input.
  */
 async function addEnrollment (objectId, emailAddress, paymentMethod) {
@@ -339,6 +367,13 @@ async function createUser (object) {
     return 0;
   
   return await accountsCollection.insertOne (object);
+}
+
+/**
+ * Deletes a user given an objectId
+ */
+function deleteUser (objectId) {
+  accountsCollection.deleteOne ({ _id: objectId });
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));
