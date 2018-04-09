@@ -24,6 +24,11 @@ body {
   height: 20vh;
 }
 
+#pay-method {
+  font-size:14px;
+  color:maroon;
+}
+
 #header-container {
   width:100%;
   position: fixed;

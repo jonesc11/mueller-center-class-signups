@@ -163,18 +163,24 @@
                 <div class="form-group">
                   <span class='form-control-label'>Affiliation:</span>
                   <div class="form-group mb-0">
-                    <input type="radio" class="radio-btn form-control" id="student" value="student" name="affiliation" ng-model="affiliation" checked="checked" required>
-                    <label for="student" class="radio-btn-label form-control-label">Student</label>
+                    <input type="radio" class="radio-btn form-control" id="student" value="ug-student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="ug-student" class="radio-btn-label form-control-label">Undergraduate Student</label>
                   </div>
                   <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="student" value="g-student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="g-student" class="radio-btn-label form-control-label">Graduate Student</label>
+                  </div>
+                  <br/>
+                  <div class="form-group mb-0">
                     <input type="radio" class="radio-btn form-control" id="faculty" value="faculty" name="affiliation" ng-model="affiliation">
-                    <label for="faculty" class="radio-btn-label form-control-label">Faculty</label>
+                    <label for="faculty" class="radio-btn-label form-control-label">Staff/Faculty</label>
                   </div>
                   <div class="form-group mb-0">
                     <input type="radio" class="radio-btn form-control" id="community" value="community" name="affiliation" ng-model="affiliation">
                     <label for="community" class="radio-btn-label form-control-label">Community Member</label>
                   </div>
-                  <div class="form-group" ng-show="affiliation=='student' || affiliation=='faculty'">
+                  <br/>
+                  <div class="form-group" ng-show="affiliation=='ug-student' || affiliation=='faculty' || affiliation=='g-student'">
                     <label for="rin" class="form-control-label">RIN:</label>
                     <input type="text" class="form-control input-text" id="rin" name="rin">
                   </div>
@@ -183,10 +189,16 @@
                   <span class='form-control-label'>Payment Method:</span>
                   <input type="radio" class="radio-btn form-control" id="cash" value="cash" name="payment" ng-model="payment" checked="checked" required>
                   <label for="cash" class="radio-btn-label form-control-label">Cash</label>
+
                   <input type="radio" class="radio-btn form-control" id="credit" value="credit" name="payment" ng-model="payment">
-                  <label for="credit" class="radio-btn-label form-control-label">Check</label>
-                  <input type="radio" class="radio-btn form-control" id="bursar" value="bursar" name="payment" ng-model="payment" ng-show="affiliation=='student'">
-                  <label for="bursar" class="radio-btn-label form-control-label" ng-show="affiliation=='student'">Bursar</label>
+                  <label for="credit" class="radio-btn-label form-control-label">Credit</label>
+
+                  <input type="radio" class="radio-btn form-control" id="check" value="check" name="payment" ng-model="payment">
+                  <label for="check" class="radio-btn-label form-control-label">Check</label>
+
+                  <input type="radio" class="radio-btn form-control" id="bursar" value="bursar" name="payment" ng-model="payment" ng-show="affiliation=='ug-student' || affiliation=='g-student'">
+                  <label for="bursar" class="radio-btn-label form-control-label" ng-show="affiliation=='ug-student' || affiliation=='g-student'">Bursar</label>
+                  <p id="pay-method">For cash or credit, pay at Union. For check, pay at Mueller Center</p>
                 </div>
               </form>
             </div>
