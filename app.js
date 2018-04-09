@@ -59,7 +59,20 @@ async function getClass (objectId) {
  * Returns all non-archived class objects
  */
 async function getAllCourses () {
-  return await coursesCollection.find({ is_archived: { $ne: true } }).toArray();
+  var courses = await coursesCollection.find({ is_archived: { $ne: true } }).toArray();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var instructor = getUserById (courses[i].instructor); 
+    if (instructor && instructor !== null) {
+      courses[i].instructor = instructor.first_name + " " + instructor.last_name;
+      courses[i].instructor_email = instructor.email;
+    } else {
+      courses[i].instructor = "";
+      courses[i].instructor_email = "";
+    }
+  }
+
+  return courses;
 }
 
 /**
