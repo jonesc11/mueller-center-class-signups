@@ -58,30 +58,32 @@
             <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Time</div>
           </div>
           <div id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="card">
-              <div class="card-header" role="tab" id="headingOne">
+            <div class="card" ng-repeat="class in class_information">
+              <div class="card-header" role="tab" id="heading{{class._id}}">
                 <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{class._id}}" aria-expanded="false" aria-controls="collapse{{class._id}}">
                     <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Pilates</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday &amp; Thursday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
+                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>{{class.name}}</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>{{print_days(class.frequency.days_of_week)}}</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>{{print_time(class.frequency.start_time, class.frequency.end_time)}}</div>
                     </div>
                   </a>
                 </h5>
               </div>
-              <div id="collapseOne" class="collapse card-border" role="tabpanel" aria-labelledby="headingOne">
+              <div id="collapse{{class._id}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class._id}}">
                 <div class="card-block">
                   <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Monday &amp; Thursday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
-				  <span><strong>Instructor:</strong> Deb DerGurahian</span>
-                  <span><strong>Email:</strong> <a href="mailto:deb@gmail.com">deb@gmail.com</a></span>
-                  <span><strong>Room:</strong> 2</span>
-                  <p class='class-description'><strong>Class Description:</strong> A system of movement which are designed to improve physical strength, flexibility, posture and mental awareness. This multi-level class, with hands on instruction, will change the way you move, think and feel. Please bring a mat!!</p>
+                  <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
+                  <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
+				  <span><strong>Instructor:</strong> {{class.instructor}}</span>
+                  <span><strong>Email:</strong> <a class="email" href="mailto:{{class.email}}">{{class.email}}</a></span>
+                  <span><strong>Room:</strong> {{class.room}}</span>
+                  <span><strong>Type:</strong> {{class.type}}</span>
+                  <p class='class-description'><strong>Class Description:</strong> {{class.description}}</p>
                 </div>
               </div>
             </div>
+<!--
             <div class="card">
               <div class="card-header" role="tab" id="headingTwo">
                 <h5 class="mb-0 panel-title">
@@ -106,6 +108,8 @@
                 </div>
               </div>
             </div>
+-->
+<!--
             <div class="card">
               <div class="card-header" role="tab" id="headingThree">
                 <h5 class="mb-0 panel-title">
@@ -130,6 +134,7 @@
                 </div>
               </div>
             </div>
+-->
           </div>
         </div>
       </div>

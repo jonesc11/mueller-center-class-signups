@@ -312,6 +312,15 @@ h4 {
   }
 }
 
+.email {
+  color: darkblue;
+}
+
+.email:hover {
+  color: darkblue;
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 800px) {
   #sidebar {
     width: 100%;
