@@ -69,6 +69,7 @@ a:hover {
   background-color: #383838;
   color: white;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 #content {
