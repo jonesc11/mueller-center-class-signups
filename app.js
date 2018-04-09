@@ -63,11 +63,16 @@ async function getAllCourses () {
 
   for (var i = 0; i < courses.length; ++i) {
     var instructor = getUserById (courses[i].instructor); 
-    courses[i].instructor = instructor.first_name + " " + instructor.last_name;
-    courses[i].instructor_email = instructor.email;
+    if (instructor && instructor !== null) {
+      courses[i].instructor = instructor.first_name + " " + instructor.last_name;
+      courses[i].instructor_email = instructor.email;
+    } else {
+      courses[i].instructor = "";
+      courses[i].instructor_email = "";
+    }
   }
 
-  return await coursesCollection.find({ is_archived: { $ne: true } }).toArray();
+  return courses;
 }
 
 /**
