@@ -69,6 +69,7 @@ a:hover {
   background-color: #383838;
   color: white;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 #content {
@@ -310,6 +311,15 @@ h4 {
     top:70px;
     position: fixed;
   }
+}
+
+.email {
+  color: darkblue;
+}
+
+.email:hover {
+  color: darkblue;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 800px) {

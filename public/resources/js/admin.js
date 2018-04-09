@@ -10,10 +10,11 @@ app.controller('controller', function ($scope, $http) {
     "name": "Pilates",
     "room": "1",
     "instructor": "Deb Something",
+    "email": "deb@gmail.com",
     "frequency": {
       "start_time": "12:00",
       "end_time": "13:00",
-      "days": ["Monday", "Thursday"]
+      "days_of_week": ["Monday", "Thursday"]
     },
     "semester": {
       "year": 2018,
@@ -42,6 +43,7 @@ app.controller('controller', function ($scope, $http) {
     "name": "Zumba",
     "description": "Zumba yay!",
     "instructor": "Sally Sweatsalot",
+    "email": "sally@gmail.com",
     "room": "2",
     "frequency": {
       "start_time": "17:00",
@@ -122,13 +124,13 @@ app.controller('controller', function ($scope, $http) {
     var time = "2018-01-01T";
     $scope.classStart = new Date(time + $scope.class_information[$scope.editClass].frequency.start_time + ":00");
     $scope.classEnd = new Date(time + $scope.class_information[$scope.editClass].frequency.end_time + ":00");
-    $scope.monday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Monday");
-    $scope.tuesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Tuesday");
-    $scope.wednesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Wednesday");
-    $scope.thursday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Thursday");
-    $scope.friday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Friday");
-    $scope.saturday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Saturday");
-    $scope.sunday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days, "Sunday");
+    $scope.monday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Monday");
+    $scope.tuesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Tuesday");
+    $scope.wednesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Wednesday");
+    $scope.thursday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Thursday");
+    $scope.friday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Friday");
+    $scope.saturday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Saturday");
+    $scope.sunday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Sunday");
     $scope.classDescription = $scope.class_information[$scope.editClass].description;
     $scope.classType = $scope.class_information[$scope.editClass].type;
   }

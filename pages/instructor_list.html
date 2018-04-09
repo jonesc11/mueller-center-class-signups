@@ -52,19 +52,19 @@
       </aside>
       <div id="content">
         <div id="instructors">
-
-          <div class="row border instructor">
-            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="/resources/img/i1.jpg"/></div>
+          <div class="row border instructor" ng-repeat="instructor in instructors">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="{{instructor.profile_image}}"/></div>
             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
-              <div class="i_name"><strong>Bill Bustamove</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:bill@gmail.com">bill@gmail.com</a></div>
+              <div class="i_name"><strong>{{instructor.first_name}} {{instructor.last_name}}</strong></div>
+              <div><strong>Contact &nbsp;&nbsp;</strong> <a class="email" href="mailto:{{instructor.email}}">{{instructor.email}}</a></div>
               <div><strong>About Me</strong></div>
               <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                {{instructor.biography}}
               </div>
             </div>
           </div>
 
+<!--
           <div class="row border instructor">
             <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="/resources/img/i2.jpg"/></div>
             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
@@ -88,6 +88,7 @@
               </div>
             </div>
           </div>
+-->
 
 
         </div>
