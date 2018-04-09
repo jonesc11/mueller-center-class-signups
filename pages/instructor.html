@@ -67,12 +67,15 @@
             <h4 class="modal-title">Change Password</h4>
           </div>
           <div class="modal-body">
-            <form id="change-pass" ng-submit="changePass()" onsubmit="this.reset()">
+            <form id="change-pass" ng-submit="changePass()">
               <label>Old Password: </label><input type="password" ng-model="oldpass"><br/>
               <label>New Password: </label><input type="password" ng-model="newpass"><br/>
               <label>Re-type New Password: </label><input type="password" ng-model="rtnewpass"><br/>
+              <div ng-show="error1" class="error">Wrong Password! Try Again<br/></div>
+              <div ng-show="error2" class="error">New Password Does Not Match! Try Again<br/></div>
+              <div ng-show="success" class="success">Password Successfully Changed!<br/></div>
               <button class="btn btn-success" type="submit" id="submit">Change Password</button>
-              <button type="button" class="btn btn-default" onclick="this.reset()" data-dismiss="modal">Cancel</button><br>
+              <button type="button" class="btn btn-default" ng-click="resetPass()" data-dismiss="modal">Cancel</button><br>
             </form>
           </div>
         </div>

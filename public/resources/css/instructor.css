@@ -25,6 +25,17 @@ header {
 	margin-right:20px;
 }
 
+.error {
+	color:maroon;
+	font-size:13px;
+}
+
+.success {
+	color:darkgreen;
+	font-size:13px;
+}
+
+
 .container {
 	margin-top: 20px;
 }
