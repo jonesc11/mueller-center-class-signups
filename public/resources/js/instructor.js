@@ -6,6 +6,8 @@ app.controller('controller', function ($scope, $http) {
   $scope.error1 = false;
   $scope.error2 = false;
   $scope.success = false;
+  $scope.currentimg = true;
+  $scope.newimg = false;
   
   $scope.enableEditor = function() {
     $scope.editorEnabled = true;
@@ -48,5 +50,24 @@ app.controller('controller', function ($scope, $http) {
     $scope.error2 = false;
     $scope.success = false;
   };
+
+  $scope.imageUpload = function(element){
+        var reader = new FileReader();
+        reader.onload = $scope.imageIsLoaded;
+        reader.readAsDataURL(element.files[0]);
+  };
+
+  $scope.imageIsLoaded = function(e){
+        $scope.$apply(function() {
+            $scope.image = e.target.result;
+            $scope.currentimg = false;
+            $scope.newimg = true;
+        });
+  };
+
+  $scope.changeImg = function() {
+      $scope.account.image = $scope.image;
+  }
+
 
 });

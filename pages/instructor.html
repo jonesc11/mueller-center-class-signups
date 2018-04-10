@@ -38,7 +38,7 @@
           </div>
           <div class="right-info">
               <div><img ng-src="{{account.image}}" class='image'></div>
-              <button type="button" class="btn btn-info">Upload Image</button>
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#picModal">Change Picture</button>
           </div>
           <button type="button" ng-click="save()" class="btn btn-success">Save Info</button>
           <button type="button" ng-click="disableEditor()" class="btn btn-danger">Cancel</button>
@@ -77,6 +77,25 @@
               <button class="btn btn-success" type="submit" id="submit">Change Password</button>
               <button type="button" class="btn btn-default" ng-click="resetPass()" data-dismiss="modal">Cancel</button><br>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Picture Modal -->
+    <div id="picModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change Profile Image</h4>
+          </div>
+          <div class="modal-body">
+              <img ng-show="currentimg" ng-src="{{account.image}}" class='thumb'>
+              <img ng-show="newimg" class="thumb" ng-src="{{image}}"/>
+              <input id="img" type='file' ng-model-instant onchange="angular.element(this).scope().imageUpload(this)"/><br/>
+              <button class="btn btn-success modalb" ng-click="changeImg()">Change Image</button>
+              <button type="button" class="btn btn-default cancelb" data-dismiss="modal">Back</button><br>
           </div>
         </div>
       </div>
