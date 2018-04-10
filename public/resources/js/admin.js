@@ -5,79 +5,13 @@ app.controller('controller', function ($scope, $http) {
   $scope.instructor_accounts = [{"name": "Sally", "email": "sally@gmail.com", "classes": ["Yoga", "Pilates"], "bio": "I'm Sally and I'm cool", "image": "/resources/img/i2.jpg"}, {"name": "Bill", "email": "bill@gmail.com", "classes": ["Boxing", "Zumba"], "bio": "I'm Bill and I'm cool", "image": "/resources/img/i3.jpg"}];
   $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
   //$scope.class_information = [{"_id": "01", "name": "Pilates", "instructor": "Deb Something", "room": "1", "start_time": "12:00", "end_time": "13:00", "days": ["Monday", "Thursday"], "description": "Pilates yay!"}, {"_id": "02", "name": "Zumba", "instructor": "Sally Sweatsalot", "room": "2", "start_time": "17:00", "end_time": "18:00", "days": ["Monday", "Thursday"], "description": "Zumba yay!"}, {"_id": "03", "name": "Zumba 2", "instructor": "Joe Jumpingjacks", "room": "3", "start_time": "13:00", "end_time": "14:00", "days": ["Tuesday"], "description": "Zumba yay x2!"}];
-  $scope.class_information = [{
-    "_id": "01",
-    "name": "Pilates",
-    "room": "1",
-    "instructor": "Deb Something",
-    "email": "deb@gmail.com",
-    "frequency": {
-      "start_time": "12:00",
-      "end_time": "13:00",
-      "days_of_week": ["Monday", "Thursday"]
-    },
-    "semester": {
-      "year": 2018,
-      "term": "Spring"
-    },
-    "type": "Fitness",
-    "is_archived": false,
-    "description": "Pilates yay!",
-    "persons_enrolled": [
-      {
-        "name": "Collin Jones",
-        "email_address": "jonesc11@rpi.edu",
-        "payment_method": "Bursar",
-        "paid": true
-      },
-      {
-        "name": "Yarden Neeman",
-        "email_address": "neemay@rpi.edu",
-        "payment_method": "Cash",
-        "paid": false
-      }
-    ]
-  },
-  {
-    "_id": "02",
-    "name": "Zumba",
-    "description": "Zumba yay!",
-    "instructor": "Sally Sweatsalot",
-    "email": "sally@gmail.com",
-    "room": "2",
-    "frequency": {
-      "start_time": "17:00",
-      "end_time": "18:00",
-      "days_of_week": ["Monday", "Thursday"]
-    },
-    "semester": {
-      "year": 2018,
-      "term": "Spring"
-    },
-    "type": "Fitness",
-    "is_archived": false,
-    "persons_enrolled": [
-      {
-        "name": "Sydney Ruzicka",
-        "email_address": "ruzics@rpi.edu",
-        "payment_method": "Check",
-        "paid": true
-      },
-      {
-        "name": "Collin Jones",
-        "email_address": "jonesc11@rpi.edu",
-        "payment_method": "Bursar",
-        "paid": false
-      },
-      {
-        "name": "Yarden Neeman",
-        "email_address": "neemay@rpi.edu",
-        "payment_method": "Cash",
-        "paid": true
-      }
-    ]
-  }
-];
+  $scope.class_information = [];
+  $http({
+    method: 'GET',
+    url: '/get-courses'
+  }).then(function (response) {
+    $scope.class_information = response.data;
+  });
   $scope.instructor_names = [{"name": "Deb Something"}, {"name": "Joe Jumpingjacks"}, {"name": "Sally Sweatsalot"}];
   $scope.rooms = ["1", "2", "3", "4"];
   $scope.roomNum = $scope.rooms[0];
