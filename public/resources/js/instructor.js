@@ -1,7 +1,9 @@
 var app = angular.module("instructor-acc", []);
 app.controller('controller', function ($scope, $http) {
   //Testing 
-  $scope.account = {"name": "Sally","password":"abc123", "email": "sally@gmail.com", "classes": ["Yoga", "Pilates"], "bio": "I'm Sally and I'm cool", "image": "/resources/img/i2.jpg"};
+  $scope.account = {"name": "Sally", "email": "sally@gmail.com", "classes": ["Yoga", "Pilates"], "bio": "I'm Sally and I'm cool", "image": "/resources/img/i2.jpg"};
+  $scope.instructor_accounts = [{"name": "Sally", "email": "sally@gmail.com", "classes": ["Yoga", "Pilates"], "bio": "I'm Sally and I'm cool", "image": "/resources/img/i2.jpg"}, {"name": "Bill", "email": "bill@gmail.com", "classes": ["Boxing", "Zumba"], "bio": "I'm Bill and I'm cool", "image": "/resources/img/i3.jpg"}];
+ master
   $scope.editorEnabled = false;
   $scope.error1 = false;
   $scope.error2 = false;

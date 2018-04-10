@@ -20,90 +20,155 @@
     </nav>
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
-      <button class="btn btn-primary add" data-toggle="modal" data-target="#add-class">Add Class</button>
-      <div id="accordion" role="tablist" aria-multiselectable="true">
+      <form ng-submit="submitEditClass()">
+        <div class="form-group">
+          <select ng-model="editClass" name='edit' class='form-control edit-class'>
+            <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
+          </select>
+          <input type="submit" class="btn btn-primary" value="Edit Class">
+        </div>
+      </form>
+      <div>
         <div class="card">
-          <div class="card-header" role="tab" id="headingOne">
+          <form class="card-block">
+            <div class="form-group">
+              <label for="class-name" class="form-control-label">Class:</label>
+              <input type="text" class="form-control" id="class-name" name="class-name" ng-model="className">
+            </div>
+            <div class="form-group">
+              <label for="instructor-name" class="form-control-label">Instructor:</label>
+              <select ng-model="instructorName" name='instructor' class='form-control'>
+                <option class="form-control">Pending</option>
+                <option class="form-control" ng-repeat="instructor in instructor_names" value="{{instructor.name}}">{{instructor.name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="room" class="form-control-label">Room:</label>
+              <input type="text" class="form-control" id="room" name="room" ng-model="classRoom">
+            </div>
+            <br/>
+            <div class="form-group">
+              <label for="start-time" class="form-control-label">Start Time:</label>
+              <input type="time" class="form-control" id="start-time" name="start-time" ng-model="classStart" placeholder="HH:mm">
+            </div>
+            <div class="form-group">
+              <label for="end-time" class="form-control-label">End Time:</label>
+              <input type="time" class="form-control" id="end-time" name="end-time" ng-model="classEnd">
+            </div>
+            <div class="form-group">
+              <label for="class-type" class="form-control-label">Type:</label>
+              <select ng-model="classType" name='class-type' class='form-control'>
+                <option class="form-control" value="Fitness">Fitness</option>
+                <option class="form-control" value="Enrichment">Enrichment</option>
+              </select>
+            </div>
+            <br/>
+            <div class="form-group">
+              <strong>Day(s):</strong><br/>
+              <div class="day">
+                <input type="checkbox" value="Monday" name="monday" ng-model="monday">
+                <label for="monday">Monday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Tuesday" name="tuesday" ng-model="tuesday">
+                <label for="tuesday">Tuesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Wednesday" name="wednesday" ng-model="wednesday">
+                <label for="wednesday">Wednesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Thursday" name="thursday" ng-model="thursday">
+                <label for="thursday">Thursday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Friday" name="friday" ng-model="friday">
+                <label for="friday">Friday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Saturday" name="saturday" ng-model="saturday">
+                <label for="saturday">Saturday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Sunday" name="sunday" ng-model="sunday">
+                <label for="sunday">Sunday</label>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription">{{class.description}}</textarea>
+            </div>
+            <div class="btn-container">
+              <button class="btn btn-primary">{{buttonState}}</button>
+              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
+              <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+<!--
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card" ng-repeat="class in class_information">
+          <div class="card-header" role="tab" id="heading{{class.name}}">
             <h5 class="mb-0 panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{class.name}}" aria-expanded="false" aria-controls="collapse{{class.name}}">
                 <div class='row'>
-                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Pilates</div>
+                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>{{class.name}}</div>
                 </div>
               </a>
             </h5>
           </div>
-          <div id="collapseOne" class="collapse card-border" role="tabpanel" aria-labelledby="headingOne">
+          <div id="collapse{{class.name}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class.name}}">
             <div class="card-block">
               <form>
                 <div class="form-group">
                   <label for="class-name" class="form-control-label">Class:</label>
-                  <input type="text" class="form-control" id="class-name" name="class-name" value="Pilates" required>
+                  <input type="text" class="form-control" id="class-name" name="class-name" value="{{class.name}}" required>
                 </div>
                 <div class="form-group">
                   <label for="instructor-name" class="form-control-label">Instructor:</label>
-                  <input type="text" class="form-control" id="instructor-name" name="instructor-name" value="Sally" required>
+                  <select ng-model="inst" name='inst' class='form-control'>
+                    <option class="form-control" selected="Pending=='{{class.instructor}}'">Pending</option>
+                    <option class="form-control" ng-repeat="instructor in instructor_names" ng-selected="'{{instructor.name}}'=='{{class.instructor}}'" value="instructor.name">{{instructor.name}}</option>
+                  </select>
                 </div>
                 <div class="form-group">
+                  <label for="room" class="form-control-label">Room:</label>
+                  <select ng-model="roomNum" name='rooms' class='form-control'>
+                    <option class="form-control" ng-repeat="room in rooms" ng-selected="{{class.room}}=={{room}}" value="{{room}}" name="room{{room}}">Room {{room}}</option>
+                  </select>
+                </div>
+                <br/>
+                <div class="form-group">
                   <label for="start-time" class="form-control-label">Start Time:</label>
-                  <input type="time" class="form-control" id="start-time" name="start-time" value="12:00" required>
+                  <input type="time" class="form-control" id="start-time" name="start-time" value="{{class.start_time}}" required>
                 </div>
                 <div class="form-group">
                   <label for="end-time" class="form-control-label">End Time:</label>
-                  <input type="time" class="form-control" id="end-time" name="end-time" value="13:00" required>
+                  <input type="time" class="form-control" id="end-time" name="end-time" value="{{class.end_time}}" required>
                 </div>
                 <br/>
                 <div class="form-group">
                   <strong>Day(s):</strong><br/>
                   <div class="day" ng-repeat="day in weekdays">
-                    <input type="checkbox" value="{{day}}" name="{{day}}">
+                    <input type="checkbox" value="{{day}}" name="{{day}}" ng-checked='checkArray({{class.days}}, "{{day}}")'>
                     <label for="{{day}}">{{day}}</label>
                   </div>
                 </div>
                 <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
                   <label for="description" class="form-control-label">Description:</label>
-                  <textarea type="text" class="form-control" id="description" name="description" required>Pilates yay!</textarea>
+                  <textarea type="text" class="form-control" id="description" name="description" required>{{class.description}}</textarea>
                 </div>
                 <div class="btn-container">
                   <button class="btn btn-primary">Save Changes</button>
-                  <button class="btn btn-danger" ng-click="deleteObject('Pilates')" data-toggle="modal" data-target="#confirm-delete">Delete</button>
+                  <button class="btn btn-danger" ng-click="deleteObject(class.name)" data-toggle="modal" data-target="#confirm-delete">Delete</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-header" role="tab" id="headingTwo">
-            <h5 class="mb-0 panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <div class='row'>
-                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Midday Yoga</div>
-                </div>
-              </a>
-            </h5>
-          </div>
-          <div id="collapseTwo" class="collapse card-border" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="card-block">
-              blank
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" role="tab" id="headingThree">
-            <h5 class="mb-0 panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <div class='row'>
-                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>Zumba</div>
-                </div>
-              </a>
-            </h5>
-          </div>
-          <div id="collapseThree" class="collapse card-border" role="tabpanel" aria-labelledby="headingThree">
-            <div class="card-block">
-              blank
-            </div>
-          </div>
-        </div>
       </div>
+-->
     </div>
     <div id="instructors" class="container tab" ng-show="instructors">
       <h1>Instructor Accounts</h1>
@@ -131,7 +196,7 @@
     <div id="members" class="container tab" ng-show="members">
       <h1>Members</h1>
       <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
-      <div class="account row" ng-repeat="member in member_accounts">
+      <div class="account row border" ng-repeat="member in member_accounts">
         <div class="col-sm-12 col-md-4 col-lg-5">
           <div><strong>Name: </strong>{{member.name}}</div>
           <div><strong>Email: </strong>{{member.email}}</div>
@@ -173,56 +238,6 @@
       </div>
     </div>
     <!-- Modals -->
-    <!-- Add class modal -->
-    <div class="modal fade" id="add-class">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add a new class</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="add-class-form">
-              <div class="form-group">
-                <label for="class-name" class="form-control-label">Class:</label>
-                <input type="text" class="form-control input-text" id="class-name" name="class-name" required>
-              </div>
-              <div class="form-group">
-                <label for="instructor-name" class="form-control-label">Instructor:</label>
-                <input type="text" class="form-control input-text" id="instructor-name" name="instructor-name" required>
-              </div>
-              <div class="form-group">
-                <label for="start-time" class="form-control-label">Start Time:</label>
-                <input type="time" class="form-control input-text" id="start-time" name="start-time" required>
-              </div>
-              <div class="form-group">
-                <label for="end-time" class="form-control-label">End Time:</label>
-                <input type="time" class="form-control input-text" id="end-time" name="end-time" required>
-              </div>
-              <div class="form-group">
-                <strong>Day(s):</strong><br/>
-                <div class="day" ng-repeat="day in weekdays">
-                  <input type="checkbox" value="{{day}}" name="{{day}}">
-                  <label for="{{day}}">{{day}}</label>
-                </div>
-              </div>
-              <div class="form-group pl-0 desc-container">
-                <label for="description" class="form-control-label">Description:</label>
-                <textarea type="text" class="form-control" id="description" name="description" required></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <div class="btn-container">
-                <button class="btn btn-primary">Add Class</button>
-                <button class="btn" data-dismiss="modal">Cancel</button>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <!--  Create Account Modal  -->
     <div class="modal fade" id="add-account">
       <div class="modal-dialog" role="document">
@@ -261,9 +276,23 @@
         <div class="modal-content">
           <div class="modal-body">
             <div class="message mt-2 mb-4">
-              Are you sure you want to delete {{delete_object}}?
+              Are you sure you want to delete {{className}}? This action cannot be undone.
             </div>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Archive Modal  -->
+    <div class="modal fade" id="confirm-archive">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to archive {{className}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Archive</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>
