@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var mongo = require ('mongodb').MongoClient;
 var bcryptjs = require ('bcryptjs');
+var ObjectID = require('mongodb').ObjectID;
 var passport = require ('passport');
 var LocalStrategy = require ('passport-local').Strategy;
 
@@ -85,6 +86,10 @@ app.post ('/register',
   passport.authenticate('local-register', { successRedirect: '/',
                                    failureRedirect: '/login' }));
 
+app.get ('/get-courses', function (req, res) {
+  getAllSignUpableCourses().then(function (data) { res.send (data); });
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
@@ -108,14 +113,77 @@ mongo.connect (mongoUrl, function (err, client) {
  * objectId is the ObjectId of the class that we are looking for.
  */
 async function getClass (objectId) {
-  return await coursesCollection.findOne ({ _id: objectId });
+  return classesCollection.findOne ({ _id: objectId });
 }
 
 /**
- * Returns all class objects
+ * Returns all non-archived class objects
  */
 async function getAllCourses () {
-  return await coursesCollection.find().toArray();
+  var courses = classesCollection.find({ is_archived: { $ne: true } }).toArray();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var instructor = getUserById (courses[i].instructor); 
+    if (instructor && instructor !== null) {
+      courses[i].instructor = instructor.first_name + " " + instructor.last_name;
+      courses[i].instructor_email = instructor.email;
+    } else {
+      courses[i].instructor = "";
+      courses[i].instructor_email = "";
+    }
+  }
+
+  return courses;
+}
+
+/**
+ * Returns all courses that are signupable
+ */
+async function getAllSignUpableCourses () {
+  var courses = await classesCollection.find({ is_archived: { $ne: true }, is_sign_up_able: true }).toArray();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var instructor = await getUserById (courses[i].instructor);
+    if (instructor && instructor !== null) {
+      courses[i].instructor = instructor.first_name + " " + instructor.last_name;
+      courses[i].instructor_email = instructor.email;
+    } else {
+      courses[i].instructor = "";
+      courses[i].instructor_email = "";
+    }
+  }
+
+  return courses;
+}
+
+/**
+ * Returns all archived class objects
+ */
+async function getAllArchivedCourses () {
+  return await classesCollection.find({ is_archived: true }).toArray();
+}
+
+/**
+ * Returns all member objects unique on email address
+ */
+async function getAllMembers () {
+  var courses = getAllCourses ();
+  var members = [];
+
+  for (var i = 0; i < courses.length; ++i) {
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      var inArray = false;
+      for (var k = 0; k < members.length; ++k)
+        if (members[i].email_address.toLowerCase() === courses[i].persons_enrolled[j].email_address.toLowerCase()) {
+          inArray = true;
+          break;
+        }
+      if (!inArray)
+        members.push (courses[i].persons_enrolled[j]);
+    }
+  }
+
+  return members;
 }
 
 /**
@@ -126,7 +194,7 @@ async function getAllCourses () {
  *    would be { description: "new description" }
  */
 async function updateClassObject (objectId, updateObject) {
-  coursesCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+  classesCollection.updateOne ({ _id: objectId }, { $set: updateObject });
 }
 
 /**
@@ -151,7 +219,7 @@ async function createClass (name, year, term, description, type) {
     type: type
   };
 
-  return await coursesCollection.insertOne (object);
+  return await classesCollection.insertOne (object);
 }
 
 /**
@@ -167,7 +235,7 @@ async function createClass (name, year, term, description, type) {
  * fEndTime is the end time of the class
  */
 async function addSession (objectId, startDate, endDate, instructor, sessionId, room, fDaysOfWeek, fStartTime, fEndTime) {
-  var currentObject = coursesCollection.findOne({ _id: objectId });
+  var currentObject = classesCollection.findOne({ _id: objectId });
   if (currentObject === undefined || currentObject === null)
     return -1;
   if (currentObject.sessions)
@@ -188,14 +256,42 @@ async function addSession (objectId, startDate, endDate, instructor, sessionId, 
     room: room
   };
 
-  return await coursesCollection.updateOne ({ _id: objectId }, { $push: update });
+  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
+}
+
+/**
+ * Adds a user to a specified course
+ * objectId is the ObjectId of the class that we are adding the person to
+ * emailAddress is the email address of the user that we are adding to the class
+ * fullName is the full name of the user that we are adding to the class
+ * paymentMethod is the payment method that the user we are adding is using
+ * paid is whether or not the person we are adding has paid
+ */
+async function addMember (objectId, emailAddress, fullName, paymentMethod, paid) {
+  var toAdd = {
+    email_address: emailAddress.toLowerCase(),
+    name: fullName,
+    payment_method: paymentMethod,
+    paid: paid
+  };
+
+  accountsCollection.updateOne ({ _id: objectId }, { $push: { enrolled_persons: toAdd } });
+}
+
+/**
+ * Removes a user to a specified course
+ * objectId is the ObjectId of the class that we are removing the person from
+ * emailAddress is the email address of the user that we are removing from the class
+ */
+async function removeMember (objectId, emailAddress) {
+  accountsCollection.updateOne ({ _id: objectId }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
  * Adds a member to the specified course. Returns 1 on success, 0 on failure, -1 on user already a member of the course or bad input.
  */
 async function addEnrollment (objectId, emailAddress, paymentMethod) {
-  var currentObject = coursesCollection.findOne({ _id: objectId });
+  var currentObject = classesCollection.findOne({ _id: objectId });
   if (currentObject === undefined || currentObject === null)
     return -1;
   if (currentObject.persons_enrolled)
@@ -209,7 +305,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
     paid: false
   };
 
-  return await coursesCollection.updateOne ({ _id: objectId }, { $push: update });
+  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
 }
 
 /**
@@ -217,7 +313,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
  * objectId is the ObjectId of the course to delete.
  */
 async function deleteCourse (objectId) {
-  coursesCollection.deleteOne ({ _id: objectId });
+  classesCollection.deleteOne ({ _id: objectId });
 }
 
 /**
@@ -270,11 +366,11 @@ async function userIsAdmin (identifier) {
  */
 async function userIsInstructor (instructor, course) {
   var queryObject = { _id: course };
-  var queryOptions = { instructors: 1 };
+  var queryOptions = { instructor: 1 };
   
-  var courseObject = await coursesCollection.findOne (queryObject, queryOptions);
+  var courseObject = await classesCollection.findOne (queryObject, queryOptions);
   
-  return courseObject.instructors.indexOf (instructor) !== -1;
+  return courseObject.instructor === instructor;
 }
 
 /**
@@ -306,7 +402,7 @@ async function getUserByEmail (email) {
  * objectId is the ObjectId that we are querying for.
  */
 async function getUserById (objectId) {
-  return await accountsCollection.findOne ({ _id: objectId });
+  return await accountsCollection.findOne ({ _id: new ObjectID(objectId) });
 }
 
 /**
@@ -365,6 +461,13 @@ async function createUser (object) {
     return 0;
 
   return await accountsCollection.insertOne (object);
+}
+
+/**
+ * Deletes a user given an objectId
+ */
+function deleteUser (objectId) {
+  accountsCollection.deleteOne ({ _id: objectId });
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));

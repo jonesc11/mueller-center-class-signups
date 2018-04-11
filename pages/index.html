@@ -13,8 +13,8 @@
   </head>
   <body ng-controller="controller">
     <div id="header-container">
-      <img id="banner" src="/resources/img/banner.jpg"/>
       <nav class="header">
+        <a href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
         <a href="https://union.rpi.edu/content/mueller-center">
           Mueller Center Fitness
         </a>
@@ -28,7 +28,7 @@
         <h3 class="align-center">Spring 2018 Classes</h3>
         <h5 class="align-center">New Classes Every Semester!<br/>Open to the public.</h5>
         <p id="sidebar-info">
-        <strong>13-Week Class Sessions:</strong>
+        <strong>13-Week Class Sessions:</strong><br/>
         February 5, 2018 - May 4, 2018 <br/>
         &nbsp;&nbsp;$40 for one class a week<br/>
         &nbsp;&nbsp;$80 for two classes a week<br/><br/>
@@ -42,6 +42,7 @@
         <div id="links">
           <a href="/login" class="link">Sign In</a>
         </div>
+        <a href="https://union.rpi.edu"><img id="union-logo" src="/resources/img/union-logo.jpg"/></a>
         <div id="social">
           <a class='social-icons fa fa-facebook' href='https://www.facebook.com/muellercenter'></a>
           <a class='social-icons fa fa-twitter' href='https://twitter.com/RPIMuellerCent'></a>
@@ -57,30 +58,32 @@
             <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Time</div>
           </div>
           <div id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="card">
-              <div class="card-header" role="tab" id="headingOne">
+            <div class="card" ng-repeat="class in class_information">
+              <div class="card-header" role="tab" id="heading{{class._id}}">
                 <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{class._id}}" aria-expanded="false" aria-controls="collapse{{class._id}}">
                     <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Pilates</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday &amp; Thursday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
+                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>{{class.name}}</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>{{print_days(class.frequency.days_of_week)}}</div>
+                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>{{print_time(class.frequency.start_time, class.frequency.end_time)}}</div>
                     </div>
                   </a>
                 </h5>
               </div>
-              <div id="collapseOne" class="collapse card-border" role="tabpanel" aria-labelledby="headingOne">
+              <div id="collapse{{class._id}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class._id}}">
                 <div class="card-block">
                   <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Monday &amp; Thursday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
-				  <span><strong>Instructor:</strong> Deb DerGurahian</span>
-                  <span><strong>Email:</strong> <a href="mailto:deb@gmail.com">deb@gmail.com</a></span>
-                  <span><strong>Room:</strong> 2</span>
-                  <p class='class-description'><strong>Class Description:</strong> A system of movement which are designed to improve physical strength, flexibility, posture and mental awareness. This multi-level class, with hands on instruction, will change the way you move, think and feel. Please bring a mat!!</p>
+                  <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
+                  <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
+				  <span><strong>Instructor:</strong> {{class.instructor}}</span>
+                  <span><strong>Email:</strong> <a class="email" href="mailto:{{class.email}}">{{class.instructor_email}}</a></span>
+                  <span><strong>Room:</strong> {{class.room}}</span>
+                  <span><strong>Type:</strong> {{class.type}}</span>
+                  <p class='class-description'><strong>Class Description:</strong> {{class.description}}</p>
                 </div>
               </div>
             </div>
+<!--
             <div class="card">
               <div class="card-header" role="tab" id="headingTwo">
                 <h5 class="mb-0 panel-title">
@@ -105,6 +108,8 @@
                 </div>
               </div>
             </div>
+-->
+<!--
             <div class="card">
               <div class="card-header" role="tab" id="headingThree">
                 <h5 class="mb-0 panel-title">
@@ -129,6 +134,7 @@
                 </div>
               </div>
             </div>
+-->
           </div>
         </div>
       </div>
@@ -162,18 +168,24 @@
                 <div class="form-group">
                   <span class='form-control-label'>Affiliation:</span>
                   <div class="form-group mb-0">
-                    <input type="radio" class="radio-btn form-control" id="student" value="student" name="affiliation" ng-model="affiliation" checked="checked" required>
-                    <label for="student" class="radio-btn-label form-control-label">Student</label>
+                    <input type="radio" class="radio-btn form-control" id="student" value="ug-student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="ug-student" class="radio-btn-label form-control-label">Undergraduate Student</label>
                   </div>
                   <div class="form-group mb-0">
+                    <input type="radio" class="radio-btn form-control" id="student" value="g-student" name="affiliation" ng-model="affiliation" checked="checked" required>
+                    <label for="g-student" class="radio-btn-label form-control-label">Graduate Student</label>
+                  </div>
+                  <br/>
+                  <div class="form-group mb-0">
                     <input type="radio" class="radio-btn form-control" id="faculty" value="faculty" name="affiliation" ng-model="affiliation">
-                    <label for="faculty" class="radio-btn-label form-control-label">Faculty</label>
+                    <label for="faculty" class="radio-btn-label form-control-label">Staff/Faculty</label>
                   </div>
                   <div class="form-group mb-0">
                     <input type="radio" class="radio-btn form-control" id="community" value="community" name="affiliation" ng-model="affiliation">
                     <label for="community" class="radio-btn-label form-control-label">Community Member</label>
                   </div>
-                  <div class="form-group" ng-show="affiliation=='student' || affiliation=='faculty'">
+                  <br/>
+                  <div class="form-group" ng-show="affiliation=='ug-student' || affiliation=='faculty' || affiliation=='g-student'">
                     <label for="rin" class="form-control-label">RIN:</label>
                     <input type="text" class="form-control input-text" id="rin" name="rin">
                   </div>
@@ -182,10 +194,16 @@
                   <span class='form-control-label'>Payment Method:</span>
                   <input type="radio" class="radio-btn form-control" id="cash" value="cash" name="payment" ng-model="payment" checked="checked" required>
                   <label for="cash" class="radio-btn-label form-control-label">Cash</label>
+
                   <input type="radio" class="radio-btn form-control" id="credit" value="credit" name="payment" ng-model="payment">
-                  <label for="credit" class="radio-btn-label form-control-label">Check</label>
-                  <input type="radio" class="radio-btn form-control" id="bursar" value="bursar" name="payment" ng-model="payment" ng-show="affiliation=='student'">
-                  <label for="bursar" class="radio-btn-label form-control-label" ng-show="affiliation=='student'">Bursar</label>
+                  <label for="credit" class="radio-btn-label form-control-label">Credit</label>
+
+                  <input type="radio" class="radio-btn form-control" id="check" value="check" name="payment" ng-model="payment">
+                  <label for="check" class="radio-btn-label form-control-label">Check</label>
+
+                  <input type="radio" class="radio-btn form-control" id="bursar" value="bursar" name="payment" ng-model="payment" ng-show="affiliation=='ug-student' || affiliation=='g-student'">
+                  <label for="bursar" class="radio-btn-label form-control-label" ng-show="affiliation=='ug-student' || affiliation=='g-student'">Bursar</label>
+                  <p id="pay-method">For cash or credit, pay at Union. For check, pay at Mueller Center</p>
                 </div>
               </form>
             </div>
