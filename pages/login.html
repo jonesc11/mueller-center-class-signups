@@ -22,15 +22,15 @@
     </div>
     <div id="login-container">
       <h4 align="center">User Log In</h4>
-      <form>
+      <form action="/login" method="post">
         <label>Email</label>
-        <input type="text" ng-model="email">
+        <input type="text" ng-model="email" name="username" id="username">
         <br/>
         <label>Password</label>
-        <input type="password" ng-model="password" class="ng-pristine ng-valid">
+        <input type="password" ng-model="password" name="password" id="password" class="ng-pristine ng-valid">
         <br/>
           <!--{{loginError}}  {{loggedUser}} -->
-        <button class="btn btn-success">Submit</button>
+        <button class="btn btn-success" type="submit">Submit</button>
         <a href="/" role="button" class="btn  btn-danger">Cancel</a>
       </form>
     </div>

@@ -1,12 +1,55 @@
 var path = require ('path');
 var express = require ('express');
+var bodyParser = require('body-parser');
 var app = express();
 var mongo = require ('mongodb').MongoClient;
 var bcryptjs = require ('bcryptjs');
 var ObjectID = require('mongodb').ObjectID;
+var passport = require ('passport');
+var LocalStrategy = require ('passport-local').Strategy;
+
+app.use (passport.initialize ());
+app.use (passport.session ());
+
+passport.serializeUser (function (user, done) {
+  done (null, user);
+});
+passport.deserializeUser (function (obj, done) {
+  done (null, obj);
+});
+
+passport.use ('local', new LocalStrategy(
+  function (username, password, done) {
+    verifyLogin (username, password).then (function (result) {
+      if (result) return done (null, username);
+      else return done (null, false);
+    });
+  }
+));
+
+passport.use ('local-register', new LocalStrategy(
+  { passReqToCallback: true },
+  function (req, username, password, done) {
+    if (true) {
+    // if (password === req.body.passwordConf) { // need to add a registration field with password confirmation
+      var newSalt = getSalt ();
+      var hash = getHashedPassword (password, newSalt);
+      var userObject = { email: username, password: hash, salt: newSalt };
+      var signupAttempt = createUser (userObject).then (function (result) {
+        if (result !== 0 && result !== -1)
+          return done (null, userObject);
+        else return done (null, false);
+      });
+    }
+    else return done (null, false);
+  }
+));
 
 var accountsCollection = null;
 var classesCollection = null;
+
+app.use (bodyParser.json ());
+app.use (bodyParser.urlencoded ( {extended: true} ));
 
 app.use (express.static (__dirname + '/public'));
 
@@ -29,6 +72,19 @@ app.get ('/instructor', function (req, res) {
 app.get ('/login', function (req, res) {
   res.sendFile (__dirname + "/pages/login.html");
 });
+
+app.post ('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login' }));
+
+app.get ('/logout',function(req,res) {
+  req.logout();
+  res.redirect('/');
+});
+
+app.post ('/register',
+  passport.authenticate('local-register', { successRedirect: '/',
+                                   failureRedirect: '/login' }));
 
 app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
@@ -264,25 +320,25 @@ async function deleteCourse (objectId) {
  * Returns a randomly generated salt.
  */
 function getSalt () {
-  return bcrypt.genSaltSync (16);
+  return bcryptjs.genSaltSync (16);
 }
 
 /**
  * Returns a hashed password based on a salt.
  */
 function getHashedPassword (passwd, salt) {
-  return bcrypt.hashSync (passwd, salt);
+  return bcryptjs.hashSync (passwd, salt);
 }
 
 /**
  * Given an email and password, returns true if the password matches the username in the database
  */
-function verifyLogin (email, passwd) {
-  var userObject = getUserByEmail (email);
+async function verifyLogin (email, passwd) {
+  var userObject = await getUserByEmail (email);
   
-  if (user == null)
+  if (userObject == null)
     return false;
-  
+
   return userObject.password === getHashedPassword (passwd, userObject.salt);
 }
 
@@ -401,9 +457,9 @@ async function createUser (object) {
 
   object.email = object.email.toLowerCase();
   
-  if (getUserByEmail (object.email) !== null)
+  if (await getUserByEmail (object.email) !== null)
     return 0;
-  
+
   return await accountsCollection.insertOne (object);
 }
 
