@@ -6,7 +6,16 @@ var mongo = require ('mongodb').MongoClient;
 var bcryptjs = require ('bcryptjs');
 var ObjectID = require('mongodb').ObjectID;
 var passport = require ('passport');
+var session = require('express-session')
 var LocalStrategy = require ('passport-local').Strategy;
+
+app.use (session ( {
+  secret: 'websci-s2018',
+  maxAge: null,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: 'auto' } // not acceptable for production server
+})); 
 
 app.use (passport.initialize ());
 app.use (passport.session ());
@@ -62,11 +71,29 @@ app.get ('/instructors', function (req, res) {
 });
 
 app.get ('/admin', function (req, res) {
-  res.sendFile (__dirname + "/pages/admin.html");
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      // console.log (req.user + ' is an admin');
+      res.sendFile (__dirname + "/pages/admin.html");
+    }
+    else {
+      // console.log ((req.user ? req.user : 'guest') + ' is not an admin');
+      res.redirect ('/');
+    }
+  });
 });
 
 app.get ('/instructor', function (req, res) {
-  res.sendFile (__dirname + "/pages/instructor.html");
+  userIsInstructor (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      // console.log (req.user + ' is an instructor');
+      res.sendFile (__dirname + "/pages/instructor.html");
+    }
+    else {
+      // console.log ((req.user ? req.user : 'guest') + ' is not an instructor');
+      res.redirect ('/');
+    }
+  });
 });
 
 app.get ('/login', function (req, res) {
@@ -356,16 +383,17 @@ async function userIsAdmin (identifier) {
   
   var obj = await accountsCollection.findOne (queryObject, {is_admin: 1});
   
-  return obj.is_admin;
+  return obj ? obj.is_admin : false;
 }
 
 /**
  * Returns true if the instructor is an instructor for the course, false otherwise.
+ * If course is null, return true if the given user is an instructor for any course.
  * instructor is the instructor ObjectId
  * course is the course ObjectId
  */
 async function userIsInstructor (instructor, course) {
-  var queryObject = { _id: course };
+  var queryObject = course ? { _id: course } : {};
   var queryOptions = { instructor: 1 };
   
   var courseObject = await classesCollection.findOne (queryObject, queryOptions);
