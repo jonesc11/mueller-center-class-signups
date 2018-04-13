@@ -20,8 +20,8 @@ passport.deserializeUser (function (obj, done) {
 
 passport.use ('local', new LocalStrategy(
   function (username, password, done) {
-    verifyLogin (username, password).then (function (result) {
-      if (result) return done (null, username);
+    verifyLogin (username, password, function (err, match) {
+      if (match) return done (null, username);
       else return done (null, false);
     });
   }
@@ -32,13 +32,13 @@ passport.use ('local-register', new LocalStrategy(
   function (req, username, password, done) {
     if (true) {
     // if (password === req.body.passwordConf) { // need to add a registration field with password confirmation
-      var newSalt = getSalt ();
-      var hash = getHashedPassword (password, newSalt);
-      var userObject = { email: username, password: hash, salt: newSalt };
-      var signupAttempt = createUser (userObject).then (function (result) {
-        if (result !== 0 && result !== -1)
-          return done (null, userObject);
-        else return done (null, false);
+      getHashedPassword (password, getSalt (), function (err, hash) {
+        var userObject = { email: username, password: hash, is_admin: false };
+        var signupAttempt = createUser (userObject).then (function (result) {
+          if (result !== 0 && result !== -1)
+            return done (null, userObject);
+          else return done (null, false);
+        });
       });
     }
     else return done (null, false);
@@ -320,26 +320,29 @@ async function deleteCourse (objectId) {
  * Returns a randomly generated salt.
  */
 function getSalt () {
-  return bcryptjs.genSaltSync (16);
+  return bcryptjs.genSaltSync (10);
 }
 
 /**
  * Returns a hashed password based on a salt.
  */
-function getHashedPassword (passwd, salt) {
-  return bcryptjs.hashSync (passwd, salt);
+function getHashedPassword (passwd, salt, done) {
+  bcryptjs.hash (passwd, salt, done);
 }
 
 /**
  * Given an email and password, returns true if the password matches the username in the database
  */
-async function verifyLogin (email, passwd) {
-  var userObject = await getUserByEmail (email);
-  
-  if (userObject == null)
-    return false;
+function verifyLogin (email, passwd, next) {
+  getUserByEmail (email).then (function (userObject) {
+    if (userObject == null)
+      return next (null, false);
 
-  return userObject.password === getHashedPassword (passwd, userObject.salt);
+    bcryptjs.compare(passwd, userObject.password, function (err, match) {
+      if (err) return next (err);
+      next (null, match);
+    });
+  });
 }
 
 /**
