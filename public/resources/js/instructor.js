@@ -19,7 +19,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.editorEnabled = true;
     $scope.editableFName = $scope.account.first_name;
     $scope.editableLName = $scope.account.last_name;
-    $scope.editableBio = $scope.account.bio;
+    $scope.editableBio = $scope.account.biography;
   };
   
   $scope.disableEditor = function() {
