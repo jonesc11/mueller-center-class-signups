@@ -6,8 +6,16 @@ var mongo = require ('mongodb').MongoClient;
 var bcryptjs = require ('bcryptjs');
 var ObjectID = require('mongodb').ObjectID;
 var passport = require ('passport');
+var session = require ('express-session');
 var LocalStrategy = require ('passport-local').Strategy;
 
+app.use (session ({
+  secret: 'websci-s2018',
+  maxAge: null,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: 'auto' }
+}));
 app.use (passport.initialize ());
 app.use (passport.session ());
 
@@ -95,7 +103,6 @@ app.get ('/get-instructors', function (req, res) {
 });
 
 app.get ('/get-account-info', function (req, res) {
-console.log(req);
   getUserByEmail (req.user ? req.user : '').then (function (result) {
     if (result) {
       res.send(result);
@@ -431,6 +438,8 @@ async function getAllInstructors () {
 
   for (var i = 0; i < instructors.length; ++i) {
     instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id }).toArray();
+    instructors[i].password = undefined;
+    instructors[i].salt = undefined;
   }
 
   return instructors;
