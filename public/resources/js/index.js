@@ -29,19 +29,13 @@ app.controller('controller', function ($scope, $http) {
     var date2 = new Date(temp + end);
     return date1.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + " - " + date2.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
-  $scope.instructors = [{
-    "first_name": "Sally",
-    "last_name": "Sweatsalot",
-    "email": "sally@gmail.com",
-    "profile_image": "/resources/img/i2.jpg",
-    "biography": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  }, {
-    "first_name": "Bill",
-    "last_name": "Bustamove",
-    "email": "bill@gmail.com",
-    "profile_image": "/resources/img/i3.jpg",
-    "biography": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  }];
+  $scope.instructors = [];
+  $http({
+    method: 'GET',
+    url: '/get-instructors'
+  }).then (function (response) {
+    $scope.instructors = response.data;
+  });
 
   $scope.class_information = [];
   $http({

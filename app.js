@@ -90,6 +90,21 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+app.get ('/get-instructors', function (req, res) {
+  getAllInstructors().then(function (data) { res.send (data); });
+});
+
+app.get ('/get-account-info', function (req, res) {
+console.log(req);
+  getUserByEmail (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      res.send(result);
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
@@ -98,14 +113,10 @@ mongo.connect (mongoUrl, function (err, client) {
     return;
   }
   
-  console.log ("Successfully connected to MongoDb server.");
-  
   var db = client.db('muellerfitness');
   
   accountsCollection = db.collection ('accounts');
   classesCollection = db.collection ('classes');
-  
-  console.log ('Successfully created collection objects');
 });
 
 /**
@@ -416,7 +427,13 @@ async function getAllAccounts () {
  * Returns a list of all instructors in the database
  */
 async function getAllInstructors () {
-  return await accountsCollection.find({ is_instructor: true }).toArray();
+  var instructors = await accountsCollection.find({ is_instructor: true }).toArray();
+
+  for (var i = 0; i < instructors.length; ++i) {
+    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id }).toArray();
+  }
+
+  return instructors;
 }
 
 /**
