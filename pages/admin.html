@@ -39,7 +39,7 @@
               <label for="instructor-name" class="form-control-label">Instructor:</label>
               <select ng-model="instructorName" name='instructor' class='form-control'>
                 <option class="form-control">Pending</option>
-                <option class="form-control" ng-repeat="instructor in instructor_names" value="{{instructor.name}}">{{instructor.name}}</option>
+                <option class="form-control" ng-repeat="instructor in instructor_accounts" value="{{instructor.first_name}} {{instructor.last_name}}">{{instructor.first_name}} {{instructor.last_name}}</option>
               </select>
             </div>
             <div class="form-group">
@@ -175,7 +175,7 @@
       <button class="btn btn-primary add-inst" data-toggle="modal" data-target="#add-account">Create New Instructor Account</button>
       <div class='account row border' ng-repeat='account in instructor_accounts'>
         <div class='col-sm-12 col-md-6 col-lg-6'>
-          <div><strong>Name: </strong>{{account.name}}</div>
+          <div><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
           <div><strong>Email: </strong>{{account.email}}</div>
           <strong>Classes:</strong>
           <ul class='inst-classes'>
@@ -185,7 +185,7 @@
         <div class='col-sm-12 col-md-6 col-lg-6'>
           <strong>Bio: </strong>
           <button class="btn btn-sm btn-danger flag">Flag Bio</button>
-          <p>{{account.bio}}</p>
+          <p>{{account.biography}}</p>
           <strong>Image: </strong>
           <button class="btn btn-sm btn-danger flag">Flag Image</button>
           <br/>

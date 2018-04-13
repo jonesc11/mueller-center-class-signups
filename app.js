@@ -101,6 +101,20 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+app.get ('/get-instructors', function (req, res) {
+  getAllInstructors().then(function (data) { res.send (data); });
+});
+
+app.get ('/get-account-info', function (req, res) {
+  getUserByEmail (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      res.send(result);
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.post ('/add-account', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -120,14 +134,10 @@ mongo.connect (mongoUrl, function (err, client) {
     return;
   }
   
-  console.log ("Successfully connected to MongoDb server.");
-  
   var db = client.db('muellerfitness');
   
   accountsCollection = db.collection ('accounts');
   classesCollection = db.collection ('classes');
-  
-  console.log ('Successfully created collection objects');
 });
 
 function genNewAccount (fname, lname, email) {
@@ -475,7 +485,15 @@ async function getAllAccounts () {
  * Returns a list of all instructors in the database
  */
 async function getAllInstructors () {
-  return await accountsCollection.find({ is_instructor: true }).toArray();
+  var instructors = await accountsCollection.find({ is_instructor: true }).toArray();
+
+  for (var i = 0; i < instructors.length; ++i) {
+    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id }).toArray();
+    instructors[i].password = undefined;
+    instructors[i].salt = undefined;
+  }
+
+  return instructors;
 }
 
 /**

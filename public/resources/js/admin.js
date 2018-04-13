@@ -2,9 +2,15 @@ var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
   $scope.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   //Some sample data just for front-end purposes
-  $scope.instructor_accounts = [{"name": "Sally", "email": "sally@gmail.com", "classes": ["Yoga", "Pilates"], "bio": "I'm Sally and I'm cool", "image": "/resources/img/i2.jpg"}, {"name": "Bill", "email": "bill@gmail.com", "classes": ["Boxing", "Zumba"], "bio": "I'm Bill and I'm cool", "image": "/resources/img/i3.jpg"}];
+  $scope.instructor_accounts = [];
+  $http({
+    url: '/get-instructors',
+    method: 'GET'
+  }).then (function (response) {
+console.log(response.data);
+    $scope.instructor_accounts = response.data;
+  });
   $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
-  //$scope.class_information = [{"_id": "01", "name": "Pilates", "instructor": "Deb Something", "room": "1", "start_time": "12:00", "end_time": "13:00", "days": ["Monday", "Thursday"], "description": "Pilates yay!"}, {"_id": "02", "name": "Zumba", "instructor": "Sally Sweatsalot", "room": "2", "start_time": "17:00", "end_time": "18:00", "days": ["Monday", "Thursday"], "description": "Zumba yay!"}, {"_id": "03", "name": "Zumba 2", "instructor": "Joe Jumpingjacks", "room": "3", "start_time": "13:00", "end_time": "14:00", "days": ["Tuesday"], "description": "Zumba yay x2!"}];
   $scope.class_information = [];
   $http({
     method: 'GET',
@@ -12,7 +18,6 @@ app.controller('controller', function ($scope, $http) {
   }).then(function (response) {
     $scope.class_information = response.data;
   });
-  $scope.instructor_names = [{"name": "Deb Something"}, {"name": "Joe Jumpingjacks"}, {"name": "Sally Sweatsalot"}];
   $scope.rooms = ["1", "2", "3", "4"];
   $scope.roomNum = $scope.rooms[0];
   $scope.editClass = "0";
