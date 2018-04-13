@@ -6,8 +6,19 @@ var mongo = require ('mongodb').MongoClient;
 var bcryptjs = require ('bcryptjs');
 var ObjectID = require('mongodb').ObjectID;
 var passport = require ('passport');
+var session = require ('express-session');
 var LocalStrategy = require ('passport-local').Strategy;
+var nodemailer = require ('nodemailer');
 
+var email_creds = require ('./email_creds.json');
+
+app.use (session({
+  secret: 'websci-s2018',
+  maxAge: null,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: 'auto' }
+}));
 app.use (passport.initialize ());
 app.use (passport.session ());
 
@@ -90,6 +101,17 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+app.post ('/add-account', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      genNewAccount (req.body.fname, req.body.lname, req.body.email);
+      res.redirect ('/admin');
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
@@ -107,6 +129,47 @@ mongo.connect (mongoUrl, function (err, client) {
   
   console.log ('Successfully created collection objects');
 });
+
+function genNewAccount (fname, lname, email) {
+  var password = '';
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+  for (var i = 0; i < 8; ++i)
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+
+  email = email.toLowerCase();
+
+  var newUser = {
+    email: email,
+    is_admin: false,
+    is_instructor: true,
+    profile_image: '/resources/img/default.png',
+    first_name: fname,
+    last_name: lname,
+    biography: 'No biography.',
+    img_is_flagged: false,
+    bio_is_flagged: false
+  };
+
+  newUser.salt = getSalt();
+  newUser.password = getHashedPassword (password, newUser.salt);
+
+  createUser (newUser);
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: email_creds
+  });
+
+  transporter.sendMail ({
+    from: email_creds.user,
+    to: email,
+    subject: 'You have been given an account for Mueller Center Fitness!',
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">You have been given an account at Mueller Center Fitness! Login <a href="http://localhost:3000/login">here</a> with the following credentials:<br/>Username: ' + email + '<br/>Password: ' + password + '</div>'
+  }, function (err, info) {
+    if (err)
+      throw err;
+  });
+}
 
 /**
  * Returns a class object given an ObjectId
@@ -348,14 +411,10 @@ async function verifyLogin (email, passwd) {
  */
 async function userIsAdmin (identifier) {
   var queryObject = {};
-  if (identifier.indexOf('@') !== -1) {
-    queryObject['email'] = identifier;
-  } else {
-    queryObject['_id'] = identifier;
-  }
-  
-  var obj = await accountsCollection.findOne (queryObject, {is_admin: 1});
-  
+  queryObject['email'] = identifier;
+
+  var obj = await accountsCollection.findOne (queryObject);
+
   return obj.is_admin;
 }
 

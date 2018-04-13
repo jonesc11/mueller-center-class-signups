@@ -68,4 +68,27 @@ app.controller('controller', function ($scope, $http) {
     $scope.classDescription = $scope.class_information[$scope.editClass].description;
     $scope.classType = $scope.class_information[$scope.editClass].type;
   }
+  $scope.createAcctErrs = [];
+  $scope.createAccount = function () {
+    if ($scope.createAcctFName == '')
+      $scope.createAcctErrs.push ('First name must be included.');
+    if ($scope.createAcctLName == '')
+      $scope.createAcctErrs.push ('Last name must be included.');
+    if ($scope.createAcctEmail == '')
+      $scope.createAcctErrs.push ('Email must be included.');
+
+    if ($scope.createAcctErrs.length == 0) {
+      $http({
+        method: 'POST',
+        url: '/add-account',
+        data: {
+          fname: $scope.createAcctFName,
+          lname: $scope.createAcctLName,
+          email: $scope.createAcctEmail
+        }
+      }).then (function (response) {
+        $('#add-account').modal('toggle');
+      });
+    }
+  };
 });
