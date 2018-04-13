@@ -17,7 +17,8 @@ app.controller('controller', function ($scope, $http) {
   
   $scope.enableEditor = function() {
     $scope.editorEnabled = true;
-    $scope.editableName = $scope.account.name;
+    $scope.editableFName = $scope.account.first_name;
+    $scope.editableLName = $scope.account.last_name;
     $scope.editableBio = $scope.account.bio;
   };
   

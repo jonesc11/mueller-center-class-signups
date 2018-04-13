@@ -18,7 +18,7 @@
         <h3 align="center">Account Information</h3>
         <div ng-hide="editorEnabled">
             <div class="left-info">
-              <div class="info"><strong>Name: </strong>{{account.name}}</div>
+              <div class="info"><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
               <div class="info"><strong>Email: </strong>{{account.email}}</div>
               <div class="info"><strong>Password: </strong>*******</div>
               <div class="info"><strong>Bio: </strong><br>{{account.bio}}</div>
@@ -30,7 +30,8 @@
         </div>
         <div ng-show="editorEnabled">
           <div class="left-info">
-            <div class="info"><strong>Name:</strong> <input ng-model="editableName" ng-show="editorEnabled"></div>
+            <div class="info"><strong>First Name:</strong> <input ng-model="editableFName" ng-show="editorEnabled"></div>
+            <div class="info"><strong>Last Name:</strong> <input ng-model="editableLName" ng-show="editorEnabled"></div> 
             <div class="info"><strong>Email: </strong>{{account.email}}</div>
             <div class="info"><strong>Password: </strong>*******</div>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordModal">Change Password</button>
