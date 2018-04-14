@@ -82,6 +82,22 @@ app.get ('/instructor', function (req, res) {
   res.sendFile (__dirname + "/pages/instructor.html");
 });
 
+/*
+{
+  subject: <string>,
+  body: <string>,
+  class_id: <string>
+}
+*/
+app.post ('/email/class', function (req, res) {
+  var classObject = getClass (req.body.class_id);
+  for (var i = 0; i < classObject.persons_enrolled; ++i) {
+    var person = classObject.persons_enrolled[i];
+
+    sendEmail (classObject.persons_enrolled[i].email_address, req.body.subject, req.body.body);
+  }
+});
+
 app.get ('/login', function (req, res) {
   res.sendFile (__dirname + "/pages/login.html");
 });
@@ -443,6 +459,31 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
  */
 async function deleteCourse (objectId) {
   classesCollection.deleteOne ({ _id: objectId });
+}
+
+/**
+ * Sends an email to the given address from the address specified in email_creds.json.
+ * recipient is the email of the recipient
+ * subject is the subject
+ * body is the body of the email (can be formatted as HTML)
+ */
+function sendEmail (recipient, subject, body) {
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: email_creds
+  });
+
+  transporter.sendMail ({
+    from: email_creds.user,
+    to: recipient,
+    subject: subject,
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">' + body + "</div>"
+  }, function(error, info) {
+    if (error)
+      console.log(error);
+    else
+      console.log('Sent: ' + info);
+  });
 }
 
 /**

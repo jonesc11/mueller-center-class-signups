@@ -42,6 +42,21 @@ app.controller('controller', function ($scope, $http) {
     }).then (function (response) {
     });;
   };
+  
+  $scope.sendEmail = function() {
+    $http.post("/email/class", {
+        //send form parameters
+        params: {
+            subject: $scope.subject,
+            body: $scope.body,
+            //class_id: $scope.class_id 
+        }
+    }).then(function(){
+        alert("Email Sent");
+    });
+  };
+
+});
 
   $scope.changePassAlerts = [];
   $scope.changePass = function() {
@@ -77,7 +92,6 @@ app.controller('controller', function ($scope, $http) {
             $scope.currentimg = false;
             $scope.newimg = true;
         });
-console.log ($('#img'));
   };
 
   $scope.changeImg = function() {
