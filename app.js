@@ -137,6 +137,17 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+app.post ('/add-class', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      createClass (req.body);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
@@ -289,9 +300,11 @@ async function getAllCourses () {
     if (instructor && instructor !== null) {
       courses[i].instructor = instructor.first_name + " " + instructor.last_name;
       courses[i].instructor_email = instructor.email;
+      courses[i].instructor_id = instructor._id.toString();
     } else {
       courses[i].instructor = "";
       courses[i].instructor_email = "";
+      courses[i].instructor_id = "";
     }
   }
 
@@ -309,9 +322,11 @@ async function getAllSignUpableCourses () {
     if (instructor && instructor !== null) {
       courses[i].instructor = instructor.first_name + " " + instructor.last_name;
       courses[i].instructor_email = instructor.email;
+      courses[i].instructor_id = instructor._id.toString();
     } else {
       courses[i].instructor = "";
       courses[i].instructor_email = "";
+      courses[i].instructor_id = "";
     }
   }
 
@@ -368,19 +383,7 @@ async function updateClassObject (objectId, updateObject) {
  * description is the course description
  * type is the type of course
  */
-async function createClass (name, year, term, description, type) {
-  if (!(term === "Spring" || term === "Summer" || term === "Fall"))
-    return -1;
-  var object = {
-    name: name,
-    semester: {
-      year: year,
-      term: term
-    },
-    description: description,
-    type: type
-  };
-
+async function createClass (object) {
   return await classesCollection.insertOne (object);
 }
 
