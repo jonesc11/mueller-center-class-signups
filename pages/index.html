@@ -72,7 +72,7 @@
               </div>
               <div id="collapse{{class._id}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class._id}}">
                 <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Pilates')">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name)">Sign Up</button>
                   <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
                   <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
 				  <span><strong>Instructor:</strong> {{class.instructor}}</span>
@@ -148,22 +148,23 @@
               </button>
             </div>
             <div class="modal-body">
+              <div class="alert alert-danger" ng-repeat="error in signUpErrors">{{error}}</div>
               <form id="sign-up-form">
                 <div class="form-group">
                   <label for="first-name" class="form-control-label">First Name:</label>
-                  <input type="text" class="form-control input-text" id="first-name" name="first-name" required>
+                  <input type="text" class="form-control input-text" id="first-name" name="first-name" ng-model="signupFName" required>
                 </div>
                 <div class="form-group">
                   <label for="last-name" class="form-control-label">Last Name:</label>
-                  <input type="text" class="form-control input-text" id="last-name" name="last-name" required>
+                  <input type="text" class="form-control input-text" id="last-name" name="last-name" ng-model="signupLName" required>
                 </div>
                 <div class="form-group">
                   <label for="email" class="form-control-label">Email:</label>
-                  <input type="email" class="form-control input-text" id="email" name="email" required>
+                  <input type="email" class="form-control input-text" id="email" name="email" ng-model="signupEmail" required>
                 </div>
                 <div class="form-group">
                   <label for="phone" class="form-control-label">Phone:</label>
-                  <input type="tel" class="form-control input-text" id="phone" name="phone" required>
+                  <input type="tel" class="form-control input-text" id="phone" name="phone" ng-model="signupPhone" required>
                 </div>
                 <div class="form-group">
                   <span class='form-control-label'>Affiliation:</span>
@@ -187,7 +188,7 @@
                   <br/>
                   <div class="form-group" ng-show="affiliation=='ug-student' || affiliation=='faculty' || affiliation=='g-student'">
                     <label for="rin" class="form-control-label">RIN:</label>
-                    <input type="text" class="form-control input-text" id="rin" name="rin">
+                    <input type="text" class="form-control input-text" id="rin" name="rin" ng-model="signupRin" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -208,7 +209,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn signup" id="login-submit">Sign up</button>
+              <button type="button" class="btn signup" id="login-submit" ng-click="signUp()">Sign up</button>
             </div>
           </div>
         </div>
