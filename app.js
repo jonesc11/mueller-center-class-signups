@@ -118,6 +118,24 @@ app.get ('/login', function (req, res) {
     res.sendFile (__dirname + "/pages/login.html");
 });
 
+app.get ('/is-admin', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (response) {
+    if (response)
+      res.send ({ is_admin: true });
+    else
+      res.send ({ is_admin: false });
+  });
+});
+
+app.get ('/is-instructor', function (req, res) {
+  userIsInstructor (req.user ? req.user : '').then (function (response) {
+    if (response)
+      res.send ({ is_instructor: true });
+    else
+      res.send ({ is_instructor: false });
+  });
+});
+
 app.post ('/login',
   passport.authenticate('local', { successRedirect: '/instructor',
                                    failureRedirect: '/login' }));
