@@ -97,6 +97,11 @@ app.get ('/instructor', function (req, res) {
   });
 });
 
+app.post ('/enroll', function (req, res) {
+  addMember (req.body.course, req.body.person);
+  res.send ({});
+});
+
 /*
 {
   subject: <string>,
@@ -429,15 +434,8 @@ async function addSession (objectId, startDate, endDate, instructor, sessionId, 
  * paymentMethod is the payment method that the user we are adding is using
  * paid is whether or not the person we are adding has paid
  */
-async function addMember (objectId, emailAddress, fullName, paymentMethod, paid) {
-  var toAdd = {
-    email_address: emailAddress.toLowerCase(),
-    name: fullName,
-    payment_method: paymentMethod,
-    paid: paid
-  };
-
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $push: { enrolled_persons: toAdd } });
+async function addMember (course, object) {
+  await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
 }
 
 /**
@@ -446,7 +444,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { persons_enrolled: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
