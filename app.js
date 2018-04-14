@@ -242,7 +242,7 @@ function genNewAccount (fname, lname, email) {
  * objectId is the ObjectId of the class that we are looking for.
  */
 async function getClass (objectId) {
-  return classesCollection.findOne ({ _id: objectId });
+  return classesCollection.findOne ({ _id: new ObjectId(objectId) });
 }
 
 /**
@@ -323,7 +323,7 @@ async function getAllMembers () {
  *    would be { description: "new description" }
  */
 async function updateClassObject (objectId, updateObject) {
-  classesCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+  classesCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
 }
 
 /**
@@ -404,7 +404,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
     paid: paid
   };
 
-  accountsCollection.updateOne ({ _id: objectId }, { $push: { enrolled_persons: toAdd } });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $push: { enrolled_persons: toAdd } });
 }
 
 /**
@@ -413,7 +413,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: objectId }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
@@ -490,7 +490,7 @@ async function userIsAdmin (identifier) {
  * course is the course ObjectId
  */
 async function userIsInstructor (instructor, course) {
-  var queryObject = { _id: course };
+  var queryObject = { _id: new ObjectId(course) };
   var queryOptions = { instructor: 1 };
   
   var courseObject = await classesCollection.findOne (queryObject, queryOptions);
@@ -504,7 +504,7 @@ async function userIsInstructor (instructor, course) {
  * objectId is the instructor's ObjectId
  */
 async function emailMatchesObject (email, objectId) {
-  var queryObject = { _id: objectId };
+  var queryObject = { _id: new ObjectId(objectId) };
   var queryOptions = { email: 1 };
   
   var instructorObject = await accountsCollection.findOne (queryObject, queryOptions);
@@ -517,9 +517,12 @@ async function emailMatchesObject (email, objectId) {
  * email is the email address that we are querying for.
  */
 async function getUserByEmail (email) {
-  var queryObject = { email: email };
+  var user = await accountsCollection.findOne ({ email: email });
+console.log (email);console.log (user);
+  user.classes = await classesCollection.find ({ instructor: user._id.toString() }).toArray();
+console.log(user);
   
-  return await accountsCollection.findOne ({ email: email });
+  return user;
 }
 
 /**
@@ -566,7 +569,7 @@ async function getAllAdmins () {
  *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
  */
 function updateUserById (objectId, updateObject) {
-  accountsCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
 }
 
 /**
