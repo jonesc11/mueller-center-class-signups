@@ -53,13 +53,17 @@
       <div id="content">
         <div id="instructors">
           <div class="row border instructor" ng-repeat="instructor in instructors">
-            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="{{instructor.profile_image}}"/></div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container" ng-show="instructor.img_is_flagged == false"><img class="instructor_img" src="{{instructor.profile_image}}"/></div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container" ng-show="instructor.img_is_flagged == true"><img class="instructor_img" src="/resources/img/default.png"/></div>
             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
               <div class="i_name"><strong>{{instructor.first_name}} {{instructor.last_name}}</strong></div>
               <div><strong>Contact &nbsp;&nbsp;</strong> <a class="email" href="mailto:{{instructor.email}}">{{instructor.email}}</a></div>
               <div><strong>About Me</strong></div>
-              <div class="i_bio">
+              <div class="i_bio" ng-show="instructor.bio_is_flagged == false">
                 {{instructor.biography}}
+              </div>
+              <div class="i_bio" ng-show="instructor.bio_is_flagged == true">
+                No biography.
               </div>
             </div>
           </div>

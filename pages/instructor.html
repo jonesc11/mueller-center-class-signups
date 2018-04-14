@@ -21,10 +21,11 @@
               <div class="info"><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
               <div class="info"><strong>Email: </strong>{{account.email}}</div>
               <div class="info"><strong>Password: </strong>*******</div>
-              <div class="info"><strong>Bio: </strong><br>{{account.biography}}</div>
+              <div class="info"><strong>Bio: </strong><br>{{account.biography}} <p ng-show="account.bio_is_flagged == true">NOTE: Your bio is flagged.</p></div>
             </div>
             <div class="right-info">
               <div><img ng-src="{{account.profile_image}}" class='image'></div>
+              <div ng-show="account.img_is_flagged == true">NOTE: Your image is flagged."</div>
             </div>
             <button type="button" ng-click="enableEditor()" class="btn btn-success">Edit Info</button>
         </div>

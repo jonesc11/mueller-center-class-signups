@@ -97,6 +97,11 @@ app.get ('/instructor', function (req, res) {
   });
 });
 
+app.post ('/enroll', function (req, res) {
+  addMember (req.body.course, req.body.person);
+  res.send ({});
+});
+
 app.post ('/email/class', function (req, res) {
   var classObject = getClass (req.body.class_id);
   for (var i = 0; i < classObject.persons_enrolled; ++i) {
@@ -130,8 +135,56 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+app.post ('/add-class', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      createClass (req.body);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/delete-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      deleteCourse (req.body.course);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/archive-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateClassObject (req.body.course, { is_archived: true, is_sign_up_able: false });
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/edit-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateClassObject (req.body.course, req.body.update);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
+});
+
+app.get ('/get-admins', function (req, res) {
+  getAllAdmins().then (function (data) {res.send (data); });
 });
 
 app.get ('/get-account-info', function (req, res) {
@@ -195,6 +248,46 @@ app.post ('/change-image', function (req, res) {
   } else {
     res.redirect ('/');
   }
+});
+
+app.post ('/flag-bio', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { bio_is_flagged: true });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/flag-img', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { img_is_flagged: true });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/unflag-bio', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { bio_is_flagged: false });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/unflag-img', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { img_is_flagged: false });
+    } else {
+      res.redirect ('/');
+    }
+  });
 });
 
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
@@ -272,7 +365,7 @@ function genNewAccount (fname, lname, email) {
  * objectId is the ObjectId of the class that we are looking for.
  */
 async function getClass (objectId) {
-  return classesCollection.findOne ({ _id: new ObjectId(objectId) });
+  return classesCollection.findOne ({ _id: new ObjectID(objectId) });
 }
 
 /**
@@ -286,9 +379,11 @@ async function getAllCourses () {
     if (instructor && instructor !== null) {
       courses[i].instructor = instructor.first_name + " " + instructor.last_name;
       courses[i].instructor_email = instructor.email;
+      courses[i].instructor_id = instructor._id.toString();
     } else {
       courses[i].instructor = "";
       courses[i].instructor_email = "";
+      courses[i].instructor_id = "";
     }
   }
 
@@ -306,9 +401,11 @@ async function getAllSignUpableCourses () {
     if (instructor && instructor !== null) {
       courses[i].instructor = instructor.first_name + " " + instructor.last_name;
       courses[i].instructor_email = instructor.email;
+      courses[i].instructor_id = instructor._id.toString();
     } else {
       courses[i].instructor = "";
       courses[i].instructor_email = "";
+      courses[i].instructor_id = "";
     }
   }
 
@@ -353,7 +450,7 @@ async function getAllMembers () {
  *    would be { description: "new description" }
  */
 async function updateClassObject (objectId, updateObject) {
-  classesCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
+  classesCollection.updateOne ({ _id: new ObjectID(objectId) }, { $set: updateObject });
 }
 
 /**
@@ -365,19 +462,7 @@ async function updateClassObject (objectId, updateObject) {
  * description is the course description
  * type is the type of course
  */
-async function createClass (name, year, term, description, type) {
-  if (!(term === "Spring" || term === "Summer" || term === "Fall"))
-    return -1;
-  var object = {
-    name: name,
-    semester: {
-      year: year,
-      term: term
-    },
-    description: description,
-    type: type
-  };
-
+async function createClass (object) {
   return await classesCollection.insertOne (object);
 }
 
@@ -426,15 +511,8 @@ async function addSession (objectId, startDate, endDate, instructor, sessionId, 
  * paymentMethod is the payment method that the user we are adding is using
  * paid is whether or not the person we are adding has paid
  */
-async function addMember (objectId, emailAddress, fullName, paymentMethod, paid) {
-  var toAdd = {
-    email_address: emailAddress.toLowerCase(),
-    name: fullName,
-    payment_method: paymentMethod,
-    paid: paid
-  };
-
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $push: { enrolled_persons: toAdd } });
+async function addMember (course, object) {
+  await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
 }
 
 /**
@@ -443,7 +521,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
@@ -464,7 +542,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
     paid: false
   };
 
-  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
+  return await classesCollection.updateOne ({ _id: new ObjectID(objectId) }, { $push: update });
 }
 
 /**
@@ -472,7 +550,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
  * objectId is the ObjectId of the course to delete.
  */
 async function deleteCourse (objectId) {
-  classesCollection.deleteOne ({ _id: objectId });
+  classesCollection.deleteOne ({ _id: new ObjectID(objectId) });
 }
 
 /**
@@ -556,7 +634,7 @@ async function userIsInstructor (instructor) {
  * objectId is the instructor's ObjectId
  */
 async function emailMatchesObject (email, objectId) {
-  var queryObject = { _id: new ObjectId(objectId) };
+  var queryObject = { _id: new ObjectID(objectId) };
   var queryOptions = { email: 1 };
   
   var instructorObject = await accountsCollection.findOne (queryObject, queryOptions);
@@ -598,7 +676,7 @@ async function getAllInstructors () {
   var instructors = await accountsCollection.find({ is_instructor: true }).toArray();
 
   for (var i = 0; i < instructors.length; ++i) {
-    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id }).toArray();
+    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id.toString() }).toArray();
     instructors[i].password = undefined;
     instructors[i].salt = undefined;
   }
@@ -610,7 +688,9 @@ async function getAllInstructors () {
  * Returns a list of all admins in the database
  */
 async function getAllAdmins () {
-  return await accountsCollection.find({ is_admin: true }).toArray();
+  var admins = await accountsCollection.find({ is_admin: true }).toArray();
+
+  return admins;
 }
 
 /**
@@ -620,7 +700,7 @@ async function getAllAdmins () {
  *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
  */
 function updateUserById (objectId, updateObject) {
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
+  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $set: updateObject });
 }
 
 /**
