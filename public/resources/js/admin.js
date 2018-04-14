@@ -7,7 +7,6 @@ app.controller('controller', function ($scope, $http) {
     url: '/get-instructors',
     method: 'GET'
   }).then (function (response) {
-console.log(response.data);
     $scope.instructor_accounts = response.data;
   });
   $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
@@ -53,12 +52,103 @@ console.log(response.data);
     }
     return false;
   }
+  $scope.alertList = [];
+  $scope.verifyAdded = false;
+  $scope.verifyUpdated = false;
+  $scope.addOrEdit = function () {
+    $scope.alertList = [];
+    if (!$scope.className || $scope.className == '') $scope.alertList.push ('Class name is empty.');
+    if (!$scope.classRoom || $scope.classRoom == '') $scope.alertList.push ('Class room is empty.');
+    if (!$scope.classStart || $scope.classStart == '') $scope.alertList.push ('Class start is not specified.');
+    if (!$scope.classEnd || $scope.classEnd == '') $scope.alertList.push ('Class end is not specified.');
+    if ($scope.classType != 'Fitness' && $scope.classType != 'Enrichment') $scope.alertList.push ('Class type is not specified.');
+    if (!$scope.classDescription || $scope.classDescription == '') $scope.alertList.push ('Class description is not specified.');
+
+    var days = [];
+    if ($scope.monday) days.push ('Monday');
+    if ($scope.tuesday) days.push ('Tuesday');
+    if ($scope.wednesday) days.push ('Wednesday');
+    if ($scope.thursday) days.push ('Thursday');
+    if ($scope.friday) days.push ('Friday');
+    if ($scope.saturday) days.push ('Saturday');
+    if ($scope.sunday) days.push ('Sunday');
+    if (days.length == 0) $scope.alertList.push ('No days were selected.');
+    if ($scope.alertList.length != 0) return;
+    if ($scope.buttonState == "Add Class") {
+      $http({
+        method: 'POST',
+        url: '/add-class',
+        data: {
+          name: $scope.className,
+          instructor: $scope.instructorName,
+          room: $scope.classRoom,
+          frequency: {
+            start_time: $scope.classStart.getHours() + ":" + $scope.classStart.getMinutes(),
+            end_time: $scope.classEnd.getHours() + ":" + $scope.classEnd.getMinutes(),
+            days_of_week: days
+          },
+          description: $scope.classDescription,
+          type: $scope.classType,
+          is_archived: false,
+          is_sign_up_able: true,
+          persons_enrolled: []
+        }
+      }).then (function (response) {
+      });
+      $scope.verifyAdded = true;
+    } else {
+      $http({
+        method: 'POST',
+        url: '/edit-course',
+        data: {
+          course: $scope.class_information[$scope.editClass]._id,
+          update: {
+            name: $scope.className,
+            instructor: $scope.instructorName,
+            room: $scope.classRoom,
+            frequency: {
+              start_time: $scope.classStart.getHours() + ":" + $scope.classStart.getMinutes(),
+              end_time: $scope.classEnd.getHours() + ":" + $scope.classEnd.getMinutes(),
+              days_of_week: days
+            },
+            description: $scope.classDescription,
+            type: $scope.classType,
+            is_archived: false,
+            is_sign_up_able: true,
+            persons_enrolled: []
+          }
+        }
+      }).then (function (response) {
+      });
+      $scope.verifyUpdated = true;
+    }
+  };
+  $scope.deleteCourse = function () {
+    $http({
+      method: 'POST',
+      url: '/delete-course',
+      data: {
+        course: $scope.class_information[$scope.editClass]._id
+      }
+    }).then (function (response) {});
+  };
+  $scope.archiveCourse = function () {
+    $http({
+      method: 'POST',
+      url: '/archive-course',
+      data: {
+        course: $scope.class_information[$scope.editClass]._id
+      }
+    }).then (function (response) {});
+  };
   $scope.submitEditClass = function() {
     $scope.buttonState = "Save Changes";
+    $scope.verifyAdded = false;
+    $scope.verifyUpdated = false;
     $scope.editing = true;
     $scope.className = $scope.class_information[$scope.editClass].name;
     $scope.classSession = $scope.class_information[$scope.editClass].session_id;
-    $scope.instructorName = $scope.class_information[$scope.editClass].instructor;
+    $scope.instructorName = $scope.class_information[$scope.editClass].instructor_id;
     $scope.classRoom = $scope.class_information[$scope.editClass].room;
     var time = "2018-01-01T";
     $scope.classStart = new Date(time + $scope.class_information[$scope.editClass].frequency.start_time + ":00");
