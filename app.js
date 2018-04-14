@@ -75,11 +75,26 @@ app.get ('/instructors', function (req, res) {
 });
 
 app.get ('/admin', function (req, res) {
-  res.sendFile (__dirname + "/pages/admin.html");
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result)
+      res.sendFile (__dirname + "/pages/admin.html");
+    else
+      res.redirect ('/');
+  });
 });
 
 app.get ('/instructor', function (req, res) {
-  res.sendFile (__dirname + "/pages/instructor.html");
+  userIsInstructor (req.user ? req.user : '').then (function (result) {
+    if (result)
+      res.sendFile (__dirname + "/pages/instructor.html");
+    else
+      userIsAdmin (req.user ? req.user : '').then (function (result) {
+        if (result)
+          res.sendFile (__dirname + '/pages/instructor.html');
+        else
+          res.redirect ('/');
+      });
+  });
 });
 
 /*
@@ -99,11 +114,14 @@ app.post ('/email/class', function (req, res) {
 });
 
 app.get ('/login', function (req, res) {
-  res.sendFile (__dirname + "/pages/login.html");
+  if (req.user)
+    res.redirect ('/instructor');
+  else
+    res.sendFile (__dirname + "/pages/login.html");
 });
 
 app.post ('/login',
-  passport.authenticate('local', { successRedirect: '/',
+  passport.authenticate('local', { successRedirect: '/instructor',
                                    failureRedirect: '/login' }));
 
 app.get ('/logout',function(req,res) {
@@ -519,26 +537,20 @@ function verifyLogin (email, passwd, next) {
  * identifier can either be an email address (noted by an '@' symbol) or an ObjectId (from Mongo)
  */
 async function userIsAdmin (identifier) {
-  var queryObject = {};
-  queryObject['email'] = identifier;
+  var obj = await accountsCollection.findOne ({ email: identifier });
 
-  var obj = await accountsCollection.findOne (queryObject);
-
-  return obj.is_admin;
+  return obj && obj.is_admin ? obj.is_admin : false;
 }
 
 /**
  * Returns true if the instructor is an instructor for the course, false otherwise.
- * instructor is the instructor ObjectId
+ * instructor is the instructor email
  * course is the course ObjectId
  */
-async function userIsInstructor (instructor, course) {
-  var queryObject = { _id: new ObjectId(course) };
-  var queryOptions = { instructor: 1 };
+async function userIsInstructor (instructor) {
+  var obj = await accountsCollection.findOne ({ email: instructor });
   
-  var courseObject = await classesCollection.findOne (queryObject, queryOptions);
-  
-  return courseObject.instructor === instructor;
+  return obj && obj.is_instructor ? obj.is_instructor : false;
 }
 
 /**
