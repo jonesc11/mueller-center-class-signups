@@ -1,5 +1,20 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
+
+  $http({
+    method: 'GET',
+    url: '/is-admin'
+  }).then(function successCallback (response) {
+    $scope.is_admin = response.data.is_admin;
+  });
+
+  $http({
+    method: 'GET',
+    url: '/is-instructor'
+  }).then(function successCallback (response) {
+    $scope.is_instructor = response.data.is_instructor;
+  });
+  
   $scope.payment = 'cash';
   $scope.affiliation = 'ug-student';
   $scope.classModal = function(id, name) {
@@ -59,6 +74,16 @@ app.controller('controller', function ($scope, $http) {
     var date2 = new Date(temp + end);
     return date1.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + " - " + date2.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
+
+  $scope.logout = function() {
+    $http({
+    method: 'GET',
+    url: '/logout'
+    }).then(function successCallback (response) {
+      alert("logged out");
+    });
+  }
+
   $scope.class_information = [];
   $http({
     method: 'GET',

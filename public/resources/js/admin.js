@@ -16,6 +16,21 @@ app.controller('controller', function ($scope, $http) {
   }).then (function (response) {
     $scope.admin_accounts = response.data;
   });
+
+  $http({
+    method: 'GET',
+    url: '/is-admin'
+  }).then(function successCallback (response) {
+    $scope.is_admin = response.data.is_admin;
+  });
+
+  $http({
+    method: 'GET',
+    url: '/is-instructor'
+  }).then(function successCallback (response) {
+    $scope.is_instructor = response.data.is_instructor;
+  });
+  
   $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
   $scope.class_information = [];
   $http({
@@ -245,4 +260,13 @@ app.controller('controller', function ($scope, $http) {
 
     $scope[from][$index].img_is_flagged = true;
   };
+
+  $scope.logout = function() {
+    $http({
+    method: 'GET',
+    url: '/logout'
+    }).then(function successCallback (response) {
+      alert("logged out");
+    });
+  }
 });
