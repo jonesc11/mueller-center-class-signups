@@ -281,7 +281,7 @@
             <div class="message mt-2 mb-4">
               Are you sure you want to delete {{className}}? This action cannot be undone.
             </div>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteCourse()">Delete</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>
@@ -295,7 +295,7 @@
             <div class="message mt-2 mb-4">
               Are you sure you want to archive {{className}}? This action cannot be undone.
             </div>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Archive</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="archiveCourse()">Archive</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>

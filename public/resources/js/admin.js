@@ -100,6 +100,24 @@ app.controller('controller', function ($scope, $http) {
 
     }
   };
+  $scope.deleteCourse = function () {
+    $http({
+      method: 'POST',
+      url: '/delete-course',
+      data: {
+        course: $scope.class_information[$scope.editClass]._id
+      }
+    }).then (function (response) {});
+  };
+  $scope.archiveCourse = function () {
+    $http({
+      method: 'POST',
+      url: '/archive-course',
+      data: {
+        course: $scope.class_information[$scope.editClass]._id
+      }
+    }).then (function (response) {});
+  };
   $scope.submitEditClass = function() {
     $scope.buttonState = "Save Changes";
     $scope.verifyAdded = false;
@@ -108,7 +126,6 @@ app.controller('controller', function ($scope, $http) {
     $scope.className = $scope.class_information[$scope.editClass].name;
     $scope.classSession = $scope.class_information[$scope.editClass].session_id;
     $scope.instructorName = $scope.class_information[$scope.editClass].instructor_id;
-console.log ($scope.class_information[$scope.editClass].instructor_id);
     $scope.classRoom = $scope.class_information[$scope.editClass].room;
     var time = "2018-01-01T";
     $scope.classStart = new Date(time + $scope.class_information[$scope.editClass].frequency.start_time + ":00");

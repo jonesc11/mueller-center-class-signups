@@ -148,6 +148,28 @@ app.post ('/add-class', function (req, res) {
   });
 });
 
+app.post ('/delete-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      deleteCourse (req.body.course);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/archive-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateClassObject (req.body.course, { is_archived: true, is_sign_up_able: false });
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
@@ -286,7 +308,7 @@ function genNewAccount (fname, lname, email) {
  * objectId is the ObjectId of the class that we are looking for.
  */
 async function getClass (objectId) {
-  return classesCollection.findOne ({ _id: new ObjectId(objectId) });
+  return classesCollection.findOne ({ _id: new ObjectID(objectId) });
 }
 
 /**
@@ -371,7 +393,7 @@ async function getAllMembers () {
  *    would be { description: "new description" }
  */
 async function updateClassObject (objectId, updateObject) {
-  classesCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
+  classesCollection.updateOne ({ _id: new ObjectID(objectId) }, { $set: updateObject });
 }
 
 /**
@@ -440,7 +462,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
     paid: paid
   };
 
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $push: { enrolled_persons: toAdd } });
+  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $push: { enrolled_persons: toAdd } });
 }
 
 /**
@@ -449,7 +471,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
@@ -470,7 +492,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
     paid: false
   };
 
-  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
+  return await classesCollection.updateOne ({ _id: new ObjectID(objectId) }, { $push: update });
 }
 
 /**
@@ -478,7 +500,7 @@ async function addEnrollment (objectId, emailAddress, paymentMethod) {
  * objectId is the ObjectId of the course to delete.
  */
 async function deleteCourse (objectId) {
-  classesCollection.deleteOne ({ _id: objectId });
+  classesCollection.deleteOne ({ _id: new ObjectID(objectId) });
 }
 
 /**
@@ -562,7 +584,7 @@ async function userIsInstructor (instructor) {
  * objectId is the instructor's ObjectId
  */
 async function emailMatchesObject (email, objectId) {
-  var queryObject = { _id: new ObjectId(objectId) };
+  var queryObject = { _id: new ObjectID(objectId) };
   var queryOptions = { email: 1 };
   
   var instructorObject = await accountsCollection.findOne (queryObject, queryOptions);
@@ -625,7 +647,7 @@ async function getAllAdmins () {
  *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
  */
 function updateUserById (objectId, updateObject) {
-  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
+  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $set: updateObject });
 }
 
 /**
