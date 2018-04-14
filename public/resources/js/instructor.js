@@ -56,8 +56,6 @@ app.controller('controller', function ($scope, $http) {
     });
   };
 
-});
-
   $scope.changePassAlerts = [];
   $scope.changePass = function() {
     if ($scope.newpass != $scope.rtnewpass)
@@ -96,6 +94,6 @@ app.controller('controller', function ($scope, $http) {
 
   $scope.changeImg = function() {
       $scope.account.profile_image = $scope.image;
-  }
+  };
 
 });
