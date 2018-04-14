@@ -97,7 +97,30 @@ app.controller('controller', function ($scope, $http) {
       });
       $scope.verifyAdded = true;
     } else {
-
+      $http({
+        method: 'POST',
+        url: '/edit-course',
+        data: {
+          course: $scope.class_information[$scope.editClass]._id,
+          update: {
+            name: $scope.className,
+            instructor: $scope.instructorName,
+            room: $scope.classRoom,
+            frequency: {
+              start_time: $scope.classStart.getHours() + ":" + $scope.classStart.getMinutes(),
+              end_time: $scope.classEnd.getHours() + ":" + $scope.classEnd.getMinutes(),
+              days_of_week: days
+            },
+            description: $scope.classDescription,
+            type: $scope.classType,
+            is_archived: false,
+            is_sign_up_able: true,
+            persons_enrolled: []
+          }
+        }
+      }).then (function (response) {
+      });
+      $scope.verifyUpdated = true;
     }
   };
   $scope.deleteCourse = function () {

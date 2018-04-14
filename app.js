@@ -170,6 +170,17 @@ app.post ('/archive-course', function (req, res) {
   });
 });
 
+app.post ('/edit-course', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateClassObject (req.body.course, req.body.update);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
