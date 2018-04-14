@@ -68,13 +68,11 @@
             <h4 class="modal-title">Change Password</h4>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="error in changePassAlerts">{{error}}</div>
             <form id="change-pass" ng-submit="changePass()">
               <label>Old Password: </label><input type="password" ng-model="oldpass"><br/>
               <label>New Password: </label><input type="password" ng-model="newpass"><br/>
               <label>Re-type New Password: </label><input type="password" ng-model="rtnewpass"><br/>
-              <div ng-show="error1" class="error">Wrong Password! Try Again<br/></div>
-              <div ng-show="error2" class="error">New Password Does Not Match! Try Again<br/></div>
-              <div ng-show="success" class="success">Password Successfully Changed!<br/></div>
               <button class="btn btn-success" type="submit" id="submit">Change Password</button>
               <button type="button" class="btn btn-default" ng-click="resetPass()" data-dismiss="modal">Cancel</button><br>
             </form>
@@ -92,10 +90,12 @@
             <h4 class="modal-title">Change Profile Image</h4>
           </div>
           <div class="modal-body">
-              <img ng-show="currentimg" ng-src="{{account.image}}" class='thumb'>
+              <img ng-show="currentimg" ng-src="{{account.profile_image}}" class='thumb'>
               <img ng-show="newimg" class="thumb" ng-src="{{image}}"/>
-              <input id="img" type='file' ng-model-instant onchange="angular.element(this).scope().imageUpload(this)"/><br/>
-              <button class="btn btn-success modalb" ng-click="changeImg()">Change Image</button>
+              <form method="post" action="/change-image" enctype="multipart/form-data">
+              <input id="img" type="file" name="newimage" ng-model-instant onchange="angular.element(this).scope().imageUpload(this)" /><br/>
+              <button class="btn btn-success modalb" type="submit" ng-click="changeImg()">Change Image</button>
+              </form>
               <button type="button" class="btn btn-default cancelb" data-dismiss="modal">Back</button><br>
           </div>
         </div>

@@ -9,6 +9,7 @@ var passport = require ('passport');
 var session = require ('express-session');
 var LocalStrategy = require ('passport-local').Strategy;
 var nodemailer = require ('nodemailer');
+var fileUpload = require ('express-fileupload');
 
 var email_creds = require ('./email_creds.json');
 
@@ -21,6 +22,7 @@ app.use (session({
 }));
 app.use (passport.initialize ());
 app.use (passport.session ());
+app.use (fileUpload());
 
 passport.serializeUser (function (user, done) {
   done (null, user);
@@ -126,6 +128,49 @@ app.post ('/add-account', function (req, res) {
   });
 });
 
+app.post ('/update-info', function (req, res) {
+  if (req.user) {
+    updateUserByEmail (req.user, {
+      first_name: req.body.fname,
+      last_name: req.body.lname,
+      biography: req.body.biography
+    });
+    res.redirect ('/instructor');
+  } else {
+    res.redirect ('/');
+  }
+});
+
+app.post ('/change-password', function (req, res) {
+  if (req.user) {
+    if (changePassword (req.user, req.body.oldpass, req.body.newpass))
+      res.send ({ success: true });
+    else
+      res.send ({ success: false });
+  } else {
+    res.redirect ('/');
+  }
+});
+
+app.post ('/change-image', function (req, res) {
+  if (req.user) {
+    if (req.files && req.files.newimage) {
+      console.log (req.files.newimage);
+      var file = req.files.newimage;
+      file.mv (__dirname + '/public/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.')), function (err) {
+        if (err)
+          throw err;
+        updateUserByEmail (req.user, {
+          profile_image: '/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.'))
+        });
+        res.redirect ('/instructor');
+      });
+    }
+  } else {
+    res.redirect ('/');
+  }
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
@@ -139,6 +184,17 @@ mongo.connect (mongoUrl, function (err, client) {
   accountsCollection = db.collection ('accounts');
   classesCollection = db.collection ('classes');
 });
+
+async function changePassword (email, oldpass, newpass) {
+  var user = await getUserByEmail (email);
+  if (user.password == getHashedPassword (oldpass, user.salt)) {
+    var newPassHashed = getHashedPassword (newpass, user.salt);
+    updateUserByEmail (email, { password: newPassHashed });
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function genNewAccount (fname, lname, email) {
   var password = '';

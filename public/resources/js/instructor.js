@@ -27,35 +27,42 @@ app.controller('controller', function ($scope, $http) {
   };
   
   $scope.save = function() {
-    $scope.account.name = $scope.editableName;
-    $scope.account.bio = $scope.editableBio;
+    $scope.account.first_name = $scope.editableFName;
+    $scope.account.last_name = $scope.editableLName;
+    $scope.account.biography = $scope.editableBio;
     $scope.disableEditor();
+    $http({
+      method: 'POST',
+      url: '/update-info',
+      data: {
+        fname: $scope.editableFName,
+        lname: $scope.editableLName,
+        biography: $scope.editableBio
+      }
+    }).then (function (response) {
+    });;
   };
 
+  $scope.changePassAlerts = [];
   $scope.changePass = function() {
-    document.getElementById("change-pass").reset();
-    if ($scope.oldpass != $scope.account.password){
-      $scope.error1 = true;
-      $scope.error2 = false;
-      $scope.success = false;
+    if ($scope.newpass != $scope.rtnewpass)
+      $scope.changePassAlerts.push ('New passwords do not match.');
+    if ($scope.changePassAlerts.length == 0) {
+      $http({
+        url: '/change-password',
+        method: 'POST',
+        data: {
+          oldpass: $scope.oldpass,
+          newpass: $scope.newpass
+        }
+      }).then (function (response) {
+        if (response.data.success) {
+          $('#passwordModal').modal('toggle');
+        } else {
+          $scope.changePassAlerts.push ('Old password is incorrect.');
+        }
+      });
     }
-    else if (($scope.oldpass == $scope.account.password) && ($scope.newpass != $scope.rtnewpass)){
-      $scope.error2 = true;
-      $scope.error1 = false;
-      $scope.success = false;
-    }
-    else if (($scope.oldpass == $scope.account.password) && ($scope.newpass == $scope.rtnewpass)){
-      $scope.account.password = $scope.newpass;
-      $scope.success = true;
-      $scope.error1 = false;
-      $scope.error2 = false;
-    }
-  };
-
-  $scope.resetPass = function(){
-    $scope.error1 = false;
-    $scope.error2 = false;
-    $scope.success = false;
   };
 
   $scope.imageUpload = function(element){
@@ -70,11 +77,11 @@ app.controller('controller', function ($scope, $http) {
             $scope.currentimg = false;
             $scope.newimg = true;
         });
+console.log ($('#img'));
   };
 
   $scope.changeImg = function() {
-      $scope.account.image = $scope.image;
+      $scope.account.profile_image = $scope.image;
   }
-
 
 });
