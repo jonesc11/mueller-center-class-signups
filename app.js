@@ -190,6 +190,10 @@ app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
 
+app.get ('/get-admins', function (req, res) {
+  getAllAdmins().then (function (data) {res.send (data); });
+});
+
 app.get ('/get-account-info', function (req, res) {
   getUserByEmail (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -251,6 +255,46 @@ app.post ('/change-image', function (req, res) {
   } else {
     res.redirect ('/');
   }
+});
+
+app.post ('/flag-bio', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { bio_is_flagged: true });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/flag-img', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { img_is_flagged: true });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/unflag-bio', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { bio_is_flagged: false });
+    } else {
+      res.redirect ('/');
+    }
+  });
+});
+
+app.post ('/unflag-img', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      updateUserByEmail (req.body.email, { img_is_flagged: false });
+    } else {
+      res.redirect ('/');
+    }
+  });
 });
 
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
@@ -634,7 +678,7 @@ async function getAllInstructors () {
   var instructors = await accountsCollection.find({ is_instructor: true }).toArray();
 
   for (var i = 0; i < instructors.length; ++i) {
-    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id }).toArray();
+    instructors[i].classes = await classesCollection.find({ instructor: instructors[i]._id.toString() }).toArray();
     instructors[i].password = undefined;
     instructors[i].salt = undefined;
   }
@@ -646,7 +690,9 @@ async function getAllInstructors () {
  * Returns a list of all admins in the database
  */
 async function getAllAdmins () {
-  return await accountsCollection.find({ is_admin: true }).toArray();
+  var admins = await accountsCollection.find({ is_admin: true }).toArray();
+
+  return admins;
 }
 
 /**
