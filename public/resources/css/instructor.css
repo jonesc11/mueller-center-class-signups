@@ -11,6 +11,60 @@ header {
   font-size: 30px;
 }
 
+.thumb {
+    width:200px;
+    height:200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uploader {
+    clear:both;
+}
+
+#img {
+	display: block;
+	margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modalb {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cancelb {
+	float:right;
+}
+
+#passwordModal input {
+	width:250px;
+	margin:10px;
+}
+
+#passwordModal label {
+	width:190px;
+}
+
+#passwordModal button {
+	margin-top:30px;
+	margin-right:20px;
+}
+
+.error {
+	color:maroon;
+	font-size:13px;
+}
+
+.success {
+	color:darkgreen;
+	font-size:13px;
+}
+
+
 .container {
 	margin-top: 20px;
 }

@@ -20,7 +20,93 @@
     </nav>
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
-      <button class="btn btn-primary add" data-toggle="modal" data-target="#add-class">Add Class</button>
+      <form ng-submit="submitEditClass()">
+        <div class="form-group">
+          <select ng-model="editClass" name='edit' class='form-control edit-class'>
+            <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
+          </select>
+          <input type="submit" class="btn btn-primary" value="Edit Class">
+        </div>
+      </form>
+      <div>
+        <div class="card">
+          <form class="card-block">
+            <div class="form-group">
+              <label for="class-name" class="form-control-label">Class:</label>
+              <input type="text" class="form-control" id="class-name" name="class-name" ng-model="className">
+            </div>
+            <div class="form-group">
+              <label for="instructor-name" class="form-control-label">Instructor:</label>
+              <select ng-model="instructorName" name='instructor' class='form-control'>
+                <option class="form-control">Pending</option>
+                <option class="form-control" ng-repeat="instructor in instructor_accounts" value="{{instructor.first_name}} {{instructor.last_name}}">{{instructor.first_name}} {{instructor.last_name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="room" class="form-control-label">Room:</label>
+              <input type="text" class="form-control" id="room" name="room" ng-model="classRoom">
+            </div>
+            <br/>
+            <div class="form-group">
+              <label for="start-time" class="form-control-label">Start Time:</label>
+              <input type="time" class="form-control" id="start-time" name="start-time" ng-model="classStart" placeholder="HH:mm">
+            </div>
+            <div class="form-group">
+              <label for="end-time" class="form-control-label">End Time:</label>
+              <input type="time" class="form-control" id="end-time" name="end-time" ng-model="classEnd">
+            </div>
+            <div class="form-group">
+              <label for="class-type" class="form-control-label">Type:</label>
+              <select ng-model="classType" name='class-type' class='form-control'>
+                <option class="form-control" value="Fitness">Fitness</option>
+                <option class="form-control" value="Enrichment">Enrichment</option>
+              </select>
+            </div>
+            <br/>
+            <div class="form-group">
+              <strong>Day(s):</strong><br/>
+              <div class="day">
+                <input type="checkbox" value="Monday" name="monday" ng-model="monday">
+                <label for="monday">Monday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Tuesday" name="tuesday" ng-model="tuesday">
+                <label for="tuesday">Tuesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Wednesday" name="wednesday" ng-model="wednesday">
+                <label for="wednesday">Wednesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Thursday" name="thursday" ng-model="thursday">
+                <label for="thursday">Thursday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Friday" name="friday" ng-model="friday">
+                <label for="friday">Friday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Saturday" name="saturday" ng-model="saturday">
+                <label for="saturday">Saturday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Sunday" name="sunday" ng-model="sunday">
+                <label for="sunday">Sunday</label>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription">{{class.description}}</textarea>
+            </div>
+            <div class="btn-container">
+              <button class="btn btn-primary">{{buttonState}}</button>
+              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
+              <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+<!--
       <div id="accordion" role="tablist" aria-multiselectable="true">
         <div class="card" ng-repeat="class in class_information">
           <div class="card-header" role="tab" id="heading{{class.name}}">
@@ -82,13 +168,14 @@
           </div>
         </div>
       </div>
+-->
     </div>
     <div id="instructors" class="container tab" ng-show="instructors">
       <h1>Instructor Accounts</h1>
       <button class="btn btn-primary add-inst" data-toggle="modal" data-target="#add-account">Create New Instructor Account</button>
       <div class='account row border' ng-repeat='account in instructor_accounts'>
         <div class='col-sm-12 col-md-6 col-lg-6'>
-          <div><strong>Name: </strong>{{account.name}}</div>
+          <div><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
           <div><strong>Email: </strong>{{account.email}}</div>
           <strong>Classes:</strong>
           <ul class='inst-classes'>
@@ -98,11 +185,11 @@
         <div class='col-sm-12 col-md-6 col-lg-6'>
           <strong>Bio: </strong>
           <button class="btn btn-sm btn-danger flag">Flag Bio</button>
-          <p>{{account.bio}}</p>
+          <p>{{account.biography}}</p>
           <strong>Image: </strong>
           <button class="btn btn-sm btn-danger flag">Flag Image</button>
           <br/>
-          <img src="{{account.image}}" class='image'>
+          <img src="{{account.profile_image}}" class='image'>
         </div>
       </div>
     </div>
@@ -151,59 +238,6 @@
       </div>
     </div>
     <!-- Modals -->
-    <!-- Add class modal -->
-    <div class="modal fade" id="add-class">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add a new class</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="add-class-form">
-              <div class="form-group">
-                <label for="class-name" class="form-control-label">Class:</label>
-                <input type="text" class="form-control input-text" id="class-name" name="class-name" required>
-              </div>
-              <div class="form-group">
-                <label for="instructor-name" class="form-control-label">Instructor:</label>
-                <select ng-model="inst" name='inst' class='form-control'>
-                  <option class="form-control">Pending</option>
-                  <option class="form-control" ng-repeat="instructor in instructor_names" value="instructor.name">{{instructor.name}}</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="start-time" class="form-control-label">Start Time:</label>
-                <input type="time" class="form-control input-text" id="start-time" name="start-time" required>
-              </div>
-              <div class="form-group">
-                <label for="end-time" class="form-control-label">End Time:</label>
-                <input type="time" class="form-control input-text" id="end-time" name="end-time" required>
-              </div>
-              <div class="form-group">
-                <strong>Day(s):</strong><br/>
-                <div class="day" ng-repeat="day in weekdays">
-                  <input type="checkbox" value="{{day}}" name="{{day}}">
-                  <label for="{{day}}">{{day}}</label>
-                </div>
-              </div>
-              <div class="form-group pl-0 desc-container">
-                <label for="description" class="form-control-label">Description:</label>
-                <textarea type="text" class="form-control" id="description" name="description" required></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <div class="btn-container">
-                <button class="btn btn-primary">Add Class</button>
-                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <!--  Create Account Modal  -->
     <div class="modal fade" id="add-account">
       <div class="modal-dialog" role="document">
@@ -215,23 +249,24 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="error in createAcctErrs">{{error}}</div>
             <form id="sign-up-form">
               <div class="form-group">
                 <label for="first-name" class="form-control-label">First Name:</label>
-                <input type="text" class="form-control input-text" id="first-name" name="first-name" required>
+                <input type="text" class="form-control input-text" id="first-name" name="first-name" ng-model="createAcctFName" required>
               </div>
               <div class="form-group">
                 <label for="last-name" class="form-control-label">Last Name:</label>
-                <input type="text" class="form-control input-text" id="last-name" name="last-name" required>
+                <input type="text" class="form-control input-text" id="last-name" name="last-name" ng-model="createAcctLName" required>
               </div>
               <div class="form-group">
                 <label for="email" class="form-control-label">Email:</label>
-                <input type="email" class="form-control input-text" id="email" name="email" required>
+                <input type="email" class="form-control input-text" id="email" name="email" ng-model="createAcctEmail" required>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary signup" id="login-submit" data-dismiss="modal">Create account</button>
+            <button type="button" class="btn btn-primary signup" ng-click="createAccount()" id="login-submit" data-dismiss="modal">Create account</button>
           </div>
         </div>
       </div>
@@ -242,9 +277,23 @@
         <div class="modal-content">
           <div class="modal-body">
             <div class="message mt-2 mb-4">
-              Are you sure you want to delete {{delete_object}}?
+              Are you sure you want to delete {{className}}? This action cannot be undone.
             </div>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Archive Modal  -->
+    <div class="modal fade" id="confirm-archive">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to archive {{className}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Archive</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>

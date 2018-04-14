@@ -2,26 +2,56 @@
 
 body {
   font-family: 'Raleway', sans-serif;
+  height:100%;
+  width: 100%;
+}
+
+#union-logo {
+  display: block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  height:100px;
+}
+
+#header-logo {
+  float:left;
+  height:50px;
 }
 
 #banner {
   width: 100%;
+  height: 20vh;
+}
+
+#pay-method {
+  font-size:14px;
+  color:maroon;
+}
+
+#header-container {
+  width:100%;
+  position: fixed;
+  top:0;
+  left:0;
+
 }
 
 .header {
+  padding:10px;
   width: 100%;
-  height: 50px;
-  font-size: 30px;
+  height: 70px;
+  font-size: 40px;
   background-color: #e2231b;
   text-align: center;
   line-height: 50px;
 }
 
-.header a {
+a {
   color: white;
 }
 
-.header a:hover {
+a:hover {
   color: white;
 }
 
@@ -35,16 +65,16 @@ body {
   width: 30%;
   position: fixed;
   z-index: 1;
-  display: inline-block;
   position: relative;
   background-color: #383838;
   color: white;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 #content {
   float: left;
   width: 70%;
-  display: inline-block;
   overflow-y: auto;
   padding: 30px;
   color: black;
@@ -268,6 +298,28 @@ h4 {
     display: inline-block;
     width: auto;
   }
+
+  #sidebar {
+    right:0;
+    top:70px;
+    height: calc(100vh - 70px);
+    position: fixed;
+  }
+
+  #content {
+    height: calc(100vh - 70px);
+    top:70px;
+    position: fixed;
+  }
+}
+
+.email {
+  color: darkblue;
+}
+
+.email:hover {
+  color: darkblue;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 800px) {
@@ -291,6 +343,14 @@ h4 {
   
   h3 {
     display: none;
+  }
+
+  #header-container {
+    position:static;
+  }
+
+  .header {
+    height: 50px;
   }
 }
 
