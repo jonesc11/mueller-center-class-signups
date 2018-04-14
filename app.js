@@ -97,13 +97,6 @@ app.get ('/instructor', function (req, res) {
   });
 });
 
-/*
-{
-  subject: <string>,
-  body: <string>,
-  class_id: <string>
-}
-*/
 app.post ('/email/class', function (req, res) {
   var classObject = getClass (req.body.class_id);
   for (var i = 0; i < classObject.persons_enrolled; ++i) {
@@ -220,13 +213,16 @@ mongo.connect (mongoUrl, function (err, client) {
 
 async function changePassword (email, oldpass, newpass) {
   var user = await getUserByEmail (email);
-  if (user.password == getHashedPassword (oldpass, user.salt)) {
-    var newPassHashed = getHashedPassword (newpass, user.salt);
-    updateUserByEmail (email, { password: newPassHashed });
-    return true;
-  } else {
-    return false;
-  }
+  getHashedPassword (oldpass, user.salt, function (err, hash) {
+    if (user.password == hash) {
+      getHashedPassword (newpass, user.salt, function (err, newhash) {
+        updateUserByEmail (email, { password: newhash });
+        return true;
+      });
+    } else {
+      return false;
+    }
+  });
 }
 
 function genNewAccount (fname, lname, email) {
@@ -250,9 +246,10 @@ function genNewAccount (fname, lname, email) {
   };
 
   newUser.salt = getSalt();
-  newUser.password = getHashedPassword (password, newUser.salt);
-
-  createUser (newUser);
+  getHashedPassword (password, newUser.salt, function (err, hash) {
+    newUser.password = hash;
+    createUser (newUser);
+  });
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -573,7 +570,8 @@ async function emailMatchesObject (email, objectId) {
  */
 async function getUserByEmail (email) {
   var user = await accountsCollection.findOne ({ email: email });
-  user.classes = await classesCollection.find ({ instructor: user._id.toString() }).toArray();
+  if (user)
+    user.classes = await classesCollection.find ({ instructor: user._id.toString() }).toArray();
   
   return user;
 }
