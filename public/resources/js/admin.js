@@ -3,12 +3,18 @@ app.controller('controller', function ($scope, $http) {
   $scope.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   //Some sample data just for front-end purposes
   $scope.instructor_accounts = [];
+  $scope.admin_accounts = [];
   $http({
     url: '/get-instructors',
     method: 'GET'
   }).then (function (response) {
-console.log(response.data);
     $scope.instructor_accounts = response.data;
+  });
+  $http({
+    url: '/get-admins',
+    method: 'GET'
+  }).then (function (response) {
+    $scope.admin_accounts = response.data;
   });
   $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
   $scope.class_information = [];
@@ -95,5 +101,57 @@ console.log(response.data);
         $('#add-account').modal('toggle');
       });
     }
+  };
+
+  $scope.unflagBio = function ($index, from) {
+    $http({
+      method: 'POST',
+      url: '/unflag-bio',
+      data: {
+        email: this.account.email
+      }
+    }).then (function (response) {
+    });
+
+    $scope[from][$index].bio_is_flagged = false;
+  };
+
+  $scope.unflagImg = function ($index, from) {
+    $http({
+      method: 'POST',
+      url: '/unflag-img',
+      data: {
+        email: this.account.email
+      }
+    }).then (function (response) {
+    });
+
+    $scope[from][$index].img_is_flagged = false;
+  };
+
+  $scope.flagBio = function ($index, from) {
+    $http({
+      method: 'POST',
+      url: '/flag-bio',
+      data: {
+        email: this.account.email
+      }
+    }).then (function (response) {
+    });
+
+    $scope[from][$index].bio_is_flagged = true;
+  };
+
+  $scope.flagImg = function ($index, from) {
+    $http({
+      method: 'POST',
+      url: '/flag-img',
+      data: {
+        email: this.account.email
+      }
+    }).then (function (response) {
+    });
+
+    $scope[from][$index].img_is_flagged = true;
   };
 });
