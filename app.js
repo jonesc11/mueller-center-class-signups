@@ -9,6 +9,7 @@ var passport = require ('passport');
 var session = require ('express-session');
 var LocalStrategy = require ('passport-local').Strategy;
 var nodemailer = require ('nodemailer');
+var fileUpload = require ('express-fileupload');
 
 var email_creds = require ('./email_creds.json');
 
@@ -21,6 +22,7 @@ app.use (session({
 }));
 app.use (passport.initialize ());
 app.use (passport.session ());
+app.use (fileUpload());
 
 passport.serializeUser (function (user, done) {
   done (null, user);
@@ -126,6 +128,49 @@ app.post ('/add-account', function (req, res) {
   });
 });
 
+app.post ('/update-info', function (req, res) {
+  if (req.user) {
+    updateUserByEmail (req.user, {
+      first_name: req.body.fname,
+      last_name: req.body.lname,
+      biography: req.body.biography
+    });
+    res.redirect ('/instructor');
+  } else {
+    res.redirect ('/');
+  }
+});
+
+app.post ('/change-password', function (req, res) {
+  if (req.user) {
+    if (changePassword (req.user, req.body.oldpass, req.body.newpass))
+      res.send ({ success: true });
+    else
+      res.send ({ success: false });
+  } else {
+    res.redirect ('/');
+  }
+});
+
+app.post ('/change-image', function (req, res) {
+  if (req.user) {
+    if (req.files && req.files.newimage) {
+      console.log (req.files.newimage);
+      var file = req.files.newimage;
+      file.mv (__dirname + '/public/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.')), function (err) {
+        if (err)
+          throw err;
+        updateUserByEmail (req.user, {
+          profile_image: '/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.'))
+        });
+        res.redirect ('/instructor');
+      });
+    }
+  } else {
+    res.redirect ('/');
+  }
+});
+
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
 mongo.connect (mongoUrl, function (err, client) {
@@ -139,6 +184,17 @@ mongo.connect (mongoUrl, function (err, client) {
   accountsCollection = db.collection ('accounts');
   classesCollection = db.collection ('classes');
 });
+
+async function changePassword (email, oldpass, newpass) {
+  var user = await getUserByEmail (email);
+  if (user.password == getHashedPassword (oldpass, user.salt)) {
+    var newPassHashed = getHashedPassword (newpass, user.salt);
+    updateUserByEmail (email, { password: newPassHashed });
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function genNewAccount (fname, lname, email) {
   var password = '';
@@ -186,7 +242,7 @@ function genNewAccount (fname, lname, email) {
  * objectId is the ObjectId of the class that we are looking for.
  */
 async function getClass (objectId) {
-  return classesCollection.findOne ({ _id: objectId });
+  return classesCollection.findOne ({ _id: new ObjectId(objectId) });
 }
 
 /**
@@ -267,7 +323,7 @@ async function getAllMembers () {
  *    would be { description: "new description" }
  */
 async function updateClassObject (objectId, updateObject) {
-  classesCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+  classesCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
 }
 
 /**
@@ -348,7 +404,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
     paid: paid
   };
 
-  accountsCollection.updateOne ({ _id: objectId }, { $push: { enrolled_persons: toAdd } });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $push: { enrolled_persons: toAdd } });
 }
 
 /**
@@ -357,7 +413,7 @@ async function addMember (objectId, emailAddress, fullName, paymentMethod, paid)
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: objectId }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
 }
 
 /**
@@ -437,7 +493,7 @@ async function userIsAdmin (identifier) {
  * course is the course ObjectId
  */
 async function userIsInstructor (instructor, course) {
-  var queryObject = { _id: course };
+  var queryObject = { _id: new ObjectId(course) };
   var queryOptions = { instructor: 1 };
   
   var courseObject = await classesCollection.findOne (queryObject, queryOptions);
@@ -451,7 +507,7 @@ async function userIsInstructor (instructor, course) {
  * objectId is the instructor's ObjectId
  */
 async function emailMatchesObject (email, objectId) {
-  var queryObject = { _id: objectId };
+  var queryObject = { _id: new ObjectId(objectId) };
   var queryOptions = { email: 1 };
   
   var instructorObject = await accountsCollection.findOne (queryObject, queryOptions);
@@ -464,9 +520,12 @@ async function emailMatchesObject (email, objectId) {
  * email is the email address that we are querying for.
  */
 async function getUserByEmail (email) {
-  var queryObject = { email: email };
+  var user = await accountsCollection.findOne ({ email: email });
+console.log (email);console.log (user);
+  user.classes = await classesCollection.find ({ instructor: user._id.toString() }).toArray();
+console.log(user);
   
-  return await accountsCollection.findOne ({ email: email });
+  return user;
 }
 
 /**
@@ -513,7 +572,7 @@ async function getAllAdmins () {
  *   i.e. if the update is updating the bio, updateObject would be: { biography: "example bio" }
  */
 function updateUserById (objectId, updateObject) {
-  accountsCollection.updateOne ({ _id: objectId }, { $set: updateObject });
+  accountsCollection.updateOne ({ _id: new ObjectId(objectId) }, { $set: updateObject });
 }
 
 /**
