@@ -179,6 +179,29 @@ app.post ('/edit-course', function (req, res) {
   });
 });
 
+app.get ('/get-members', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      getAllMembers ().then (function (response) {
+        res.send (response);
+      });
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/delete-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      deleteMember (req.body.email);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
@@ -423,23 +446,47 @@ async function getAllArchivedCourses () {
  * Returns all member objects unique on email address
  */
 async function getAllMembers () {
-  var courses = getAllCourses ();
+  var courses = await getAllCourses ();
   var members = [];
 
   for (var i = 0; i < courses.length; ++i) {
     for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
       var inArray = false;
       for (var k = 0; k < members.length; ++k)
-        if (members[i].email_address.toLowerCase() === courses[i].persons_enrolled[j].email_address.toLowerCase()) {
+        if (members[k].email.toLowerCase() === courses[i].persons_enrolled[j].email.toLowerCase()) {
           inArray = true;
+          members[k].classes.push ({
+              name: courses[i].name,
+              _id: courses[i]._id.toString()
+            });
           break;
         }
-      if (!inArray)
+      if (!inArray) {
         members.push (courses[i].persons_enrolled[j]);
+        members[members.length - 1].classes = [
+          {
+            name: courses[i].name,
+            _id: courses[i]._id.toString()
+          } ];
+      }
     }
   }
 
-  return members;
+  return {members: members};
+}
+
+async function deleteMember (email) {
+  var courses = await getAllCourses ();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var newList = [];
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      if (courses[i].persons_enrolled[j].email.toLowerCase() != email.toLowerCase()) {
+        newList.push (courses[i].persons_enrolled[j]);
+      }
+    }
+    updateClassObject (courses[i]._id.toString(), { persons_enrolled: newList });
+  }
 }
 
 /**

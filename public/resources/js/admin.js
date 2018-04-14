@@ -16,7 +16,13 @@ app.controller('controller', function ($scope, $http) {
   }).then (function (response) {
     $scope.admin_accounts = response.data;
   });
-  $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
+  $scope.member_accounts = [];
+  $http({
+    method: 'GET',
+    url: '/get-members'
+  }).then (function (response) {
+    $scope.member_accounts = response.data.members;
+  });
   $scope.class_information = [];
   $http({
     method: 'GET',
@@ -50,6 +56,22 @@ app.controller('controller', function ($scope, $http) {
   }
   $scope.deleteObject = function(obj) {
     $scope.delete_object = obj;  
+  }
+  $scope.deleteMember = function () {
+    for (var i = 0; i < $scope.member_accounts.length; ++i) {
+      if ($scope.member_accounts[i].email.toLowerCase() == $scope.delete_object.toLowerCase()) {
+        $scope.member_accounts.splice (i, 1);
+        break;
+      }
+    }
+
+    $http({
+      method: 'POST',
+      url: '/delete-member',
+      data: {
+        email: $scope.delete_object
+      }
+    }).then (function (response) {});;
   }
   $scope.checkArray = function(arr, val) {
     for(var i in arr) {
