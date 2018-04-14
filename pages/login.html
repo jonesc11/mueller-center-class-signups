@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <title>Mueller Center</title>
   </head>
-  <body ng-controller="controller">
+  <body>
     <div id="header-container">
       <nav class="header">
         <a href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
@@ -29,12 +29,10 @@
         <label>Password</label>
         <input type="password" ng-model="password" name="password" id="password" class="ng-pristine ng-valid">
         <br/>
-          <!--{{loginError}}  {{loggedUser}} -->
         <button class="btn btn-success" type="submit">Submit</button>
         <a href="/" role="button" class="btn  btn-danger">Cancel</a>
       </form>
     </div>
-  
 
     <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

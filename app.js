@@ -171,7 +171,6 @@ app.post ('/change-password', function (req, res) {
 app.post ('/change-image', function (req, res) {
   if (req.user) {
     if (req.files && req.files.newimage) {
-      console.log (req.files.newimage);
       var file = req.files.newimage;
       file.mv (__dirname + '/public/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.')), function (err) {
         if (err)
@@ -562,9 +561,7 @@ async function emailMatchesObject (email, objectId) {
  */
 async function getUserByEmail (email) {
   var user = await accountsCollection.findOne ({ email: email });
-console.log (email);console.log (user);
   user.classes = await classesCollection.find ({ instructor: user._id.toString() }).toArray();
-console.log(user);
   
   return user;
 }
