@@ -40,7 +40,10 @@
         Classes are taught by professional instructors. Room assignments are subject to change. ALL classes are subject to cancellation due to low participation numbers and are subject to change in class format, instructor, and class time as needed.
         </p>
         <div id="links">
-          <a href="/login" class="link">Sign In</a>
+          <div ng-if="is_admin==true"><a href="/admin">Admin Panel</a></div>
+          <div ng-if="is_admin==true || is_instructor==true"><a href="/instructor">My Account</a></div>
+          <div ng-if="is_admin==true || is_instructor==true"><a href="/" ng-click="logout()">Log Out</a></div>
+          <div ng-if="is_admin==false && is_instructor==false"><a href="/login" class="link">Sign In</a></div>
         </div>
         <a href="https://union.rpi.edu"><img id="union-logo" src="/resources/img/union-logo.jpg"/></a>
         <div id="social">

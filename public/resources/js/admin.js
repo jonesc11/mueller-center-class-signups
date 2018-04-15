@@ -23,6 +23,20 @@ app.controller('controller', function ($scope, $http) {
   }).then (function (response) {
     $scope.member_accounts = response.data.members;
   });
+
+  $http({
+    method: 'GET',
+    url: '/is-admin'
+  }).then(function successCallback (response) {
+    $scope.is_admin = response.data.is_admin;
+  });
+
+  $http({
+    method: 'GET',
+    url: '/is-instructor'
+  }).then(function successCallback (response) {
+    $scope.is_instructor = response.data.is_instructor;
+  });
   $scope.class_information = [];
   $http({
     method: 'GET',
@@ -325,4 +339,13 @@ app.controller('controller', function ($scope, $http) {
 
     $scope[from][$index].img_is_flagged = true;
   };
+
+  $scope.logout = function() {
+    $http({
+    method: 'GET',
+    url: '/logout'
+    }).then(function successCallback (response) {
+      alert("logged out");
+    });
+  }
 });
