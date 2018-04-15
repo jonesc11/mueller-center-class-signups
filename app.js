@@ -102,13 +102,20 @@ app.post ('/enroll', function (req, res) {
   res.send ({});
 });
 
-app.post ('/email/class', function (req, res) {
-  var classObject = getClass (req.body.class_id);
-  for (var i = 0; i < classObject.persons_enrolled; ++i) {
-    var person = classObject.persons_enrolled[i];
-
-    sendEmail (classObject.persons_enrolled[i].email_address, req.body.subject, req.body.body);
-  }
+app.post ('/email-class', function (req, res) {
+  userIsInstructor (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      getClass (req.body.class_id).then (function (response) {
+        for (var i = 0; i < response.persons_enrolled.length; ++i) {
+          var person = response.persons_enrolled[i];
+          sendEmail (person.email, req.body.subject, req.body.body);
+        }
+        res.send ({});
+      });
+    } else {
+      res.send ({});
+    }
+  });
 });
 
 app.get ('/login', function (req, res) {

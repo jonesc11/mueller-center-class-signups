@@ -57,14 +57,11 @@ app.controller('controller', function ($scope, $http) {
     });;
   };
   
-  $scope.sendEmail = function() {
-    $http.post("/email/class", {
-        //send form parameters
-        params: {
-            subject: $scope.subject,
-            body: $scope.body,
-            //class_id: $scope.class_id 
-        }
+  $scope.sendEmail = function(class_id) {
+    $http.post("/email-class", {
+        subject: this.subject,
+        body: this.message,
+        class_id: class_id 
     }).then(function(){
         alert("Email Sent");
     });
