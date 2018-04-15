@@ -227,9 +227,10 @@
             <strong>Payment Method: </strong>
             <div class='form-group'>
               <select ng-model="method" name='method' class='dropdown form-control'>
-                <option class="form-control" ng-selected="member.payment_method=='Cash'" value="Cash">Cash</option>
-                <option class="form-control" ng-selected="member.payment_method=='Check'" value="Check">Check</option>
-                <option class="form-control" ng-selected="member.payment_method=='Bursar'" value="Bursar">Bursar</option>
+                <option class="form-control" ng-selected="member.payment_method=='cash'" value="cash">Cash</option>
+                <option class="form-control" ng-selected="member.payment_method=='check'" value="check">Check</option>
+                <option class="form-control" ng-selected="member.payment_method=='credit'" value="credit">Credit</option>
+                <option class="form-control" ng-selected="member.payment_method=='bursar'" value="bursar">Bursar</option>
               </select>
             </div>
           </div>
@@ -237,8 +238,8 @@
             <strong>Payment Status: </strong>
             <div class='form-group'>
               <select ng-model="payment" name='payment' class='dropdown form-control'>
-                <option class="form-control" ng-selected="!member.payment_status" value="0">Unpaid</option>
-                <option class="form-control" ng-selected="member.payment_status" value="1">Paid</option>
+                <option class="form-control" ng-selected="!member.paid" value="0">Unpaid</option>
+                <option class="form-control" ng-selected="member.paid" value="1">Paid</option>
               </select>
             </div>
           </div>
@@ -247,10 +248,9 @@
           <strong>Classes Enrolled:</strong>
           <form class="member-classes">
             <div class="form-group classes" ng-repeat="class in member.classes">
-              <input type="checkbox" value="{{class._id}}" name="{{class}}">
               <label for="{{class._id}}">{{class.name}}</label>
+              <button class="btn btn-sm btn-secondary" ng-click="removeMember(member.email, class._id, $index)">Remove</button>
             </div>
-            <button class="btn btn-sm btn-secondary">Remove selected classes</button>
           </form>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-2">

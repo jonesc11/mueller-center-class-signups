@@ -220,6 +220,17 @@ app.post ('/delete-member', function (req, res) {
   });
 });
 
+app.post ('/remove-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      removeMember (req.body.course, req.body.email);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
@@ -586,7 +597,14 @@ async function addMember (course, object) {
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  getClass (objectId).then (function (response) {
+    var newArr = [];
+    for (var i = 0; i < response.persons_enrolled.length; ++i) {
+      if (response.persons_enrolled[i].email.toLowerCase() != emailAddress.toLowerCase())
+        newArr.push (response.persons_enrolled[i]);
+    }
+    updateClassObject (objectId, { persons_enrolled: newArr });
+  });
 }
 
 /**

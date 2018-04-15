@@ -71,8 +71,24 @@ app.controller('controller', function ($scope, $http) {
       data: {
         email: $scope.delete_object
       }
-    }).then (function (response) {});;
+    }).then (function (response) {});
   }
+  $scope.removeMember = function (email, id, $index) {
+    for (var i = 0; i < $scope.member_accounts.length; ++i) {
+      if ($scope.member_accounts[i].email.toLowerCase() == email.toLowerCase()) {
+        $scope.member_accounts[i].classes.splice ($index, 1);
+      }
+    }
+    $http({
+      method: 'POST',
+      url: '/remove-member',
+      data: {
+        course: id,
+        email: email
+      }
+    }).then (function (response) {
+    });
+  };
   $scope.checkArray = function(arr, val) {
     for(var i in arr) {
       if(arr[i]==val) {
