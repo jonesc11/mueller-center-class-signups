@@ -226,18 +226,18 @@
           <div>
             <strong>Payment Method: </strong>
             <div class='form-group'>
-              <select ng-model="method" name='method' class='dropdown form-control'>
+              <select ng-model="method" name='method' class='dropdown form-control' ng-change="onMemberChange('payment_method')">
                 <option class="form-control" ng-selected="member.payment_method=='cash'" value="cash">Cash</option>
                 <option class="form-control" ng-selected="member.payment_method=='check'" value="check">Check</option>
                 <option class="form-control" ng-selected="member.payment_method=='credit'" value="credit">Credit</option>
-                <option class="form-control" ng-selected="member.payment_method=='bursar'" value="bursar">Bursar</option>
+                <option class="form-control" ng-selected="member.payment_method=='bursar'" value="bursar" ng-show="member.affiliation=='ug-student' || member.affiliation == 'g-student'">Bursar</option>
               </select>
             </div>
           </div>
           <div>
             <strong>Payment Status: </strong>
             <div class='form-group'>
-              <select ng-model="payment" name='payment' class='dropdown form-control'>
+              <select ng-model="payment" name='payment' class='dropdown form-control' ng-change="onMemberChange('paid')">
                 <option class="form-control" ng-selected="!member.paid" value="0">Unpaid</option>
                 <option class="form-control" ng-selected="member.paid" value="1">Paid</option>
               </select>

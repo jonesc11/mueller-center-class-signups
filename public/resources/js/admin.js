@@ -73,6 +73,17 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {});
   }
+  $scope.onMemberChange = function (type) {
+    $http({
+      method: 'POST',
+      url: '/change-member',
+      data: {
+        email: this.member.email,
+        method: this.method ? this.method : this.member.payment_method,
+        paid: this.payment ? (this.payment == '1') : this.member.paid
+      }
+    }).then (function (response) {});
+  }
   $scope.emailMemberModal = function (email) {
     $scope.memToEmail = email;
     $scope.emailWarnings = [];

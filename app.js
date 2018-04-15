@@ -242,6 +242,17 @@ app.post ('/remove-member', function (req, res) {
   });
 });
 
+app.post ('/change-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      changeMemberPayment (req.body.email, { payment_method: req.body.method, paid: req.body.paid });
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
@@ -554,43 +565,6 @@ async function createClass (object) {
 }
 
 /**
- * Adds a session to the specified course. Returns 1 on success, 0 on failure, -1 on bad input.
- * objectId is the ObjectId of the course we are adding the session to
- * startDate is the start date of the session we are adding
- * endDate is the end date of the session we are adding
- * instructor is the ObjectId of the session's instructor
- * sessionId is an ID for the session. It must be unique within the class.
- * room is the room that the class is taught in
- * fDaysOfWeek is the days of the week that the course is offered
- * fStartTime is the start time of the class
- * fEndTime is the end time of the class
- */
-async function addSession (objectId, startDate, endDate, instructor, sessionId, room, fDaysOfWeek, fStartTime, fEndTime) {
-  var currentObject = classesCollection.findOne({ _id: objectId });
-  if (currentObject === undefined || currentObject === null)
-    return -1;
-  if (currentObject.sessions)
-    for (var i = 0; i < currentObject.sessions.length; ++i)
-      if (currentObject.sessions[i].session_id == sessionId)
-        return -1;
-
-  var update = {
-    start_date: startDate,
-    end_date: endDate,
-    frequency: {
-      days_of_week: fDaysOfWeek,
-      start_time: fStartTime,
-      end_time: fEndTime
-    },
-    instructor: instructor,
-    session_id: sessionId,
-    room: room
-  };
-
-  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
-}
-
-/**
  * Adds a user to a specified course
  * objectId is the ObjectId of the class that we are adding the person to
  * emailAddress is the email address of the user that we are adding to the class
@@ -600,6 +574,23 @@ async function addSession (objectId, startDate, endDate, instructor, sessionId, 
  */
 async function addMember (course, object) {
   await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
+}
+
+async function changeMemberPayment (email, paymentData) {
+  var courses = await getAllCourses ();
+  var members = [];
+
+  for (var i = 0; i < courses.length; ++i) {
+    var newArr = [];
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      if (email.toLowerCase() === courses[i].persons_enrolled[j].email.toLowerCase()) {
+        courses[i].persons_enrolled[j].payment_method = paymentData.payment_method;
+        courses[i].persons_enrolled[j].paid = paymentData.paid;
+      }
+      newArr.push (courses[i].persons_enrolled[j]);
+    }
+    updateClassObject (courses[i]._id.toString(), { persons_enrolled: newArr });
+  }
 }
 
 /**
