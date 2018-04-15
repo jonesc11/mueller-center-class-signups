@@ -106,14 +106,4 @@ app.controller('controller', function ($scope, $http) {
   $scope.changeImg = function() {
       $scope.account.profile_image = $scope.image;
   };
-
-  $scope.logout = function() {
-    $http({
-    method: 'GET',
-    url: '/logout'
-    }).then(function successCallback (response) {
-      alert("logged out");
-    });
-  }
-
 });
