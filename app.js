@@ -111,6 +111,17 @@ app.post ('/email/class', function (req, res) {
   }
 });
 
+app.post ('/email/ind', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (response) {
+    if (response) {
+      sendEmail (req.body.email, req.body.subject, req.body.message);
+      res.send ({ success: true });
+    } else {
+      res.send ({ success: false });
+    }
+  });
+});
+
 app.get ('/login', function (req, res) {
   if (req.user)
     res.redirect ('/instructor');
@@ -656,8 +667,6 @@ function sendEmail (recipient, subject, body) {
   }, function(error, info) {
     if (error)
       console.log(error);
-    else
-      console.log('Sent: ' + info);
   });
 }
 

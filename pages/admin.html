@@ -255,7 +255,7 @@
         </div>
         <div class="col-sm-12 col-md-4 col-lg-2">
           <div class="float"><button class="btn btn-sm btn-danger" ng-click="deleteObject(member.email)" data-toggle="modal" data-target="#confirm-delete-mem">Delete</button></div>
-          <div class="float"><button class="btn btn-sm btn-secondary">Email member</button></div>
+          <div class="float"><button class="btn btn-sm btn-secondary" ng-click="emailMemberModal(member.email)" data-toggle="modal" data-target="#email-member-modal">Email member</button></div>
         </div>
       </div>
     </div>
@@ -289,6 +289,35 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary signup" ng-click="createAccount()" id="login-submit" data-dismiss="modal">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Send Email to Individual Modal  -->
+    <div class="modal fade" id="email-member-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Send an Email</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="warning in emailWarnings">{{warning}}</div>
+            <div class="alert alert-success" ng-show="emailSuccess">Email successfully sent.</div>
+            <form>
+              <div class="message">
+                <strong>Subject: </strong><br/>
+                <input type="text" ng-model="indSubject" class="form-control" />
+                <strong>Message: </strong><br/>
+                <textarea ng-model="indMessage" class="form-control" rows="8" cols="60"></textarea>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" ng-click="emailInd()">Send Email</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
           </div>
         </div>
       </div>

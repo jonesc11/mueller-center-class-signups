@@ -73,6 +73,37 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {});
   }
+  $scope.emailMemberModal = function (email) {
+    $scope.memToEmail = email;
+    $scope.emailWarnings = [];
+    $scope.emailSuccess = false;
+    $scope.indSubject = '';
+    $scope.indMessage = '';
+  }
+  $scope.emailWarnings = [];
+  $scope.emailInd = function () {
+    $scope.emailWarnings = [];
+    if (!$scope.indSubject || $scope.indSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
+    if (!$scope.indMessage || $scope.indMessage == '') $scope.emailWarnings.push ('Message is not defined.');
+    if ($scope.emailWarnings.length != 0) return;
+    $http({
+      method: 'POST',
+      url: '/email/ind',
+      data: {
+        email: $scope.memToEmail,
+        subject: $scope.indSubject,
+        message: $scope.indMessage
+      }
+    }).then (function (response) {
+      if (response.data.success) {
+        $scope.emailSuccess = true;
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+      } else {
+        $scope.emailWarnings = [ 'Email was not successfully sent.' ];
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+      }
+    });
+  }
   $scope.removeMember = function (email, id, $index) {
     for (var i = 0; i < $scope.member_accounts.length; ++i) {
       if ($scope.member_accounts[i].email.toLowerCase() == email.toLowerCase()) {
