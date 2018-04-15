@@ -351,6 +351,15 @@ h4 {
 
   .header {
     height: 50px;
+    font-size:7vw;
+  }
+
+  #header-logo {
+    height:100%;
+  }
+
+  #mobile-header {
+    font-size:6vw;
   }
 }
 
