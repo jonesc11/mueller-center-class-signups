@@ -118,6 +118,17 @@ app.post ('/email-class', function (req, res) {
   });
 });
 
+app.post ('/email/ind', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (response) {
+    if (response) {
+      sendEmail (req.body.email, req.body.subject, req.body.message);
+      res.send ({ success: true });
+    } else {
+      res.send ({ success: false });
+    }
+  });
+});
+
 app.get ('/login', function (req, res) {
   if (req.user)
     res.redirect ('/instructor');
@@ -197,6 +208,51 @@ app.post ('/edit-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       updateClassObject (req.body.course, req.body.update);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.get ('/get-members', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      getAllMembers ().then (function (response) {
+        res.send (response);
+      });
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/delete-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      deleteMember (req.body.email);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/remove-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      removeMember (req.body.course, req.body.email);
+      res.send ({});
+    } else {
+      res.send ({});
+    }
+  });
+});
+
+app.post ('/change-member', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      changeMemberPayment (req.body.email, { payment_method: req.body.method, paid: req.body.paid });
       res.send ({});
     } else {
       res.send ({});
@@ -448,23 +504,47 @@ async function getAllArchivedCourses () {
  * Returns all member objects unique on email address
  */
 async function getAllMembers () {
-  var courses = getAllCourses ();
+  var courses = await getAllCourses ();
   var members = [];
 
   for (var i = 0; i < courses.length; ++i) {
     for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
       var inArray = false;
       for (var k = 0; k < members.length; ++k)
-        if (members[i].email_address.toLowerCase() === courses[i].persons_enrolled[j].email_address.toLowerCase()) {
+        if (members[k].email.toLowerCase() === courses[i].persons_enrolled[j].email.toLowerCase()) {
           inArray = true;
+          members[k].classes.push ({
+              name: courses[i].name,
+              _id: courses[i]._id.toString()
+            });
           break;
         }
-      if (!inArray)
+      if (!inArray) {
         members.push (courses[i].persons_enrolled[j]);
+        members[members.length - 1].classes = [
+          {
+            name: courses[i].name,
+            _id: courses[i]._id.toString()
+          } ];
+      }
     }
   }
 
-  return members;
+  return {members: members};
+}
+
+async function deleteMember (email) {
+  var courses = await getAllCourses ();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var newList = [];
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      if (courses[i].persons_enrolled[j].email.toLowerCase() != email.toLowerCase()) {
+        newList.push (courses[i].persons_enrolled[j]);
+      }
+    }
+    updateClassObject (courses[i]._id.toString(), { persons_enrolled: newList });
+  }
 }
 
 /**
@@ -492,43 +572,6 @@ async function createClass (object) {
 }
 
 /**
- * Adds a session to the specified course. Returns 1 on success, 0 on failure, -1 on bad input.
- * objectId is the ObjectId of the course we are adding the session to
- * startDate is the start date of the session we are adding
- * endDate is the end date of the session we are adding
- * instructor is the ObjectId of the session's instructor
- * sessionId is an ID for the session. It must be unique within the class.
- * room is the room that the class is taught in
- * fDaysOfWeek is the days of the week that the course is offered
- * fStartTime is the start time of the class
- * fEndTime is the end time of the class
- */
-async function addSession (objectId, startDate, endDate, instructor, sessionId, room, fDaysOfWeek, fStartTime, fEndTime) {
-  var currentObject = classesCollection.findOne({ _id: objectId });
-  if (currentObject === undefined || currentObject === null)
-    return -1;
-  if (currentObject.sessions)
-    for (var i = 0; i < currentObject.sessions.length; ++i)
-      if (currentObject.sessions[i].session_id == sessionId)
-        return -1;
-
-  var update = {
-    start_date: startDate,
-    end_date: endDate,
-    frequency: {
-      days_of_week: fDaysOfWeek,
-      start_time: fStartTime,
-      end_time: fEndTime
-    },
-    instructor: instructor,
-    session_id: sessionId,
-    room: room
-  };
-
-  return await classesCollection.updateOne ({ _id: objectId }, { $push: update });
-}
-
-/**
  * Adds a user to a specified course
  * objectId is the ObjectId of the class that we are adding the person to
  * emailAddress is the email address of the user that we are adding to the class
@@ -540,13 +583,37 @@ async function addMember (course, object) {
   await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
 }
 
+async function changeMemberPayment (email, paymentData) {
+  var courses = await getAllCourses ();
+  var members = [];
+
+  for (var i = 0; i < courses.length; ++i) {
+    var newArr = [];
+    for (var j = 0; j < courses[i].persons_enrolled.length; ++j) {
+      if (email.toLowerCase() === courses[i].persons_enrolled[j].email.toLowerCase()) {
+        courses[i].persons_enrolled[j].payment_method = paymentData.payment_method;
+        courses[i].persons_enrolled[j].paid = paymentData.paid;
+      }
+      newArr.push (courses[i].persons_enrolled[j]);
+    }
+    updateClassObject (courses[i]._id.toString(), { persons_enrolled: newArr });
+  }
+}
+
 /**
  * Removes a user to a specified course
  * objectId is the ObjectId of the class that we are removing the person from
  * emailAddress is the email address of the user that we are removing from the class
  */
 async function removeMember (objectId, emailAddress) {
-  accountsCollection.updateOne ({ _id: new ObjectID(objectId) }, { $pull: { enrolled_persons: { email_address: emailAddress.toLowerCase() } } });
+  getClass (objectId).then (function (response) {
+    var newArr = [];
+    for (var i = 0; i < response.persons_enrolled.length; ++i) {
+      if (response.persons_enrolled[i].email.toLowerCase() != emailAddress.toLowerCase())
+        newArr.push (response.persons_enrolled[i]);
+    }
+    updateClassObject (objectId, { persons_enrolled: newArr });
+  });
 }
 
 /**
@@ -598,8 +665,6 @@ function sendEmail (recipient, subject, body) {
   }, function(error, info) {
     if (error)
       console.log(error);
-    else
-      console.log('Sent: ' + info);
   });
 }
 

@@ -220,42 +220,42 @@
       <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
       <div class="account row border" ng-repeat="member in member_accounts">
         <div class="col-sm-12 col-md-4 col-lg-5">
-          <div><strong>Name: </strong>{{member.name}}</div>
+          <div><strong>Name: </strong>{{member.first_name}} {{member.last_name}}</div>
           <div><strong>Email: </strong>{{member.email}}</div>
           <div><strong>RIN: </strong>{{member.rin}}</div>
           <div>
             <strong>Payment Method: </strong>
             <div class='form-group'>
-              <select ng-model="method" name='method' class='dropdown form-control'>
-                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Cash'" value="Cash">Cash</option>
-                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Check'" value="Check">Check</option>
-                <option class="form-control" ng-selected="'{{member.payment_method}}'=='Bursar'" value="Bursar">Bursar</option>
+              <select ng-model="method" name='method' class='dropdown form-control' ng-change="onMemberChange('payment_method')">
+                <option class="form-control" ng-selected="member.payment_method=='cash'" value="cash">Cash</option>
+                <option class="form-control" ng-selected="member.payment_method=='check'" value="check">Check</option>
+                <option class="form-control" ng-selected="member.payment_method=='credit'" value="credit">Credit</option>
+                <option class="form-control" ng-selected="member.payment_method=='bursar'" value="bursar" ng-show="member.affiliation=='ug-student' || member.affiliation == 'g-student'">Bursar</option>
               </select>
             </div>
           </div>
           <div>
             <strong>Payment Status: </strong>
             <div class='form-group'>
-              <select ng-model="payment" name='payment' class='dropdown form-control'>
-                <option class="form-control" ng-selected="!{{member.payment_status}}" value="0">Unpaid</option>
-                <option class="form-control" ng-selected="{{member.payment_status}}" value="1">Paid</option>
+              <select ng-model="payment" name='payment' class='dropdown form-control' ng-change="onMemberChange('paid')">
+                <option class="form-control" ng-selected="!member.paid" value="0">Unpaid</option>
+                <option class="form-control" ng-selected="member.paid" value="1">Paid</option>
               </select>
             </div>
           </div>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-5">
           <strong>Classes Enrolled:</strong>
-          <form class='member-classes'>
-            <div class="form-group classes" ng-repeat='class in member.classes'>
-              <input type='checkbox' value='{{class}}' name='{{class}}'>
-              <label for='{{class}}'>{{class}}</label>
+          <form class="member-classes">
+            <div class="form-group classes" ng-repeat="class in member.classes">
+              <label for="{{class._id}}">{{class.name}}</label>
+              <button class="btn btn-sm btn-secondary" ng-click="removeMember(member.email, class._id, $index)">Remove</button>
             </div>
-            <button class="btn btn-sm btn-secondary">Remove selected classes</button>
           </form>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-2">
-          <div class="float"><button class="btn btn-sm btn-danger" ng-click="deleteObject(member.name)" data-toggle="modal" data-target="#confirm-delete">Delete</button></div>
-          <div class="float"><button class="btn btn-sm btn-secondary">Email member</button></div>
+          <div class="float"><button class="btn btn-sm btn-danger" ng-click="deleteObject(member.email)" data-toggle="modal" data-target="#confirm-delete-mem">Delete</button></div>
+          <div class="float"><button class="btn btn-sm btn-secondary" ng-click="emailMemberModal(member.email)" data-toggle="modal" data-target="#email-member-modal">Email member</button></div>
         </div>
       </div>
     </div>
@@ -300,6 +300,35 @@
         </div>
       </div>
     </div>
+    <!--  Send Email to Individual Modal  -->
+    <div class="modal fade" id="email-member-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Send an Email</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="warning in emailWarnings">{{warning}}</div>
+            <div class="alert alert-success" ng-show="emailSuccess">Email successfully sent.</div>
+            <form>
+              <div class="message">
+                <strong>Subject: </strong><br/>
+                <input type="text" ng-model="indSubject" class="form-control" />
+                <strong>Message: </strong><br/>
+                <textarea ng-model="indMessage" class="form-control" rows="8" cols="60"></textarea>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" ng-click="emailInd()">Send Email</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--  Confirm Delete Modal  -->
     <div class="modal fade" id="confirm-delete">
       <div class="modal-dialog" role="document">
@@ -309,6 +338,20 @@
               Are you sure you want to delete {{className}}? This action cannot be undone.
             </div>
             <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteCourse()">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Member Delete Modal  -->
+    <div class="modal fade" id="confirm-delete-mem">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete {{delete_object}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteMember()">Delete</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>

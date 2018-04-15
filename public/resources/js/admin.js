@@ -16,6 +16,13 @@ app.controller('controller', function ($scope, $http) {
   }).then (function (response) {
     $scope.admin_accounts = response.data;
   });
+  $scope.member_accounts = [];
+  $http({
+    method: 'GET',
+    url: '/get-members'
+  }).then (function (response) {
+    $scope.member_accounts = response.data.members;
+  });
 
   $http({
     method: 'GET',
@@ -30,8 +37,6 @@ app.controller('controller', function ($scope, $http) {
   }).then(function successCallback (response) {
     $scope.is_instructor = response.data.is_instructor;
   });
-  
-  $scope.member_accounts = [{"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Bursar", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "1"}, {"name": "Yarden Ne'eman", "email": "neemay@rpi.edu", "rin": "660000000", "payment_method": "Cash", "classes": ["Kettlebell Kickboxing", "Core Yoga"], "payment_status": "0"}];
   $scope.class_information = [];
   $http({
     method: 'GET',
@@ -66,6 +71,80 @@ app.controller('controller', function ($scope, $http) {
   $scope.deleteObject = function(obj) {
     $scope.delete_object = obj;  
   }
+  $scope.deleteMember = function () {
+    for (var i = 0; i < $scope.member_accounts.length; ++i) {
+      if ($scope.member_accounts[i].email.toLowerCase() == $scope.delete_object.toLowerCase()) {
+        $scope.member_accounts.splice (i, 1);
+        break;
+      }
+    }
+
+    $http({
+      method: 'POST',
+      url: '/delete-member',
+      data: {
+        email: $scope.delete_object
+      }
+    }).then (function (response) {});
+  }
+  $scope.onMemberChange = function (type) {
+    $http({
+      method: 'POST',
+      url: '/change-member',
+      data: {
+        email: this.member.email,
+        method: this.method ? this.method : this.member.payment_method,
+        paid: this.payment ? (this.payment == '1') : this.member.paid
+      }
+    }).then (function (response) {});
+  }
+  $scope.emailMemberModal = function (email) {
+    $scope.memToEmail = email;
+    $scope.emailWarnings = [];
+    $scope.emailSuccess = false;
+    $scope.indSubject = '';
+    $scope.indMessage = '';
+  }
+  $scope.emailWarnings = [];
+  $scope.emailInd = function () {
+    $scope.emailWarnings = [];
+    if (!$scope.indSubject || $scope.indSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
+    if (!$scope.indMessage || $scope.indMessage == '') $scope.emailWarnings.push ('Message is not defined.');
+    if ($scope.emailWarnings.length != 0) return;
+    $http({
+      method: 'POST',
+      url: '/email/ind',
+      data: {
+        email: $scope.memToEmail,
+        subject: $scope.indSubject,
+        message: $scope.indMessage
+      }
+    }).then (function (response) {
+      if (response.data.success) {
+        $scope.emailSuccess = true;
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+      } else {
+        $scope.emailWarnings = [ 'Email was not successfully sent.' ];
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+      }
+    });
+  }
+  $scope.removeMember = function (email, id, $index) {
+    for (var i = 0; i < $scope.member_accounts.length; ++i) {
+      if ($scope.member_accounts[i].email.toLowerCase() == email.toLowerCase()) {
+        $scope.member_accounts[i].classes.splice ($index, 1);
+      }
+    }
+    $http({
+      method: 'POST',
+      url: '/remove-member',
+      data: {
+        course: id,
+        email: email
+      }
+    }).then (function (response) {
+    });
+  };
   $scope.checkArray = function(arr, val) {
     for(var i in arr) {
       if(arr[i]==val) {
