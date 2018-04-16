@@ -1,6 +1,6 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
-
+  
   $http({
     method: 'GET',
     url: '/is-admin'
@@ -13,6 +13,14 @@ app.controller('controller', function ($scope, $http) {
     url: '/is-instructor'
   }).then(function successCallback (response) {
     $scope.is_instructor = response.data.is_instructor;
+  });
+  
+  $scope.instructor_accounts = [];
+  $http({
+    url: '/get-instructors',
+    method: 'GET'
+  }).then (function (response) {
+    $scope.instructor_accounts = response.data;
   });
   
   $scope.payment = 'cash';
