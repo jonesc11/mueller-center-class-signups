@@ -184,8 +184,8 @@ app.controller('controller', function ($scope, $http) {
           instructor: $scope.instructorName,
           room: $scope.classRoom,
           frequency: {
-            start_time: $scope.classStart.getHours() + ":" + $scope.classStart.getMinutes(),
-            end_time: $scope.classEnd.getHours() + ":" + $scope.classEnd.getMinutes(),
+            start_time: ($scope.classStart.getHours() < 10 ? '0' + $scope.classStart.getHours() : $scope.classStart.getHours()) + ":" + ($scope.classStart.getMinutes() < 10 ? '0' + $scope.classStart.getMinutes() : $scope.classStart.getMinutes()),
+            end_time: ($scope.classEnd.getHours() < 10 ? '0' + $scope.classEnd.getHours() : $scope.classEnd.getHours()) + ":" + ($scope.classEnd.getMinutes() < 10 ? '0' + $scope.classEnd.getMinutes() : $scope.classEnd.getMinutes()),
             days_of_week: days
           },
           description: $scope.classDescription,
@@ -208,8 +208,8 @@ app.controller('controller', function ($scope, $http) {
             instructor: $scope.instructorName,
             room: $scope.classRoom,
             frequency: {
-              start_time: $scope.classStart.getHours() + ":" + $scope.classStart.getMinutes(),
-              end_time: $scope.classEnd.getHours() + ":" + $scope.classEnd.getMinutes(),
+              start_time: ($scope.classStart.getHours() < 10 ? '0' + $scope.classStart.getHours() : $scope.classStart.getHours()) + ":" + ($scope.classStart.getMinutes() < 10 ? '0' + $scope.classStart.getMinutes() : $scope.classStart.getMinutes()),
+              end_time: ($scope.classEnd.getHours() < 10 ? '0' + $scope.classEnd.getHours() : $scope.classEnd.getHours()) + ":" + ($scope.classEnd.getMinutes() < 10 ? '0' + $scope.classEnd.getMinutes() : $scope.classEnd.getMinutes()),
               days_of_week: days
             },
             description: $scope.classDescription,
