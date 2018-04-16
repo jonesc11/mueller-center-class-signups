@@ -93,8 +93,8 @@ app.controller('controller', function ($scope, $http) {
       url: '/change-member',
       data: {
         email: this.member.email,
-        method: this.method ? this.method : this.member.payment_method,
-        paid: this.payment ? (this.payment == '1') : this.member.paid
+        method: this.member.payment_method,
+        paid: this.member.paid
       }
     }).then (function (response) {});
   }

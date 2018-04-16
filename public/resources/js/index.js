@@ -59,7 +59,7 @@ app.controller('controller', function ($scope, $http) {
           affiliation: $scope.affiliation,
           payment_method: $scope.payment,
           rin: $scope.signupRin ? $scope.signupRin : '',
-          paid: false,
+          paid: 'false',
         }
       }
     }).then (function (response) {
