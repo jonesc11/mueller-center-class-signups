@@ -25,9 +25,13 @@ app.controller('controller', function ($scope, $http) {
   
   $scope.payment = 'cash';
   $scope.affiliation = 'ug-student';
-  $scope.classModal = function(id, name) {
+  $scope.classModal = function(id, name, instructor, room, time, days) {
     $scope.class_id = id;  
     $scope.class_name = name;
+    $scope.instructor = instructor;
+    $scope.room = room;
+    $scope.time = time;
+    $scope.days = days;
   }
   $scope.detail_text = "Details";
   $scope.toggle_show = function() {
@@ -50,7 +54,14 @@ app.controller('controller', function ($scope, $http) {
       method: 'POST',
       url: '/enroll',
       data: {
-        course: $scope.class_id,
+        course: {
+          course_id: $scope.class_id,
+          course_name: $scope.class_name,
+          instructor: $scope.instructor,
+          time: $scope.time,
+          room: $scope.room,
+          days: $scope.days
+        },
         person: {
           first_name: $scope.signupFName,
           last_name: $scope.signupLName,

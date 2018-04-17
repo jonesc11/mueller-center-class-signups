@@ -83,14 +83,14 @@ app.get ('/admin', function (req, res) {
   });
 });
 
-app.get ('/instructor', function (req, res) {
+app.get ('/account', function (req, res) {
   userIsInstructor (req.user ? req.user : '').then (function (result) {
     if (result)
-      res.sendFile (__dirname + "/pages/instructor.html");
+      res.sendFile (__dirname + "/pages/account.html");
     else
       userIsAdmin (req.user ? req.user : '').then (function (result) {
         if (result)
-          res.sendFile (__dirname + '/pages/instructor.html');
+          res.sendFile (__dirname + '/pages/account.html');
         else
           res.redirect ('/');
       });
@@ -98,7 +98,23 @@ app.get ('/instructor', function (req, res) {
 });
 
 app.post ('/enroll', function (req, res) {
-  addMember (req.body.course, req.body.person);
+  addMember (req.body.course.course_id, req.body.person);
+  
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: email_creds
+  });
+  
+  transporter.sendMail ({
+    from: email_creds.user,
+    to: req.body.person.email,
+    subject: 'You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness!',
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness! This class is taught by ' + req.body.course.instructor + ' on ' + req.body.course.days + ' from ' + req.body.course.time + ' in room ' + req.body.course.room +'. If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union. You have three weeks from the beginning of classes to request a refund for this class. If you wish to be removed from a class, please email Donna Sutton at suttoa@rpi.edu with your name, RIN (if applicable), and the class you wish to be removed from.</div>'
+  }, function (err, info) {
+    if (err)
+      throw err;
+  });
+  
   res.send ({});
 });
 
@@ -110,10 +126,10 @@ app.post ('/email-class', function (req, res) {
           var person = response.persons_enrolled[i];
           sendEmail (person.email, req.body.subject, req.body.body);
         }
-        res.send ({});
+        res.send ({ success: true});
       });
     } else {
-      res.send ({});
+      res.send ({success: false});
     }
   });
 });
@@ -131,7 +147,7 @@ app.post ('/email/ind', function (req, res) {
 
 app.get ('/login', function (req, res) {
   if (req.user)
-    res.redirect ('/instructor');
+    res.redirect ('/account');
   else
     res.sendFile (__dirname + "/pages/login.html");
 });
@@ -155,7 +171,7 @@ app.get ('/is-instructor', function (req, res) {
 });
 
 app.post ('/login',
-  passport.authenticate('local', { successRedirect: '/instructor',
+  passport.authenticate('local', { successRedirect: '/account',
                                    failureRedirect: '/login' }));
 
 app.get ('/logout',function(req,res) {
@@ -175,9 +191,9 @@ app.post ('/add-class', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       createClass (req.body);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });
@@ -186,9 +202,9 @@ app.post ('/delete-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       deleteCourse (req.body.course);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });
@@ -208,9 +224,9 @@ app.post ('/edit-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       updateClassObject (req.body.course, req.body.update);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });
@@ -296,7 +312,7 @@ app.post ('/update-info', function (req, res) {
       last_name: req.body.lname,
       biography: req.body.biography
     });
-    res.redirect ('/instructor');
+    res.redirect ('/account');
   } else {
     res.redirect ('/');
   }
@@ -323,7 +339,7 @@ app.post ('/change-image', function (req, res) {
         updateUserByEmail (req.user, {
           profile_image: '/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.'))
         });
-        res.redirect ('/instructor');
+        res.redirect ('/account');
       });
     }
   } else {

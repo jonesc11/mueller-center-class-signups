@@ -1,21 +1,28 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
   $scope.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  //Some sample data just for front-end purposes
+
   $scope.instructor_accounts = [];
   $scope.admin_accounts = [];
-  $http({
-    url: '/get-instructors',
-    method: 'GET'
-  }).then (function (response) {
-    $scope.instructor_accounts = response.data;
-  });
+  $scope.getInstructors = function() {
+   $http({
+      url: '/get-instructors',
+      method: 'GET'
+    }).then (function (response) {
+      $scope.instructor_accounts = response.data;
+      $scope.instructorName = $scope.instructor_accounts[0]._id;
+    }); 
+  }
+  
+  $scope.getInstructors(); //initial call to get instructors
+  
   $http({
     url: '/get-admins',
     method: 'GET'
   }).then (function (response) {
     $scope.admin_accounts = response.data;
   });
+  
   $scope.member_accounts = [];
   $http({
     method: 'GET',
@@ -37,24 +44,43 @@ app.controller('controller', function ($scope, $http) {
   }).then(function successCallback (response) {
     $scope.is_instructor = response.data.is_instructor;
   });
+  
   $scope.class_information = [];
-  $http({
-    method: 'GET',
-    url: '/get-courses'
-  }).then(function (response) {
-    $scope.class_information = response.data;
-  });
-  $scope.rooms = ["1", "2", "3", "4"];
-  $scope.roomNum = $scope.rooms[0];
-  $scope.editClass = "0";
-  $scope.instructorName = "Pending";
-  $scope.classSession = 1;
-  $scope.classType = "fitness";
+  $scope.getClasses = function() {
+    $http({
+      method: 'GET',
+      url: '/get-courses'
+    }).then(function (response) {
+      $scope.class_information = response.data;
+    });
+  }
+  $scope.getClasses(); //initial call to get classes
+  
   $scope.classes = true;
   $scope.payment = "0";
   $scope.method = "Cash";
-  $scope.buttonState = "Add Class";
-  $scope.editing = false;
+  
+  $scope.setAddState = function() {
+    $scope.className = "";
+    $scope.classRoom = "";
+    $scope.classStart = "";
+    $scope.classEnd = "";
+    $scope.classType = "Fitness";
+    $scope.classDescription = "";
+    $scope.monday = false;
+    $scope.tuesday = false;
+    $scope.wednesday = false;
+    $scope.thursday = false;
+    $scope.friday = false;
+    $scope.saturday = false;
+    $scope.sunday = false;
+    $scope.editClass = "0";
+    $scope.buttonState = "Add Class";
+    $scope.editing = false;
+  }
+  
+  $scope.setAddState(); //initial call to set add state
+  
   $scope.changeTab = function(event, val) {
     $(".nav-link").removeClass("active");
     $(event.target).addClass("active");
@@ -104,6 +130,8 @@ app.controller('controller', function ($scope, $http) {
     $scope.emailSuccess = false;
     $scope.indSubject = '';
     $scope.indMessage = '';
+    $("#individualEmail").show();
+    $("#individualSubmit").show();
   }
   $scope.emailWarnings = [];
   $scope.emailInd = function () {
@@ -122,10 +150,12 @@ app.controller('controller', function ($scope, $http) {
     }).then (function (response) {
       if (response.data.success) {
         $scope.emailSuccess = true;
-        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+        $("#individualEmail").hide();
+        $("#individualSubmit").hide();
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       } else {
         $scope.emailWarnings = [ 'Email was not successfully sent.' ];
-        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       }
     });
   }
@@ -195,8 +225,32 @@ app.controller('controller', function ($scope, $http) {
           persons_enrolled: []
         }
       }).then (function (response) {
+        $scope.getClasses();
+        if (response.data.success) {
+          $scope.verifyAdded = true;
+          $scope.classAddMessage = " Class successfully added!";
+          setTimeout (function () { $scope.verifyAdded = false; }, 1000);
+          $scope.className = "";
+          $scope.instructorName = $scope.instructor_accounts[0]._id;
+          $scope.classRoom = "";
+          $scope.classStart = "";
+          $scope.classEnd = "";
+          $scope.classType = "Fitness";
+          $scope.classDescription = "";
+          $scope.monday = false;
+          $scope.tuesday = false;
+          $scope.wednesday = false;
+          $scope.thursday = false;
+          $scope.friday = false;
+          $scope.saturday = false;
+          $scope.sunday = false;
+        }
+        else {
+          $scope.verifyAdded = true;
+          $scope.classAddMessage = " Class could not be added.";
+          setTimeout (function () { $scope.verifyAdded = false; }, 1000);
+        }
       });
-      $scope.verifyAdded = true;
     } else {
       $http({
         method: 'POST',
@@ -217,10 +271,21 @@ app.controller('controller', function ($scope, $http) {
           }
         }
       }).then (function (response) {
+        $scope.getClasses();
+        if (response.data.success) {
+          $scope.verifyUpdated = true;
+          $scope.classUpdateMessage = " Class successfully updated!";
+          setTimeout (function () { $scope.verifyUpdated = false; }, 1000);
+        }
+        else {
+          $scope.verifyUpdated = true;
+          $scope.classUpdateMessage = " Class could not be updated.";
+          setTimeout (function () { $scope.verifyUpdated = false; }, 1000);
+        }
       });
-      $scope.verifyUpdated = true;
     }
   };
+  
   $scope.deleteCourse = function () {
     $http({
       method: 'POST',
@@ -228,8 +293,22 @@ app.controller('controller', function ($scope, $http) {
       data: {
         course: $scope.class_information[$scope.editClass]._id
       }
-    }).then (function (response) {});
+    }).then (function (response) {
+      $scope.getClasses();
+      if(response.data.success) {
+        $scope.setAddState();
+        $scope.verifyDelete = true;
+        $scope.classDeleteMessage = " Class successfully deleted!";
+        setTimeout (function () { $scope.verifyDelete = false; }, 1000);
+      }
+      else {
+        $scope.verifyDelete = true;
+        $scope.classDeleteMessage = " Class could not be deleted.";
+        setTimeout (function () { $scope.verifyDelete = false; }, 1000);
+      }
+    });
   };
+  
   $scope.archiveCourse = function () {
     $http({
       method: 'POST',
@@ -239,6 +318,7 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {});
   };
+  
   $scope.submitEditClass = function() {
     $scope.buttonState = "Save Changes";
     $scope.verifyAdded = false;
@@ -261,6 +341,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.classDescription = $scope.class_information[$scope.editClass].description;
     $scope.classType = $scope.class_information[$scope.editClass].type;
   }
+  
   $scope.createAcctErrs = [];
   $scope.createAccount = function () {
     if ($scope.createAcctFName == '')
