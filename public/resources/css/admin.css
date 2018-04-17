@@ -210,6 +210,10 @@ textarea {
   margin-right: 20px;
 }
 
+#instDropdown {
+  display: inline-block;
+}
+
 @media screen and (min-width: 676px) {
   .modal-dialog {
     max-width: 600px;

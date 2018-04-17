@@ -175,9 +175,9 @@ app.post ('/add-class', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       createClass (req.body);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });
@@ -186,9 +186,9 @@ app.post ('/delete-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       deleteCourse (req.body.course);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });
@@ -208,9 +208,9 @@ app.post ('/edit-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
       updateClassObject (req.body.course, req.body.update);
-      res.send ({});
+      res.send ({ success: true });
     } else {
-      res.send ({});
+      res.send ({ success: false });
     }
   });
 });

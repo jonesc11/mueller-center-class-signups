@@ -9,6 +9,7 @@ app.controller('controller', function ($scope, $http) {
     method: 'GET'
   }).then (function (response) {
     $scope.instructor_accounts = response.data;
+    $scope.instructorName = $scope.instructor_accounts[0]._id;
   });
   $http({
     url: '/get-admins',
@@ -44,17 +45,32 @@ app.controller('controller', function ($scope, $http) {
   }).then(function (response) {
     $scope.class_information = response.data;
   });
-  $scope.rooms = ["1", "2", "3", "4"];
-  $scope.roomNum = $scope.rooms[0];
-  $scope.editClass = "0";
-  $scope.instructorName = "Pending";
-  $scope.classSession = 1;
-  $scope.classType = "fitness";
+  
   $scope.classes = true;
   $scope.payment = "0";
   $scope.method = "Cash";
-  $scope.buttonState = "Add Class";
-  $scope.editing = false;
+  
+  $scope.setAddState = function() {
+    $scope.className = "";
+    $scope.classRoom = "";
+    $scope.classStart = "";
+    $scope.classEnd = "";
+    $scope.classType = "Fitness";
+    $scope.classDescription = "";
+    $scope.monday = false;
+    $scope.tuesday = false;
+    $scope.wednesday = false;
+    $scope.thursday = false;
+    $scope.friday = false;
+    $scope.saturday = false;
+    $scope.sunday = false;
+    $scope.editClass = "0";
+    $scope.buttonState = "Add Class";
+    $scope.editing = false;
+  }
+  
+  $scope.setAddState(); //initial call to set add state
+  
   $scope.changeTab = function(event, val) {
     $(".nav-link").removeClass("active");
     $(event.target).addClass("active");
@@ -199,8 +215,32 @@ app.controller('controller', function ($scope, $http) {
           persons_enrolled: []
         }
       }).then (function (response) {
+        if (response.data.success) {
+          $scope.verifyAdded = true;
+          $scope.classAddMessage = " Class successfully added!";
+          setTimeout (function () { $scope.verifyAdded = false; }, 1000);
+          $scope.className = "";
+          $scope.instructorName = $scope.instructor_accounts[0]._id;
+          $scope.classRoom = "";
+          $scope.classStart = "";
+          $scope.classEnd = "";
+          $scope.classType = "Fitness";
+          $scope.classDescription = "";
+          $scope.monday = false;
+          $scope.tuesday = false;
+          $scope.wednesday = false;
+          $scope.thursday = false;
+          $scope.friday = false;
+          $scope.saturday = false;
+          $scope.sunday = false;
+        }
+        else {
+          $scope.verifyAdded = true;
+          $scope.classAddMessage = " Class could not be added.";
+          setTimeout (function () { $scope.verifyAdded = false; }, 1000);
+        }
       });
-      $scope.verifyAdded = true;
+      //$scope.verifyAdded = true;
     } else {
       $http({
         method: 'POST',
@@ -221,8 +261,17 @@ app.controller('controller', function ($scope, $http) {
           }
         }
       }).then (function (response) {
+        if (response.data.success) {
+          $scope.verifyUpdated = true;
+          $scope.classUpdateMessage = " Class successfully updated!";
+          setTimeout (function () { $scope.verifyUpdated = false; }, 1000);
+        }
+        else {
+          $scope.verifyUpdated = true;
+          $scope.classUpdateMessage = " Class could not be updated.";
+          setTimeout (function () { $scope.verifyUpdated = false; }, 1000);
+        }
       });
-      $scope.verifyUpdated = true;
     }
   };
   $scope.deleteCourse = function () {

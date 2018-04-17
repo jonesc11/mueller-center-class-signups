@@ -21,14 +21,17 @@
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
       <div class="alert alert-danger" ng-repeat="alert in alertList">{{alert}}</div>
-      <form ng-submit="submitEditClass()">
-        <div class="form-group">
-          <select ng-model="editClass" name='edit' class='form-control edit-class'>
-            <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
-          </select>
-          <input type="submit" class="btn btn-primary" value="Edit Class">
-        </div>
-      </form>
+      <div>
+        <form id="instDropdown" ng-submit="submitEditClass()">
+          <div class="form-group">
+            <select ng-model="editClass" name='edit' class='form-control edit-class'>
+              <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
+            </select>
+            <input type="submit" class="btn btn-primary" value="Edit Class">
+          </div>
+        </form>
+        <button class="btn btn-primary" ng-click="setAddState()">Add New Class</button>
+      </div>
       <div>
         <div class="card">
           <form class="card-block">
@@ -94,16 +97,16 @@
                 <label for="sunday">Sunday</label>
               </div>
             </div>
-            <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
+            <div class="form-group col-sm-12 col-md-8 col-lg-8 pl-0">
               <label for="description" class="form-control-label">Description:</label>
-              <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription">{{class.description}}</textarea>
+              <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription" rows="6" cols="60">{{class.description}}</textarea>
             </div>
             <div class="btn-container">
               <button class="btn btn-primary" ng-click="addOrEdit()">{{buttonState}}</button>
 <!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
-              <span ng-show="verifyAdded">Added!</span>
-              <span ng-show="verifyUpdated">Updated!</span>
+              <span ng-show="verifyAdded"> {{classAddMessage}}</span>
+              <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
             </div>
           </form>
         </div>
