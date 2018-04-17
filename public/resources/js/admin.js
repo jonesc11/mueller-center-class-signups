@@ -214,9 +214,6 @@ app.controller('controller', function ($scope, $http) {
             },
             description: $scope.classDescription,
             type: $scope.classType,
-            is_archived: false,
-            is_sign_up_able: true,
-            persons_enrolled: []
           }
         }
       }).then (function (response) {
