@@ -83,14 +83,14 @@ app.get ('/admin', function (req, res) {
   });
 });
 
-app.get ('/instructor', function (req, res) {
+app.get ('/account', function (req, res) {
   userIsInstructor (req.user ? req.user : '').then (function (result) {
     if (result)
-      res.sendFile (__dirname + "/pages/instructor.html");
+      res.sendFile (__dirname + "/pages/account.html");
     else
       userIsAdmin (req.user ? req.user : '').then (function (result) {
         if (result)
-          res.sendFile (__dirname + '/pages/instructor.html');
+          res.sendFile (__dirname + '/pages/account.html');
         else
           res.redirect ('/');
       });
@@ -110,10 +110,10 @@ app.post ('/email-class', function (req, res) {
           var person = response.persons_enrolled[i];
           sendEmail (person.email, req.body.subject, req.body.body);
         }
-        res.send ({});
+        res.send ({ success: true});
       });
     } else {
-      res.send ({});
+      res.send ({success: false});
     }
   });
 });
@@ -131,7 +131,7 @@ app.post ('/email/ind', function (req, res) {
 
 app.get ('/login', function (req, res) {
   if (req.user)
-    res.redirect ('/instructor');
+    res.redirect ('/account');
   else
     res.sendFile (__dirname + "/pages/login.html");
 });
@@ -155,7 +155,7 @@ app.get ('/is-instructor', function (req, res) {
 });
 
 app.post ('/login',
-  passport.authenticate('local', { successRedirect: '/instructor',
+  passport.authenticate('local', { successRedirect: '/account',
                                    failureRedirect: '/login' }));
 
 app.get ('/logout',function(req,res) {
@@ -296,7 +296,7 @@ app.post ('/update-info', function (req, res) {
       last_name: req.body.lname,
       biography: req.body.biography
     });
-    res.redirect ('/instructor');
+    res.redirect ('/account');
   } else {
     res.redirect ('/');
   }
@@ -323,7 +323,7 @@ app.post ('/change-image', function (req, res) {
         updateUserByEmail (req.user, {
           profile_image: '/resources/img/' + req.user + file.name.substring (file.name.lastIndexOf ('.'))
         });
-        res.redirect ('/instructor');
+        res.redirect ('/account');
       });
     }
   } else {

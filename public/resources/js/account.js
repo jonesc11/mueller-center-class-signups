@@ -57,13 +57,37 @@ app.controller('controller', function ($scope, $http) {
     });;
   };
   
+  $scope.emailClassModal = function (class_id, class_name) {
+    $scope.emailId = class_id;
+    $scope.emailName = class_name;
+    $scope.emailWarnings = [];
+    $scope.emailSuccess = false;
+    $scope.allSubject = '';
+    $scope.allMessage = '';
+    $("#classEmail").show();
+    $("#classSubmit").show();
+  }
+  $scope.emailWarnings = [];
+  
   $scope.sendEmail = function(class_id) {
+    $scope.emailWarnings = [];
+    if (!$scope.allSubject || $scope.allSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
+    if (!$scope.allMessage || $scope.allMessage == '') $scope.emailWarnings.push ('Message is not defined.');
+    if ($scope.emailWarnings.length != 0) return;
     $http.post("/email-class", {
-        subject: this.subject,
-        body: this.message,
+        subject: $scope.allSubject,
+        body: $scope.allMessage,
         class_id: class_id 
-    }).then(function(){
-        alert("Email Sent");
+    }).then(function(response){
+      if (response.data.success) {
+        $scope.emailSuccess = true;
+        $("#classEmail").hide();
+        $("#classSubmit").hide();
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
+      } else {
+        $scope.emailWarnings = [ 'Email was not successfully sent.' ];
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
+      }
     });
   };
 

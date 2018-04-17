@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/resources/css/instructor.css">
+    <link rel="stylesheet" href="/resources/css/account.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <title>Mueller Center</title>
   </head>
@@ -51,7 +51,8 @@
         <h3 align="center">Your Classes</h3>
         <div class="class-info border" ng-repeat="class in account.classes">
           <h4 align="center">{{class.name}}<br></h4>
-          <button class="email btn btn-primary" data-toggle="collapse" data-target="#email-{{$index}}">Email Members</button>
+          <button class="email btn btn-primary" ng-click="emailClassModal(class._id, class.name)" data-toggle="modal" data-target="#email-member-modal">Email Members</button>
+<!--
           <div id="email-{{$index}}" class="collapse">
             <form id="send-email-{{$index}}" ng-submit="sendEmail(class._id)">
               <div class="message">
@@ -63,6 +64,7 @@
               <button type="submit" class="btn btn-success">Send Email</button>
             </form>
           </div>
+-->
         </div>
       </div>
       
@@ -115,7 +117,35 @@
         </div>
       </div>
     </div>
-
+    <!--  Send Email to Class Modal  -->
+    <div class="modal fade" id="email-member-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Send an email to {{emailName}} members</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="warning in emailWarnings">{{warning}}</div>
+            <div class="alert alert-success" ng-show="emailSuccess">Email successfully sent.</div>
+            <form>
+              <div id="classEmail" class="message">
+                <strong>Subject: </strong><br/>
+                <input type="text" ng-model="allSubject" class="form-control" />
+                <strong>Message: </strong><br/>
+                <textarea ng-model="allMessage" class="form-control" rows="8" cols="60"></textarea>
+              </div>
+            </form>
+            <div id="classSubmit" class="modal-footer">
+              <button type="button" class="btn btn-primary" ng-click="sendEmail(emailId)">Send Email</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- <div ng-app>
   <div ng-controller="ClickToEditCtrl">
     <div ng-hide="editorEnabled">
@@ -136,6 +166,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-    <script src="/resources/js/instructor.js"></script>
+    <script src="/resources/js/account.js"></script>
   </body>
 </html>

@@ -104,6 +104,8 @@ app.controller('controller', function ($scope, $http) {
     $scope.emailSuccess = false;
     $scope.indSubject = '';
     $scope.indMessage = '';
+    $("#individualEmail").show();
+    $("#individualSubmit").show();
   }
   $scope.emailWarnings = [];
   $scope.emailInd = function () {
@@ -122,10 +124,12 @@ app.controller('controller', function ($scope, $http) {
     }).then (function (response) {
       if (response.data.success) {
         $scope.emailSuccess = true;
-        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+        $("#individualEmail").hide();
+        $("#individualSubmit").hide();
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       } else {
         $scope.emailWarnings = [ 'Email was not successfully sent.' ];
-        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 2000);
+        setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       }
     });
   }
