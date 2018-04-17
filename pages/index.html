@@ -75,7 +75,7 @@
               </div>
               <div id="collapse{{class._id}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class._id}}">
                 <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name)">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name, class.instructor, class.room, print_time(class.frequency.start_time, class.frequency.end_time), print_days(class.frequency.days_of_week))">Sign Up</button>
                   <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
                   <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
 				  <span><strong>Instructor:</strong> {{class.instructor}}</span>

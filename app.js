@@ -98,7 +98,23 @@ app.get ('/account', function (req, res) {
 });
 
 app.post ('/enroll', function (req, res) {
-  addMember (req.body.course, req.body.person);
+  addMember (req.body.course.course_id, req.body.person);
+  
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: email_creds
+  });
+  
+  transporter.sendMail ({
+    from: email_creds.user,
+    to: req.body.person.email,
+    subject: 'You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness!',
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness! This class is taught by ' + req.body.course.instructor + ' on ' + req.body.course.days + ' from ' + req.body.course.time + ' in room ' + req.body.course.room +'. If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union. You have three weeks from the beginning of classes to request a refund for this class. If you wish to be removed from a class, please email Donna Sutton at suttoa@rpi.edu with your name, RIN (if applicable), and the class you wish to be removed from.</div>'
+  }, function (err, info) {
+    if (err)
+      throw err;
+  });
+  
   res.send ({});
 });
 

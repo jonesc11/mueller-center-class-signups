@@ -30,7 +30,7 @@
             <input type="submit" class="btn btn-primary" value="Edit Class">
           </div>
         </form>
-        <button class="btn btn-primary" ng-click="setAddState()">Add New Class</button>
+        <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
       </div>
       <div>
         <div class="card">
@@ -107,6 +107,7 @@
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded"> {{classAddMessage}}</span>
               <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
+              <span ng-show="verifyDelete"> {{classDeleteMessage}}</span>
             </div>
           </form>
         </div>
