@@ -18,6 +18,11 @@
       <div class="nav-item nav-link" ng-model="instructors" ng-click="changeTab($event, 'i')">Instructors</div>
       <div class="nav-item nav-link" ng-model="members" ng-click="changeTab($event, 'm')">Members</div>
     </nav>
+        <div class="nav-buttons">
+      <a href="/" class="btn btn-secondary" role="button">Home</a>
+      <a href="/account" class="btn btn-secondary" role="button">My Account</a>
+      <a href="/logout" class="btn btn-secondary" role="button" id="logout">Log Out</a>
+    </div>
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
       <div class="alert alert-danger" ng-repeat="alert in alertList">{{alert}}</div>
@@ -201,12 +206,6 @@
           <div class="float"><button class="btn btn-sm btn-secondary" ng-click="emailMemberModal(member.email)" data-toggle="modal" data-target="#email-member-modal">Email member</button></div>
         </div>
       </div>
-    </div>
-
-    <div class="nav-buttons">
-      <a href="/" class="btn btn-secondary" role="button">Home</a>
-      <a href="/account" class="btn btn-secondary" role="button">My Account</a>
-      <a href="/logout" class="btn btn-secondary" role="button">Log Out</a>
     </div>
 
     <!-- Modals -->
