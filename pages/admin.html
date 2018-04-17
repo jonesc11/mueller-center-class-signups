@@ -100,7 +100,7 @@
             </div>
             <div class="btn-container">
               <button class="btn btn-primary" ng-click="addOrEdit()">{{buttonState}}</button>
-              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
+<!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded">Added!</span>
               <span ng-show="verifyUpdated">Updated!</span>
@@ -108,69 +108,6 @@
           </form>
         </div>
       </div>
-<!--
-      <div id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="card" ng-repeat="class in class_information">
-          <div class="card-header" role="tab" id="heading{{class.name}}">
-            <h5 class="mb-0 panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{class.name}}" aria-expanded="false" aria-controls="collapse{{class.name}}">
-                <div class='row'>
-                  <div class='class-info-header col-sm-12 col-md-12 col-lg-12'>{{class.name}}</div>
-                </div>
-              </a>
-            </h5>
-          </div>
-          <div id="collapse{{class.name}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class.name}}">
-            <div class="card-block">
-              <form>
-                <div class="form-group">
-                  <label for="class-name" class="form-control-label">Class:</label>
-                  <input type="text" class="form-control" id="class-name" name="class-name" value="{{class.name}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="instructor-name" class="form-control-label">Instructor:</label>
-                  <select ng-model="inst" name='inst' class='form-control'>
-                    <option class="form-control" selected="Pending=='{{class.instructor}}'">Pending</option>
-                    <option class="form-control" ng-repeat="instructor in instructor_names" ng-selected="'{{instructor.name}}'=='{{class.instructor}}'" value="instructor.name">{{instructor.name}}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="room" class="form-control-label">Room:</label>
-                  <select ng-model="roomNum" name='rooms' class='form-control'>
-                    <option class="form-control" ng-repeat="room in rooms" ng-selected="{{class.room}}=={{room}}" value="{{room}}" name="room{{room}}">Room {{room}}</option>
-                  </select>
-                </div>
-                <br/>
-                <div class="form-group">
-                  <label for="start-time" class="form-control-label">Start Time:</label>
-                  <input type="time" class="form-control" id="start-time" name="start-time" value="{{class.start_time}}" required>
-                </div>
-                <div class="form-group">
-                  <label for="end-time" class="form-control-label">End Time:</label>
-                  <input type="time" class="form-control" id="end-time" name="end-time" value="{{class.end_time}}" required>
-                </div>
-                <br/>
-                <div class="form-group">
-                  <strong>Day(s):</strong><br/>
-                  <div class="day" ng-repeat="day in weekdays">
-                    <input type="checkbox" value="{{day}}" name="{{day}}" ng-checked='checkArray({{class.days}}, "{{day}}")'>
-                    <label for="{{day}}">{{day}}</label>
-                  </div>
-                </div>
-                <div class="form-group col-sm-12 col-md-8 col-lg-6 pl-0">
-                  <label for="description" class="form-control-label">Description:</label>
-                  <textarea type="text" class="form-control" id="description" name="description" required>{{class.description}}</textarea>
-                </div>
-                <div class="btn-container">
-                  <button class="btn btn-primary">Save Changes</button>
-                  <button class="btn btn-danger" ng-click="deleteObject(class.name)" data-toggle="modal" data-target="#confirm-delete">Delete</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
--->
     </div>
     <div id="instructors" class="container tab" ng-show="instructors">
       <h1>Instructor Accounts</h1>
@@ -358,6 +295,20 @@
       </div>
     </div>
     <!--  Confirm Archive Modal  -->
+    <div class="modal fade" id="confirm-archive">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to archive {{className}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="archiveCourse()">Archive</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Remove User from Class  -->
     <div class="modal fade" id="confirm-archive">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
