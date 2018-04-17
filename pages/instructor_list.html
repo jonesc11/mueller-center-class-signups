@@ -31,11 +31,12 @@
         <strong>13-Week Class Sessions:</strong><br/>
         February 5, 2018 - May 4, 2018 <br/>
         &nbsp;&nbsp;$40 for one class a week<br/>
-        &nbsp;&nbsp;$80 for two classes a week<br/><br/>
+        &nbsp;&nbsp;$80 for two classes a week<br/>
+        Full refund available within three weeks of the start of classes<br/>
         <a href="/" class="link">Back to Classes</a><br/>
         <strong>Questions?</strong><br/>
         Contact Donna Sutton at:<br/>
-        &nbsp;&nbsp;Email: <a href="mailto:sutta@rpi.edu">sutta@rpi.edu</a><br/>
+        &nbsp;&nbsp;Email: <a href="mailto:suttoa@rpi.edu">suttoa@rpi.edu</a><br/>
         &nbsp;&nbsp;Phone: (518) 276-2874<br/><br/>
         Classes are taught by professional instructors. Room assignments are subject to change. ALL classes are subject to cancellation due to low participation numbers and are subject to change in class format, instructor, and class time as needed.
         </p>
@@ -68,36 +69,12 @@
               <div class="i_bio" ng-show="instructor.bio_is_flagged == true">
                 No biography.
               </div>
+              <div><strong>Classes I Teach</strong></div>
+              <ul>
+                <li ng-repeat="class in instructor.classes">{{class.name}}</li>
+              </ul>
             </div>
           </div>
-
-<!--
-          <div class="row border instructor">
-            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="/resources/img/i2.jpg"/></div>
-            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
-              <div class="i_name"><strong>Sally Sweatsalot</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:sally@gmail.com">sally@gmail.com</a></div>
-              <div><strong>About Me</strong></div>
-              <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-            </div>
-          </div>
-
-          <div class="row border instructor">
-            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container"><img class="instructor_img" src="/resources/img/i3.jpg"/></div>
-            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
-              <div class="i_name"><strong>Joe Jumpingjacks</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:joe@gmail.com">joe@gmail.com</a></div>
-              <div><strong>About Me</strong></div>
-              <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-            </div>
-          </div>
--->
-
-
         </div>
       </div>
 
