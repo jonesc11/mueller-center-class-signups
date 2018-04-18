@@ -79,7 +79,7 @@
                   <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name, class.instructor, class.room, print_time(class.frequency.start_time, class.frequency.end_time), print_days(class.frequency.days_of_week))">Sign Up</button>
                   <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
                   <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
-				  <span><strong>Instructor:</strong> {{class.instructor}}</span>
+				  <span><strong>Instructor:</strong> <a href="/instructor_list.html">{{class.instructor}}</a></span>
                   <span><strong>Email:</strong> <a class="email" href="mailto:{{class.email}}">{{class.instructor_email}}</a></span>
                   <span><strong>Room:</strong> {{class.room}}</span>
                   <span><strong>Type:</strong> {{class.type}}</span>
@@ -87,58 +87,6 @@
                 </div>
               </div>
             </div>
-<!--
-            <div class="card">
-              <div class="card-header" role="tab" id="headingTwo">
-                <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Midday Yoga</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
-                    </div>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseTwo" class="collapse card-border" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Midday Yoga')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Monday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
-				  <span><strong>Instructor:</strong> Jennifer Karius</span>
-                  <span><strong>Email:</strong> <a href="mailto:jen@gmail.com">jen@gmail.com</a></span>
-                  <span><strong>Room:</strong> 3</span>
-                  <p class='class-description'><strong>Class Description:</strong> A strong class that creates a total body workout and serves to clear the mind. Gentle awareness reminders and techniques are given to link the connection of the breath to each pose class combines elements of different systems. Expect to lengthen, strengthen and stretch the body and prepare the mind for meditation.</p>
-                </div>
-              </div>
-            </div>
--->
-<!--
-            <div class="card">
-              <div class="card-header" role="tab" id="headingThree">
-                <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Zumba</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Thursday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>5:00pm</div>
-                    </div>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseThree" class="collapse card-border" role="tabpanel" aria-labelledby="headingThree">
-                <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Zumba')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Thursday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 5:00pm</span>
-				  <span><strong>Instructor:</strong> Karen Stern</span>
-                  <span><strong>Email:</strong> <a href="mailto:karen@gmail.com">karen@gmail.com</a></span>
-                  <span><strong>Room:</strong> 1</span>
-                  <p class='class-description'><strong>Class Description:</strong> Are you ready to party yourself into shape? Forget the workout; let’s just lose ourselves in the music. Classes feature exotic rhythms set to high-energy music beats. Before you know it, you’ll be getting fit and your energy levels will be soaring! It’s easy to do, effective and totally exhilarating.</p>
-                </div>
-              </div>
-            </div>
--->
           </div>
         </div>
       </div>
