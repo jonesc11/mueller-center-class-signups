@@ -1,7 +1,6 @@
 body,html {
   font-family: 'Raleway', sans-serif;
-  width: 100%;
-  height: 100%;
+
 }
 
 header {
@@ -9,6 +8,15 @@ header {
   color: white;
   text-align: center;
   font-size: 30px;
+}
+
+.navbar-brand {
+  font-size:25px; 
+}
+
+.navbar {
+  background-color: #e2231b;
+  color:white;
 }
 
 .thumb {
@@ -148,13 +156,21 @@ header {
 }
 
 .nav-buttons {
-	margin-top:30px;
-	float:left;
+  width:100%;
+  margin-top: 0px;
+  margin:10px;
+  float:left;
+  margin-right:30px;
 }
 
 .nav-buttons a {
-	margin-right:20px;
-	width:150px;
-	height:50px;
-	padding:10px;
+  margin-right:20px;
+  width:120px;
+  height:40px;
+  padding:6px;
+}
+
+#logout {
+  margin-right:50px;
+  float:right;
 }

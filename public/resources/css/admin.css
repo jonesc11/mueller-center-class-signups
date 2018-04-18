@@ -11,18 +11,33 @@ header {
   font-size: 30px;
 }
 
+.navbar-brand {
+  font-size:25px; 
+}
+
+.navbar {
+  background-color: #e2231b;
+  color:white;
+}
+
 .nav-buttons {
-  margin-top:30px;
+  width:100%;
+  margin-top: 0px;
+  margin:10px;
   float:left;
-  margin-left:150px;
-  margin-bottom: 20px;
+  margin-right:30px;
 }
 
 .nav-buttons a {
   margin-right:20px;
-  width:150px;
-  height:50px;
-  padding:10px;
+  width:120px;
+  height:40px;
+  padding:6px;
+}
+
+#logout {
+  margin-right:50px;
+  float:right;
 }
 
 .nav-pills .nav-link.active {
@@ -30,11 +45,11 @@ header {
   color: white;
 }
 
-.nav-item {
+.second .nav-item {
   background-color: #e8e8e8;
   border: 1px solid grey;
   border-left: none;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .nav-pills .nav-link {
@@ -42,7 +57,7 @@ header {
   border-radius: 0px;
 }
 
-.nav-link:hover {
+.second .nav-link:hover {
   background-color: #adadad;
   text-decoration: underline;
   color: black;
