@@ -148,6 +148,10 @@ a:hover {
   border-bottom-right-radius: .25rem;
 }
 
+.card-block a {
+  color:black;
+}
+
 .class-info-header {
   display: inline-block;
 }

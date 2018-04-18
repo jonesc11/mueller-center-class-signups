@@ -79,7 +79,7 @@
                   <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name, class.instructor, class.room, print_time(class.frequency.start_time, class.frequency.end_time), print_days(class.frequency.days_of_week))">Sign Up</button>
                   <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
                   <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
-				  <span><strong>Instructor:</strong> {{class.instructor}}</span>
+				          <span><strong>Instructor:</strong><a href="/instructors#{{class.instructor| removeSpaces}}"> {{class.instructor}}</a></span>
                   <span><strong>Email:</strong> <a class="email" href="mailto:{{class.email}}">{{class.instructor_email}}</a></span>
                   <span><strong>Room:</strong> {{class.room}}</span>
                   <span><strong>Type:</strong> {{class.type}}</span>
