@@ -11,6 +11,15 @@ header {
   font-size: 30px;
 }
 
+.navbar-brand {
+  font-size:25px; 
+}
+
+.navbar {
+  background-color: #e2231b;
+  color:white;
+}
+
 .nav-buttons {
   width:100%;
   margin-top: 0px;
@@ -36,7 +45,7 @@ header {
   color: white;
 }
 
-.nav-item {
+.second .nav-item {
   background-color: #e8e8e8;
   border: 1px solid grey;
   border-left: none;
@@ -48,7 +57,7 @@ header {
   border-radius: 0px;
 }
 
-.nav-link:hover {
+.second .nav-link:hover {
   background-color: #adadad;
   text-decoration: underline;
   color: black;
