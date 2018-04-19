@@ -114,8 +114,7 @@ app.post ('/enroll', function (req, res) {
     if (err)
       throw err;
   });
-  
-  res.send ({});
+  res.send ({success: true});
 });
 
 app.post ('/email-class', function (req, res) {

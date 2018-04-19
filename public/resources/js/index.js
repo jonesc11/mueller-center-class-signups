@@ -75,6 +75,9 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {
       $('#sign-up').modal('toggle');
+      $('#success').modal('toggle');
+    }).catch(function (response) {
+      $('#error').modal('toggle');
     });
   };
   $scope.print_days = function(arr) {
