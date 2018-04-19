@@ -72,19 +72,6 @@
         <div class="class-info border" ng-repeat="class in account.classes">
           <h4 align="center">{{class.name}}<br></h4>
           <button class="email btn btn-primary" ng-click="emailClassModal(class._id, class.name)" data-toggle="modal" data-target="#email-member-modal">Email Members</button>
-<!--
-          <div id="email-{{$index}}" class="collapse">
-            <form id="send-email-{{$index}}" ng-submit="sendEmail(class._id)">
-              <div class="message">
-                <strong>Subject: </strong><br/>
-                <textarea ng-model="subject" rows="1" cols="60"></textarea>
-                <strong>Message: </strong><br/>
-                <textarea ng-model="message" rows="8" cols="60"></textarea>
-              </div>
-              <button type="submit" class="btn btn-success">Send Email</button>
-            </form>
-          </div>
--->
         </div>
       </div>
     </div>
@@ -153,7 +140,7 @@
               </div>
             </form>
             <div id="classSubmit" class="modal-footer">
-              <button type="button" class="btn btn-primary" ng-click="sendEmail(emailId)">Send Email</button>
+              <button type="button" class="btn btn-primary" ng-click="sendEmail(emailId, emailName)">Send Email</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
           </div>
