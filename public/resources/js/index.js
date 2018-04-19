@@ -1,6 +1,6 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
-  
+
   $http({
     method: 'GET',
     url: '/is-admin'
@@ -113,6 +113,15 @@ app.controller('controller', function ($scope, $http) {
   }).then(function successCallback (response) {
     $scope.class_information = response.data;
   });
+
+  $scope.$on('instructorListRendered', function (ngRepeatFinishedEvent) {
+    if(window.location.hash) {
+      if (window.innerWidth < 676)
+        window.scrollTo(0, $(window.location.hash).offset().top - 10);
+      else
+        $('#content').scrollTop($(window.location.hash).offset().top - 80);
+    }
+  });
 });
 
 
@@ -124,4 +133,16 @@ app.filter('removeSpaces', [function() {
         return string.replace(/[\s]/g, '');
     };
 }])
+
+// implemented from https://stackoverflow.com/a/44206573
+app.directive('postRepeat', function($timeout) {
+  return function(scope, element, attrs) {
+    if (scope.$last){
+      $timeout(function () {
+        scope.$emit(attrs.postRepeat);
+      });
+    }
+  };
+});
+
 
