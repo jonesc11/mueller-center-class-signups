@@ -116,7 +116,7 @@ app.controller('controller', function ($scope, $http) {
 
   $scope.$on('instructorListRendered', function (ngRepeatFinishedEvent) {
     if(window.location.hash) {
-      if (window.innerWidth < 676)
+      if (window.innerWidth < 800)
         window.scrollTo(0, $(window.location.hash).offset().top - 10);
       else
         $('#content').scrollTop($(window.location.hash).offset().top - 80);
