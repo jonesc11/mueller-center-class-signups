@@ -329,8 +329,8 @@ app.controller('controller', function ($scope, $http) {
     $scope.instructorName = $scope.class_information[$scope.editClass].instructor_id;
     $scope.classRoom = $scope.class_information[$scope.editClass].room;
     var time = "2018-01-01T";
-    $scope.classStart = new Date(time + $scope.class_information[$scope.editClass].frequency.start_time + ":00");
-    $scope.classEnd = new Date(time + $scope.class_information[$scope.editClass].frequency.end_time + ":00");
+    $scope.classStart = new Date(time + $scope.class_information[$scope.editClass].frequency.start_time);
+    $scope.classEnd = new Date(time + $scope.class_information[$scope.editClass].frequency.end_time);
     $scope.monday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Monday");
     $scope.tuesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Tuesday");
     $scope.wednesday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Wednesday");
