@@ -69,7 +69,7 @@ app.controller('controller', function ($scope, $http) {
   }
   $scope.emailWarnings = [];
   
-  $scope.sendEmail = function(class_id) {
+  $scope.sendEmail = function(class_id, class_name) {
     $scope.emailWarnings = [];
     if (!$scope.allSubject || $scope.allSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
     if (!$scope.allMessage || $scope.allMessage == '') $scope.emailWarnings.push ('Message is not defined.');
@@ -77,7 +77,8 @@ app.controller('controller', function ($scope, $http) {
     $http.post("/email-class", {
         subject: $scope.allSubject,
         body: $scope.allMessage,
-        class_id: class_id 
+        class_id: class_id,
+        class_name: class_name
     }).then(function(response){
       if (response.data.success) {
         $scope.emailSuccess = true;

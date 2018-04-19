@@ -114,8 +114,7 @@ app.post ('/enroll', function (req, res) {
     if (err)
       throw err;
   });
-  
-  res.send ({});
+  res.send ({success: true});
 });
 
 app.post ('/email-class', function (req, res) {
@@ -124,7 +123,7 @@ app.post ('/email-class', function (req, res) {
       getClass (req.body.class_id).then (function (response) {
         for (var i = 0; i < response.persons_enrolled.length; ++i) {
           var person = response.persons_enrolled[i];
-          sendEmail (person.email, req.body.subject, req.body.body);
+          sendEmail (person.email, req.body.subject, req.body.body, req.body.class_name);
         }
         res.send ({ success: true});
       });
@@ -137,7 +136,7 @@ app.post ('/email-class', function (req, res) {
 app.post ('/email/ind', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (response) {
     if (response) {
-      sendEmail (req.body.email, req.body.subject, req.body.message);
+      sendEmail (req.body.email, req.body.subject, req.body.message, "Mueller Center Admin");
       res.send ({ success: true });
     } else {
       res.send ({ success: false });
@@ -667,7 +666,7 @@ async function deleteCourse (objectId) {
  * subject is the subject
  * body is the body of the email (can be formatted as HTML)
  */
-function sendEmail (recipient, subject, body) {
+function sendEmail (recipient, subject, body, sender) {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: email_creds
@@ -677,7 +676,7 @@ function sendEmail (recipient, subject, body) {
     from: email_creds.user,
     to: recipient,
     subject: subject,
-    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">' + body + "</div>"
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px"><h2>Email from: ' + sender +'</h2><p>' + body + "</p></div>"
   }, function(error, info) {
     if (error)
       console.log(error);

@@ -136,7 +136,7 @@ textarea {
 }
 
 .form-group {
-  display: inline-block;
+  display: inline-table;
 }
 
 .form-control {
@@ -201,10 +201,6 @@ textarea {
 .classes {
   display: block!important;
   margin: 0px;
-}
-
-.form-group {
-  display: inline-block;
 }
 
 .desc-container {

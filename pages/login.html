@@ -11,33 +11,37 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <title>Mueller Center</title>
   </head>
-  <body>
+  <body ng-controller="controller">
     <div id="header-container">
       <nav class="header">
-        <a href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
+        <a id="logo-container" href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
         <a href="https://union.rpi.edu/content/mueller-center">
           Mueller Center Fitness
         </a>
       </nav>
     </div>
-    <div id="login-container">
-      <h4 align="center">User Log In</h4>
-      <form action="/login" method="post">
-        <label>Email</label>
-        <input type="text" ng-model="email" name="username" id="username">
-        <br/>
-        <label>Password</label>
-        <input type="password" ng-model="password" name="password" id="password" class="ng-pristine ng-valid">
-        <br/>
-        <button class="btn btn-success" type="submit">Submit</button>
-        <a href="/" role="button" class="btn  btn-danger">Cancel</a>
-      </form>
+    <div id="container">
+      <div id="login-container">
+        <h4 align="center">Instructor/Admin Log In</h4>
+        <form action="/login" method="post" class="offset-sm-2 col-sm-8 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+          <div class="form-group">
+            <label for="username" class="form-control-label">Email</label>
+            <input class="form-control" type="text" ng-model="email" name="username" id="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-control-label">Password</label>
+            <input class="form-control" type="password" ng-model="password" name="password" id="password" class="ng-pristine ng-valid">
+          </div>
+          <button class="btn btn-success" type="submit">Submit</button>
+          <a href="/" role="button" class="btn  btn-danger">Cancel</a>
+        </form>
+      </div>
     </div>
 
     <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-    <script src="/resources/js/instructor.js"></script>
+    <script src="/resources/js/account.js"></script>
   </body>
 </html>

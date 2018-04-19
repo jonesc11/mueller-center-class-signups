@@ -14,7 +14,7 @@
   <body ng-controller="controller">
     <div id="header-container">
       <nav class="header">
-        <a href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
+        <a id="logo-container" href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
         <a href="https://union.rpi.edu/content/mueller-center">
           Mueller Center Fitness
         </a>
@@ -87,61 +87,11 @@
                 </div>
               </div>
             </div>
-<!--
-            <div class="card">
-              <div class="card-header" role="tab" id="headingTwo">
-                <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Midday Yoga</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Monday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>12:00pm</div>
-                    </div>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseTwo" class="collapse card-border" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Midday Yoga')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Monday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 12:00pm</span>
-				  <span><strong>Instructor:</strong> Jennifer Karius</span>
-                  <span><strong>Email:</strong> <a href="mailto:jen@gmail.com">jen@gmail.com</a></span>
-                  <span><strong>Room:</strong> 3</span>
-                  <p class='class-description'><strong>Class Description:</strong> A strong class that creates a total body workout and serves to clear the mind. Gentle awareness reminders and techniques are given to link the connection of the breath to each pose class combines elements of different systems. Expect to lengthen, strengthen and stretch the body and prepare the mind for meditation.</p>
-                </div>
-              </div>
-            </div>
--->
-<!--
-            <div class="card">
-              <div class="card-header" role="tab" id="headingThree">
-                <h5 class="mb-0 panel-title">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <div class='row'>
-                      <div class='class-info-header col-sm-4 col-md-4 col-lg-4'>Zumba</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Thursday</div>
-                      <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>5:00pm</div>
-                    </div>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseThree" class="collapse card-border" role="tabpanel" aria-labelledby="headingThree">
-                <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="class('Zumba')">Sign Up</button>
-                  <span class="mobile-show"><strong>Day(s):</strong> Thursday</span>
-                  <span class="mobile-show"><strong>Time:</strong> 5:00pm</span>
-				  <span><strong>Instructor:</strong> Karen Stern</span>
-                  <span><strong>Email:</strong> <a href="mailto:karen@gmail.com">karen@gmail.com</a></span>
-                  <span><strong>Room:</strong> 1</span>
-                  <p class='class-description'><strong>Class Description:</strong> Are you ready to party yourself into shape? Forget the workout; let’s just lose ourselves in the music. Classes feature exotic rhythms set to high-energy music beats. Before you know it, you’ll be getting fit and your energy levels will be soaring! It’s easy to do, effective and totally exhilarating.</p>
-                </div>
-              </div>
-            </div>
--->
           </div>
         </div>
       </div>
+      <!--   Modals   -->
+      <!--   Signup Modal  -->
       <div class="modal fade" id="sign-up">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -214,6 +164,42 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn signup" id="login-submit" ng-click="signUp()">Sign up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--   Signup Success Modal   -->
+      <div class="modal fade" id="success">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">You have successfully registered!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="message mt-2 mb-4">
+                You should recieve an email to confirm this registration shortly. If you do not recieve an email, contact Donna Sutton at suttoa@rpi.edu.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--   Error Modal   -->
+      <div class="modal fade" id="error">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Something went wrong.</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="message mt-2 mb-4">
+                Please try again later or email Donna Sutton at suttoa@rpi.edu.
+              </div>
             </div>
           </div>
         </div>
