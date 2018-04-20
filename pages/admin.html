@@ -116,6 +116,19 @@
                 <label for="sunday">Sunday</label>
               </div>
             </div>
+            <br/>
+            <div class="form-group">
+              <label class="form-control-label">Term:</label>
+              <select id="term" name="term" class="form-control" ng-model="classTerm" ng-disabled="editing">
+                <option value="Fall">Fall</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Year:</label>
+              <input type="number" id="year" name="year" class="form-control" ng-model="classYear" min="2018" max="2050" placeholder="2018" ng-disabled="editing">
+            </div>
             <div class="form-group col-sm-12 col-md-8 col-lg-8 pl-0">
               <label for="description" class="form-control-label">Description:</label>
               <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription" rows="6" cols="60">{{class.description}}</textarea>

@@ -59,6 +59,7 @@ app.controller('controller', function ($scope, $http) {
   $scope.classes = true;
   $scope.payment = "0";
   $scope.method = "Cash";
+  $scope.classTerm = "Fall";
   
   $scope.setAddState = function() {
     $scope.className = "";
