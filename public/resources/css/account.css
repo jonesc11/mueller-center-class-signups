@@ -88,7 +88,7 @@ header {
 }
 
 .acc-info button {
-	margin-top:30px;
+	margin-top:10px;
 	margin-left:15px;
 }
 
@@ -100,6 +100,10 @@ header {
 .left-info button {
 	margin-top:3px;
 	margin-bottom: 10px;
+}
+
+.left-info input {
+	width:80%;
 }
 
 #all-classes {
@@ -141,13 +145,46 @@ header {
 	padding-left:5%;
 	width:60%;
 	float:left;
-	height: 430px;
 }
 
 .right-info {
 	width:40%;
 	float:right;
-	height: 470px;
+}
+
+.edit-right-info {
+	width:40%;
+	float:right;
+	height:200px;
+}
+
+#bio {
+	overflow:scroll;
+	height:250px;
+	padding-right:5%;
+	margin-bottom: 10px;
+}
+
+textarea[name=bio] {
+    resize: none;
+    width:100%;
+    height: 150px;
+}
+
+.bottom-info {
+	display: inline-block;
+	padding-left:5%;
+}
+
+#edit-bottom-info {
+	display: inline-block;
+	padding-left:5%;
+	width:95%;
+
+}
+
+#edit-bottom-info button {
+	margin-top: 20px;
 }
 
 .message {
@@ -177,4 +214,27 @@ header {
 
 .nav-link:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 700px) {
+	.acc-info {
+		width: 100%;
+		margin-bottom:20px;
+	}
+
+	#all-classes {
+		width: 100%;
+	}
+
+	.right-info button {
+		margin-left:0px;
+	}
+
+	.acc-info button {
+		margin-left:0px;
+	}
+
+	#upload {
+		width:135px;
+	}
 }
