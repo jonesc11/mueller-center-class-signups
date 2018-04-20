@@ -354,14 +354,15 @@ app.controller('controller', function ($scope, $http) {
   
   $scope.createAcctErrs = [];
   $scope.createAccount = function () {
-    if ($scope.createAcctFName == '')
+    if (!$scope.createAcctFName | $scope.createAcctFName == '')
       $scope.createAcctErrs.push ('First name must be included.');
-    if ($scope.createAcctLName == '')
+    if (!$scope.createAcctLName | $scope.createAcctLName == '')
       $scope.createAcctErrs.push ('Last name must be included.');
-    if ($scope.createAcctEmail == '')
+    if (!$scope.createAcctEmail | $scope.createAcctEmail == '')
       $scope.createAcctErrs.push ('Email must be included.');
-
+    //TODO - check that either checkbox is selected (must be at least one, can be both)
     if ($scope.createAcctErrs.length == 0) {
+      //TODO - assign privileges
       $http({
         method: 'POST',
         url: '/add-account',
