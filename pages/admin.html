@@ -147,12 +147,12 @@
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
           <strong>Bio: </strong>
-          <button class="btn btn-sm btn-danger flag" ng-click="flagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == false">Flag Bio</button>
-          <button class="btn btn-sm btn-danger flag" ng-click="unflagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == true">Unflag Bio</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == false">Flag Bio</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == true">Unflag Bio</button>
           <p>{{account.biography}}</p>
           <strong>Image: </strong>
-          <button class="btn btn-sm btn-danger flag" ng-click="flagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == false">Flag Image</button>
-          <button class="btn btn-sm btn-danger flag" ng-click="unflagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == true">Unflag Image</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == false">Flag Image</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == true">Unflag Image</button>
           <br/>
           <img src="{{account.profile_image}}" class='image'>
         </div>
@@ -212,7 +212,7 @@
           <form class="member-classes">
             <div class="form-group classes" ng-repeat="class in member.classes">
               <label for="{{class._id}}">{{class.name}}</label>
-              <button class="btn btn-sm btn-secondary" ng-click="removeMember(member.email, class._id, $index)">Remove</button>
+              <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">Remove</button>
             </div>
           </form>
         </div>
@@ -344,21 +344,19 @@
       </div>
     </div>
     <!--  Confirm Remove User from Class  -->
-<!--
-    <div class="modal fade" id="confirm-remove">
+    <div class="modal fade" id="confirm-remove-mem">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
             <div class="message mt-2 mb-4">
-              Are you sure you want to archive {{className}}? This action cannot be undone.
+              Are you sure you want to remove {{removeName}} from {{removeClass}}?
             </div>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="remoCourse()">Archive</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeMember()">Remove</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>
       </div>
     </div>
--->
     <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

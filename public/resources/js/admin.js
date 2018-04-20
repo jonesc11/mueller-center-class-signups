@@ -159,22 +159,32 @@ app.controller('controller', function ($scope, $http) {
       }
     });
   }
-  $scope.removeMember = function (email, id, $index) {
+  
+  $scope.setRemoveMember = function(email, fname, lname, cname, id, $index) {
+    $scope.removeEmail = email;
+    $scope.removeId = id;
+    $scope.removeIndex = $index;
+    $scope.removeName = fname + " " + lname;
+    $scope.removeClass = cname;
+  }
+  
+  $scope.removeMember = function () {
     for (var i = 0; i < $scope.member_accounts.length; ++i) {
-      if ($scope.member_accounts[i].email.toLowerCase() == email.toLowerCase()) {
-        $scope.member_accounts[i].classes.splice ($index, 1);
+      if ($scope.member_accounts[i].email.toLowerCase() == $scope.removeEmail.toLowerCase()) {
+        $scope.member_accounts[i].classes.splice ($scope.removeIndex, 1);
       }
     }
     $http({
       method: 'POST',
       url: '/remove-member',
       data: {
-        course: id,
-        email: email
+        course: $scope.removeId,
+        email: $scope.removeEmail
       }
     }).then (function (response) {
     });
   };
+  
   $scope.checkArray = function(arr, val) {
     for(var i in arr) {
       if(arr[i]==val) {
