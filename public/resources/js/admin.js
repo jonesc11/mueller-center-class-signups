@@ -426,4 +426,13 @@ app.controller('controller', function ($scope, $http) {
       alert("logged out");
     });
   }
+  
+  $scope.setDelete = function(email, id) {
+    $scope.delete_email = email;
+    $scope.delete_id = id;
+  }
+  
+  $scope.deleteAccount = function() {
+    //TODO - Delete instructor account (also delete their information form the courses they are listed under? Or do we just assume that they'll know to change it)
+  }
 });

@@ -143,6 +143,7 @@
           <ul class='inst-classes'>
             <li ng-repeat='class in account.classes'>{{class.name}}</li>
           </ul>
+          <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-acc" ng-click="setDelete(account.email, account._id)">Delete Account</button>
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
           <strong>Bio: </strong>
@@ -299,6 +300,21 @@
         </div>
       </div>
     </div>
+    <!--  Confirm Account Delete Modal  -->
+    <!--  Confirm Delete Modal  -->
+    <div class="modal fade" id="confirm-delete-acc">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete the account for the email {{delete_email}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteAccount(delete_id)">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--  Confirm Member Delete Modal  -->
     <div class="modal fade" id="confirm-delete-mem">
       <div class="modal-dialog" role="document">
@@ -328,19 +344,21 @@
       </div>
     </div>
     <!--  Confirm Remove User from Class  -->
-    <div class="modal fade" id="confirm-archive">
+<!--
+    <div class="modal fade" id="confirm-remove">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
             <div class="message mt-2 mb-4">
               Are you sure you want to archive {{className}}? This action cannot be undone.
             </div>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="archiveCourse()">Archive</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="remoCourse()">Archive</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </div>
       </div>
     </div>
+-->
     <!-- jQuery, Bootstrap JS, angular -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
