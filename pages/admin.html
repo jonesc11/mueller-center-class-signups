@@ -134,8 +134,9 @@
               <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription" rows="6" cols="60">{{class.description}}</textarea>
             </div>
             <div class="btn-container">
-              <button class="btn btn-primary" ng-click="addOrEdit()">{{buttonState}}</button>
+              <button class="btn btn-success" ng-click="addOrEdit()">{{buttonState}}</button>
 <!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
+              <button class="btn btn-primary" ng-show="editing" ng-click="toggleRegistration()">{{toggleSignups}}</button>
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded"> {{classAddMessage}}</span>
               <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>

@@ -351,6 +351,10 @@ app.controller('controller', function ($scope, $http) {
     $scope.sunday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Sunday");
     $scope.classDescription = $scope.class_information[$scope.editClass].description;
     $scope.classType = $scope.class_information[$scope.editClass].type;
+    if($scope.class_information[$scope.editClass].is_sign_up_able)
+      $scope.toggleSignups = "Close Registration";
+    else
+      $scope.toggleSignups = "Open Registration";
   }
   
   $scope.createAcctErrs = [];
@@ -446,5 +450,13 @@ app.controller('controller', function ($scope, $http) {
   
   $scope.deleteAccount = function() {
     //TODO - Delete instructor account (also delete their information form the courses they are listed under? Or do we just assume that they'll know to change it)
+  }
+  
+  $scope.toggleRegistration = function() {
+    //TODO - toggle is_sign_up_able
+    if($scope.class_information[$scope.editClass].is_sign_up_able)
+      $scope.toggleSignups = "Open Registration";
+    else
+      $scope.toggleSignups = "Close Registration";
   }
 });
