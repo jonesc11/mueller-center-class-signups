@@ -263,6 +263,10 @@ app.controller('controller', function ($scope, $http) {
           type: $scope.classType,
           is_archived: false,
           is_sign_up_able: true,
+          semester: {
+            year: classYear,
+            term: classTerm
+          },
           persons_enrolled: []
         }
       }).then (function (response) {
@@ -309,6 +313,10 @@ app.controller('controller', function ($scope, $http) {
             },
             description: $scope.classDescription,
             type: $scope.classType,
+            semester: {
+              term: classTerm,
+              year: classYear
+            }
           }
         }
       }).then (function (response) {
