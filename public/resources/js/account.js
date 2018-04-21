@@ -107,6 +107,23 @@ app.controller('controller', function ($scope, $http) {
     });
   };
 
+  //Function to handle logging in
+  $scope.login = function () {
+    $http({
+      url: '/login',
+      method: 'POST',
+      data: {
+        password: $scope.password,
+        username: $scope.email
+      }
+    }).then (function (response) {
+      if (response.data.success === false)
+        $scope.loginFailed = !response.data.success;
+      else
+        window.location = '/account';
+    });
+  };
+
   //Function to handle changing password
   $scope.changePassAlerts = [];
   $scope.changePass = function() {
