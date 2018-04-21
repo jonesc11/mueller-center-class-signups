@@ -57,7 +57,7 @@ app.controller('controller', function ($scope, $http) {
   $scope.getClasses = function() {
     $http({
       method: 'GET',
-      url: '/get-courses'
+      url: '/get-nonarchived-courses'
     }).then(function (response) {
       $scope.class_information = response.data;
     });
@@ -521,10 +521,28 @@ app.controller('controller', function ($scope, $http) {
   
   //Function to toggle the registration status of a class
   $scope.toggleRegistration = function() {
-    //TODO - toggle is_sign_up_able
-    if($scope.class_information[$scope.editClass].is_sign_up_able)
-      $scope.toggleSignups = "Open Registration";
-    else
-      $scope.toggleSignups = "Close Registration";
+    if($scope.class_information[$scope.editClass].is_sign_up_able) {
+      $http ({
+        url: '/edit-course',
+        method: 'POST',
+        data: {
+          course: $scope.class_information[$scope.editClass]._id,
+          update: { is_sign_up_able: false }
+        }
+      }).then (function (success) {
+        $scope.toggleSignups = "Open Registration";
+      });;
+    } else {
+      $http ({
+        url: '/edit-course',
+        method: 'POST',
+        data: {
+          course: $scope.class_information[$scope.editClass]._id,
+          update: { is_sign_up_able: true }
+        }
+      }).then (function (success) {
+        $scope.toggleSignups = "Close Registration";
+      });;
+    }
   }
 });

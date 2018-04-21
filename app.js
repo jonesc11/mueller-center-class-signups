@@ -202,6 +202,11 @@ app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+//Function to get all courses that are open for registration
+app.get ('/get-nonarchived-courses', function (req, res) {
+  getAllNonArchivedCourses().then(function (data) { res.send (data); });
+});
+
 //Function to add a new class
 app.post ('/add-class', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
@@ -564,6 +569,13 @@ async function getAllSignUpableCourses () {
  */
 async function getAllArchivedCourses () {
   return await classesCollection.find({ is_archived: true }).toArray();
+}
+
+/**
+ * Returns all non archived class objects
+ */
+async function getAllNonArchivedCourses () {
+  return await classesCollection.find({ is_archived: false }).toArray();
 }
 
 /**
