@@ -1,7 +1,7 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
   
-  //Function to determine whether this user is an admin
+  //Server call to determine whether this user is an admin
   $http({
     method: 'GET',
     url: '/is-admin'
@@ -9,7 +9,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_admin = response.data.is_admin;
   });
 
-  //Function to determine whether this user is an instructor
+  //Server call to determine whether this user is an instructor
   $http({
     method: 'GET',
     url: '/is-instructor'
@@ -17,7 +17,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_instructor = response.data.is_instructor;
   });
 
-  //Function to get the account information for this user
+  //Server call to get the account information for this user
   $scope.account = {};
   $http({
     method: 'GET',

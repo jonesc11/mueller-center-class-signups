@@ -1,21 +1,22 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
-  $scope.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
+  
+  //Server call to get instructor accounts
   $scope.instructor_accounts = [];
-  $scope.admin_accounts = [];
   $scope.getInstructors = function() {
    $http({
       url: '/get-instructors',
       method: 'GET'
     }).then (function (response) {
       $scope.instructor_accounts = response.data;
+      //Set initial instructor to be the first instructor
       $scope.instructorName = $scope.instructor_accounts[0]._id;
     }); 
   }
-  
   $scope.getInstructors(); //initial call to get instructors
   
+  //Server call to get admin accounts
+  $scope.admin_accounts = [];
   $http({
     url: '/get-admins',
     method: 'GET'
@@ -23,6 +24,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.admin_accounts = response.data;
   });
   
+  //Server call to get member information
   $scope.member_accounts = [];
   $http({
     method: 'GET',
@@ -31,6 +33,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.member_accounts = response.data.members;
   });
 
+  //Server call to determine whether the user is an admin
   $http({
     method: 'GET',
     url: '/is-admin'
@@ -38,6 +41,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_admin = response.data.is_admin;
   });
 
+  //Server call to determine whether the user is an instructor
   $http({
     method: 'GET',
     url: '/is-instructor'
@@ -45,6 +49,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_instructor = response.data.is_instructor;
   });
   
+  //Function to get the classes
   $scope.class_information = [];
   $scope.getClasses = function() {
     $http({
@@ -56,11 +61,13 @@ app.controller('controller', function ($scope, $http) {
   }
   $scope.getClasses(); //initial call to get classes
   
+  //Set some variables with default values
   $scope.classes = true;
   $scope.payment = "0";
   $scope.method = "Cash";
   $scope.classTerm = "Fall";
   
+  //Function to reset the page to an "Add Class" state
   $scope.setAddState = function() {
     $scope.className = "";
     $scope.classRoom = "";
@@ -79,9 +86,9 @@ app.controller('controller', function ($scope, $http) {
     $scope.buttonState = "Add Class";
     $scope.editing = false;
   }
-  
   $scope.setAddState(); //initial call to set add state
   
+  //Function to toggle changing tabs within this page
   $scope.changeTab = function(event, val) {
     $(".nav-link").removeClass("active");
     $(event.target).addClass("active");
@@ -95,10 +102,15 @@ app.controller('controller', function ($scope, $http) {
     else
       $scope.members = true;
   }
+  
+  //Function that specifies which object was clicked to be deleted
   $scope.deleteObject = function(obj) {
     $scope.delete_object = obj;  
   }
+  
+  //Function to delete a member completely
   $scope.deleteMember = function () {
+    //Find the member object that corresponds to the one to be deleted
     for (var i = 0; i < $scope.member_accounts.length; ++i) {
       if ($scope.member_accounts[i].email.toLowerCase() == $scope.delete_object.toLowerCase()) {
         $scope.member_accounts.splice (i, 1);
@@ -106,6 +118,7 @@ app.controller('controller', function ($scope, $http) {
       }
     }
 
+    //Server call to delete this member
     $http({
       method: 'POST',
       url: '/delete-member',
@@ -114,6 +127,8 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {});
   }
+  
+  //Function to update member payment method or status
   $scope.onMemberChange = function (type) {
     $http({
       method: 'POST',
@@ -125,6 +140,8 @@ app.controller('controller', function ($scope, $http) {
       }
     }).then (function (response) {});
   }
+  
+  //Function to set variables to email a member
   $scope.emailMemberModal = function (email) {
     $scope.memToEmail = email;
     $scope.emailWarnings = [];
@@ -134,12 +151,15 @@ app.controller('controller', function ($scope, $http) {
     $("#individualEmail").show();
     $("#individualSubmit").show();
   }
+  
+  //Function to email an individual member. Checks that the subject and body have content
   $scope.emailWarnings = [];
   $scope.emailInd = function () {
     $scope.emailWarnings = [];
     if (!$scope.indSubject || $scope.indSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
     if (!$scope.indMessage || $scope.indMessage == '') $scope.emailWarnings.push ('Message is not defined.');
     if ($scope.emailWarnings.length != 0) return;
+    //Server call to email an individual member
     $http({
       method: 'POST',
       url: '/email/ind',
@@ -149,18 +169,19 @@ app.controller('controller', function ($scope, $http) {
         message: $scope.indMessage
       }
     }).then (function (response) {
-      if (response.data.success) {
+      if (response.data.success) { //if the email was successfully sent
         $scope.emailSuccess = true;
         $("#individualEmail").hide();
         $("#individualSubmit").hide();
         setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
-      } else {
+      } else { //otherwise
         $scope.emailWarnings = [ 'Email was not successfully sent.' ];
         setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       }
     });
   }
   
+  //Function to set variables associated with the member to be removed
   $scope.setRemoveMember = function(email, fname, lname, cname, id, $index) {
     $scope.removeEmail = email;
     $scope.removeId = id;
@@ -169,6 +190,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.removeClass = cname;
   }
   
+  //Function to unenroll a member from a specific class
   $scope.removeMember = function () {
     for (var i = 0; i < $scope.member_accounts.length; ++i) {
       if ($scope.member_accounts[i].email.toLowerCase() == $scope.removeEmail.toLowerCase()) {
@@ -186,19 +208,13 @@ app.controller('controller', function ($scope, $http) {
     });
   };
   
-  $scope.checkArray = function(arr, val) {
-    for(var i in arr) {
-      if(arr[i]==val) {
-        return true;
-      }
-    }
-    return false;
-  }
+  //Function to add or edit a class
   $scope.alertList = [];
   $scope.verifyAdded = false;
   $scope.verifyUpdated = false;
   $scope.addOrEdit = function () {
     $scope.alertList = [];
+    //Checks that required fields to add or update a class are set
     if (!$scope.className || $scope.className == '') $scope.alertList.push ('Class name is empty.');
     if (!$scope.classRoom || $scope.classRoom == '') $scope.alertList.push ('Class room is empty.');
     if (!$scope.classStart || $scope.classStart == '') $scope.alertList.push ('Class start is not specified.');
@@ -216,6 +232,7 @@ app.controller('controller', function ($scope, $http) {
     if ($scope.sunday) days.push ('Sunday');
     if (days.length == 0) $scope.alertList.push ('No days were selected.');
     if ($scope.alertList.length != 0) return;
+    //If we are adding a new class, send the information to the server
     if ($scope.buttonState == "Add Class") {
       $http({
         method: 'POST',
@@ -262,7 +279,7 @@ app.controller('controller', function ($scope, $http) {
           setTimeout (function () { $scope.verifyAdded = false; }, 1000);
         }
       });
-    } else {
+    } else { //we are editing an existing class
       $http({
         method: 'POST',
         url: '/edit-course',
@@ -297,6 +314,7 @@ app.controller('controller', function ($scope, $http) {
     }
   };
   
+  //Function to delete a course
   $scope.deleteCourse = function () {
     $http({
       method: 'POST',
@@ -319,17 +337,19 @@ app.controller('controller', function ($scope, $http) {
       }
     });
   };
+ 
+// Function to archive a course  
+//  $scope.archiveCourse = function () {
+//    $http({
+//      method: 'POST',
+//      url: '/archive-course',
+//      data: {
+//        course: $scope.class_information[$scope.editClass]._id
+//      }
+//    }).then (function (response) {});
+//  };
   
-  $scope.archiveCourse = function () {
-    $http({
-      method: 'POST',
-      url: '/archive-course',
-      data: {
-        course: $scope.class_information[$scope.editClass]._id
-      }
-    }).then (function (response) {});
-  };
-  
+  //Function to populate the information for a class when this class is set to be edited
   $scope.submitEditClass = function() {
     $scope.buttonState = "Save Changes";
     $scope.verifyAdded = false;
@@ -357,6 +377,7 @@ app.controller('controller', function ($scope, $http) {
       $scope.toggleSignups = "Open Registration";
   }
   
+  //Function to create an instructor account
   $scope.createAcctErrs = [];
   $scope.createAccount = function () {
     if (!$scope.createAcctFName | $scope.createAcctFName == '')
@@ -382,6 +403,7 @@ app.controller('controller', function ($scope, $http) {
     }
   };
 
+  //Function to unflag an instructor bio
   $scope.unflagBio = function ($index, from) {
     $http({
       method: 'POST',
@@ -395,6 +417,7 @@ app.controller('controller', function ($scope, $http) {
     $scope[from][$index].bio_is_flagged = false;
   };
 
+  //Function to unflag an instructor image
   $scope.unflagImg = function ($index, from) {
     $http({
       method: 'POST',
@@ -408,6 +431,7 @@ app.controller('controller', function ($scope, $http) {
     $scope[from][$index].img_is_flagged = false;
   };
 
+  //Function to flag an instructor bio
   $scope.flagBio = function ($index, from) {
     $http({
       method: 'POST',
@@ -421,6 +445,7 @@ app.controller('controller', function ($scope, $http) {
     $scope[from][$index].bio_is_flagged = true;
   };
 
+  //Function to flag an instructor image
   $scope.flagImg = function ($index, from) {
     $http({
       method: 'POST',
@@ -434,6 +459,7 @@ app.controller('controller', function ($scope, $http) {
     $scope[from][$index].img_is_flagged = true;
   };
 
+  //Function to logout
   $scope.logout = function() {
     $http({
     method: 'GET',
@@ -443,15 +469,18 @@ app.controller('controller', function ($scope, $http) {
     });
   }
   
+  //Function to store information about which account is being deleted
   $scope.setDelete = function(email, id) {
     $scope.delete_email = email;
     $scope.delete_id = id;
   }
   
+  //Function to delete an instructor account
   $scope.deleteAccount = function() {
     //TODO - Delete instructor account (also delete their information form the courses they are listed under? Or do we just assume that they'll know to change it)
   }
   
+  //Function to toggle the registration status of a class
   $scope.toggleRegistration = function() {
     //TODO - toggle is_sign_up_able
     if($scope.class_information[$scope.editClass].is_sign_up_able)
