@@ -393,13 +393,15 @@ app.controller('controller', function ($scope, $http) {
   //Function to create an instructor account
   $scope.createAcctErrs = [];
   $scope.createAccount = function () {
-    if (!$scope.createAcctFName | $scope.createAcctFName == '')
+    $scope.createAcctErrs = [];
+    if (!$scope.createAcctFName || $scope.createAcctFName == '')
       $scope.createAcctErrs.push ('First name must be included.');
-    if (!$scope.createAcctLName | $scope.createAcctLName == '')
+    if (!$scope.createAcctLName || $scope.createAcctLName == '')
       $scope.createAcctErrs.push ('Last name must be included.');
-    if (!$scope.createAcctEmail | $scope.createAcctEmail == '')
+    if (!$scope.createAcctEmail || $scope.createAcctEmail == '')
       $scope.createAcctErrs.push ('Email must be included.');
-    //TODO - check that either checkbox is selected (must be at least one, can be both)
+    if (!$scope.createAdminCheck && !$scope.createInstructorCheck)
+      $scope.createAcctErrs.push ('User must be an instructor, administrator, or both.');
     if ($scope.createAcctErrs.length == 0) {
       //TODO - assign privileges
       $http({
@@ -408,7 +410,9 @@ app.controller('controller', function ($scope, $http) {
         data: {
           fname: $scope.createAcctFName,
           lname: $scope.createAcctLName,
-          email: $scope.createAcctEmail
+          email: $scope.createAcctEmail,
+          is_admin: $scope.createAdminCheck,
+          is_instructor: $scope.createInstructorCheck
         }
       }).then (function (response) {
         $('#add-account').modal('toggle');

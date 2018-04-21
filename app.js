@@ -324,7 +324,7 @@ app.get ('/get-account-info', function (req, res) {
 app.post ('/add-account', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
-      genNewAccount (req.body.fname, req.body.lname, req.body.email);
+      genNewAccount (req.body.fname, req.body.lname, req.body.email, req.body.is_admin, req.body.is_instructor);
       res.redirect ('/admin');
     } else {
       res.redirect ('/');
@@ -464,7 +464,7 @@ async function changePassword (email, oldpass, newpass) {
 }
 
 //Function to create a new account and generate a temporary password
-function genNewAccount (fname, lname, email) {
+function genNewAccount (fname, lname, email, admin, instructor) {
   var password = '';
   var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
   for (var i = 0; i < 8; ++i)
@@ -474,8 +474,8 @@ function genNewAccount (fname, lname, email) {
 
   var newUser = {
     email: email,
-    is_admin: false,
-    is_instructor: true,
+    is_admin: admin,
+    is_instructor: instructor,
     profile_image: '/resources/img/default.png',
     first_name: fname,
     last_name: lname,
