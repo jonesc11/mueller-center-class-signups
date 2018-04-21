@@ -1,6 +1,7 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
   
+  //Function to determine whether this user is an admin
   $http({
     method: 'GET',
     url: '/is-admin'
@@ -8,6 +9,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_admin = response.data.is_admin;
   });
 
+  //Function to determine whether this user is an instructor
   $http({
     method: 'GET',
     url: '/is-instructor'
@@ -15,6 +17,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.is_instructor = response.data.is_instructor;
   });
 
+  //Function to get the account information for this user
   $scope.account = {};
   $http({
     method: 'GET',
@@ -22,6 +25,8 @@ app.controller('controller', function ($scope, $http) {
   }).then (function (response) {
     $scope.account = response.data;
   });
+  
+  //Set default variables
   $scope.editorEnabled = false;
   $scope.error1 = false;
   $scope.error2 = false;
@@ -29,6 +34,7 @@ app.controller('controller', function ($scope, $http) {
   $scope.currentimg = true;
   $scope.newimg = false;
   
+  //Function that enables editor mode when 'Edit' is clicked
   $scope.enableEditor = function() {
     $scope.editorEnabled = true;
     $scope.editableFName = $scope.account.first_name;
@@ -36,15 +42,18 @@ app.controller('controller', function ($scope, $http) {
     $scope.editableBio = $scope.account.biography;
   };
   
+  //Function to disable editor mode
   $scope.disableEditor = function() {
     $scope.editorEnabled = false;
   };
   
+  //Function that is called when a user updates their account information
   $scope.save = function() {
     $scope.account.first_name = $scope.editableFName;
     $scope.account.last_name = $scope.editableLName;
     $scope.account.biography = $scope.editableBio;
     $scope.disableEditor();
+    //Send the updated information to the server
     $http({
       method: 'POST',
       url: '/update-info',
@@ -54,9 +63,11 @@ app.controller('controller', function ($scope, $http) {
         biography: $scope.editableBio
       }
     }).then (function (response) {
-    });;
+    });
   };
   
+  //Function that sets the necessary variables depending on which class is
+  //to be emailed. Also resets any errors.
   $scope.emailClassModal = function (class_id, class_name) {
     $scope.emailId = class_id;
     $scope.emailName = class_name;
@@ -67,31 +78,36 @@ app.controller('controller', function ($scope, $http) {
     $("#classEmail").show();
     $("#classSubmit").show();
   }
-  $scope.emailWarnings = [];
   
+  //Function that sends the email to the class
+  //First, the form is checked for errors
+  $scope.emailWarnings = [];
   $scope.sendEmail = function(class_id, class_name) {
     $scope.emailWarnings = [];
     if (!$scope.allSubject || $scope.allSubject == '') $scope.emailWarnings.push ('Subject is not specified.');
     if (!$scope.allMessage || $scope.allMessage == '') $scope.emailWarnings.push ('Message is not defined.');
     if ($scope.emailWarnings.length != 0) return;
+    
+    //If there are no errors, email the class.
     $http.post("/email-class", {
         subject: $scope.allSubject,
         body: $scope.allMessage,
         class_id: class_id,
         class_name: class_name
     }).then(function(response){
-      if (response.data.success) {
+      if (response.data.success) { //if the server sends that the email sent
         $scope.emailSuccess = true;
         $("#classEmail").hide();
         $("#classSubmit").hide();
         setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
-      } else {
+      } else { //otherwise
         $scope.emailWarnings = [ 'Email was not successfully sent.' ];
         setTimeout (function () { $('#email-member-modal').modal('toggle'); }, 1500);
       }
     });
   };
 
+  //Function to handle changing password
   $scope.changePassAlerts = [];
   $scope.changePass = function() {
     if ($scope.newpass != $scope.rtnewpass)
@@ -114,6 +130,7 @@ app.controller('controller', function ($scope, $http) {
     }
   };
 
+  //Functions to handle image display and uploading
   $scope.imageUpload = function(element){
         var reader = new FileReader();
         reader.onload = $scope.imageIsLoaded;
