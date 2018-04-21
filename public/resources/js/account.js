@@ -1,6 +1,6 @@
 var app = angular.module("mueller-sign-up", []);
 app.controller('controller', function ($scope, $http) {
-
+  
   $http({
     method: 'GET',
     url: '/is-admin'
