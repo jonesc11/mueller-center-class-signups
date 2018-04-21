@@ -66,14 +66,17 @@ app.use (bodyParser.urlencoded ( {extended: true} ));
 
 app.use (express.static (__dirname + '/public'));
 
+//Returns index.html when a user requests the main page
 app.get ('/', function (req, res) {
   res.sendFile (__dirname + "/pages/index.html");
 });
 
+//Returns index.html when a user requests the instructor page
 app.get ('/instructors', function (req, res) {
   res.sendFile (__dirname + "/pages/instructor_list.html");
 });
 
+//Returns the admin panel if the user is an admin
 app.get ('/admin', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result)
@@ -83,6 +86,7 @@ app.get ('/admin', function (req, res) {
   });
 });
 
+//Returns the account page if the user is an admin or instructor
 app.get ('/account', function (req, res) {
   userIsInstructor (req.user ? req.user : '').then (function (result) {
     if (result)
@@ -97,9 +101,12 @@ app.get ('/account', function (req, res) {
   });
 });
 
+//Function to enroll a user in a class
 app.post ('/enroll', function (req, res) {
+  //Call to add member to this class
   addMember (req.body.course.course_id, req.body.person);
   
+  //Create an email and send it to the user confirming they signed up for the class
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: email_creds
@@ -109,7 +116,7 @@ app.post ('/enroll', function (req, res) {
     from: email_creds.user,
     to: req.body.person.email,
     subject: 'You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness!',
-    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px">You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness! This class is taught by ' + req.body.course.instructor + ' on ' + req.body.course.days + ' from ' + req.body.course.time + ' in room ' + req.body.course.room +'. If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union. You have three weeks from the beginning of classes to request a refund for this class. If you wish to be removed from a class, please email Donna Sutton at suttoa@rpi.edu with your name, RIN (if applicable), and the class you wish to be removed from.</div>'
+    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px"><h1 align="center">You have signed up for ' +  req.body.course.course_name +' at Mueller Center Fitness!</h1><h3 style="margin-bottom:0">Class details:</h3><div>Instructor: ' + req.body.course.instructor + '<br/>Days: ' + req.body.course.days +'<br/>Time: ' + req.body.course.time +'<br/>Room: ' + req.body.course.room +'</div><p>If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union Administration Office. You have three weeks from the beginning of classes to request a full refund.</p><p>If you wish to be removed from this class, please email Donna Sutton at <a href="mailto:suttoa@rpi.edu">suttoa@rpi.edu</a> with your name, RIN (if applicable), and the class you wish to be removed from.</p><div align="center"><img style="width:200px;" src="https://poly.rpi.edu/wp-content/uploads/2018/03/Union-Logo-Design-WebLeveled.jpg"><br/>Contact the Mueller Center at: (518)-276-2874</div>'
   }, function (err, info) {
     if (err)
       throw err;
@@ -117,6 +124,7 @@ app.post ('/enroll', function (req, res) {
   res.send ({success: true});
 });
 
+//Function to email an entire class
 app.post ('/email-class', function (req, res) {
   userIsInstructor (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -133,6 +141,7 @@ app.post ('/email-class', function (req, res) {
   });
 });
 
+//Function to email an individual user
 app.post ('/email/ind', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (response) {
     if (response) {
@@ -144,6 +153,7 @@ app.post ('/email/ind', function (req, res) {
   });
 });
 
+//Returns the login page if this is a valid user
 app.get ('/login', function (req, res) {
   if (req.user)
     res.redirect ('/account');
@@ -151,6 +161,7 @@ app.get ('/login', function (req, res) {
     res.sendFile (__dirname + "/pages/login.html");
 });
 
+//Checks if the user is an admin
 app.get ('/is-admin', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (response) {
     if (response)
@@ -160,6 +171,7 @@ app.get ('/is-admin', function (req, res) {
   });
 });
 
+//Checks if the user is an instructor
 app.get ('/is-instructor', function (req, res) {
   userIsInstructor (req.user ? req.user : '').then (function (response) {
     if (response)
@@ -169,23 +181,28 @@ app.get ('/is-instructor', function (req, res) {
   });
 });
 
+//Function to login
 app.post ('/login',
   passport.authenticate('local', { successRedirect: '/account',
                                    failureRedirect: '/login' }));
 
+//Function to log out
 app.get ('/logout',function(req,res) {
   req.logout();
   res.redirect('/');
 });
 
+//Function to register a new user
 app.post ('/register',
   passport.authenticate('local-register', { successRedirect: '/',
                                    failureRedirect: '/login' }));
 
+//Function to get all courses that are open for registration
 app.get ('/get-courses', function (req, res) {
   getAllSignUpableCourses().then(function (data) { res.send (data); });
 });
 
+//Function to add a new class
 app.post ('/add-class', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -197,6 +214,7 @@ app.post ('/add-class', function (req, res) {
   });
 });
 
+//Function to delete a class
 app.post ('/delete-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -208,6 +226,7 @@ app.post ('/delete-course', function (req, res) {
   });
 });
 
+//Function to archive a class
 app.post ('/archive-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -219,6 +238,7 @@ app.post ('/archive-course', function (req, res) {
   });
 });
 
+//Function to edit a class
 app.post ('/edit-course', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -230,6 +250,7 @@ app.post ('/edit-course', function (req, res) {
   });
 });
 
+//Function to return the members of a class
 app.get ('/get-members', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -242,6 +263,7 @@ app.get ('/get-members', function (req, res) {
   });
 });
 
+//Function to delete a member
 app.post ('/delete-member', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -253,6 +275,7 @@ app.post ('/delete-member', function (req, res) {
   });
 });
 
+//Function to remove a member from a class
 app.post ('/remove-member', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -264,6 +287,7 @@ app.post ('/remove-member', function (req, res) {
   });
 });
 
+//Function to change the payment method or status for a member
 app.post ('/change-member', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -275,14 +299,17 @@ app.post ('/change-member', function (req, res) {
   });
 });
 
+//Function to return all instructors
 app.get ('/get-instructors', function (req, res) {
   getAllInstructors().then(function (data) { res.send (data); });
 });
 
+//Function to return all admins
 app.get ('/get-admins', function (req, res) {
   getAllAdmins().then (function (data) {res.send (data); });
 });
 
+//Function to get this user's account information
 app.get ('/get-account-info', function (req, res) {
   getUserByEmail (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -293,6 +320,7 @@ app.get ('/get-account-info', function (req, res) {
   });
 });
 
+//Function to create a new admin or instructor account
 app.post ('/add-account', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -304,6 +332,7 @@ app.post ('/add-account', function (req, res) {
   });
 });
 
+//Function to update an account's information
 app.post ('/update-info', function (req, res) {
   if (req.user) {
     updateUserByEmail (req.user, {
@@ -317,6 +346,7 @@ app.post ('/update-info', function (req, res) {
   }
 });
 
+//Function to change the account's password
 app.post ('/change-password', function (req, res) {
   if (req.user) {
     if (changePassword (req.user, req.body.oldpass, req.body.newpass))
@@ -328,6 +358,7 @@ app.post ('/change-password', function (req, res) {
   }
 });
 
+//Function to change the account's image
 app.post ('/change-image', function (req, res) {
   if (req.user) {
     if (req.files && req.files.newimage) {
@@ -346,6 +377,7 @@ app.post ('/change-image', function (req, res) {
   }
 });
 
+//Function to flag an instructor bio
 app.post ('/flag-bio', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -356,6 +388,7 @@ app.post ('/flag-bio', function (req, res) {
   });
 });
 
+//Function to flag an instructor image
 app.post ('/flag-img', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -366,6 +399,7 @@ app.post ('/flag-img', function (req, res) {
   });
 });
 
+//Function to unflag a bio
 app.post ('/unflag-bio', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -376,6 +410,7 @@ app.post ('/unflag-bio', function (req, res) {
   });
 });
 
+//Function to unflag an image
 app.post ('/unflag-img', function (req, res) {
   userIsAdmin (req.user ? req.user : '').then (function (result) {
     if (result) {
@@ -386,8 +421,10 @@ app.post ('/unflag-img', function (req, res) {
   });
 });
 
+//URL for mongo database
 var mongoUrl = 'mongodb://ec2-34-239-101-4.compute-1.amazonaws.com';
 
+//Connect to the database
 mongo.connect (mongoUrl, function (err, client) {
   if (err) {
     console.log (err);
@@ -400,6 +437,7 @@ mongo.connect (mongoUrl, function (err, client) {
   classesCollection = db.collection ('classes');
 });
 
+//Function to change the password for an account
 async function changePassword (email, oldpass, newpass) {
   var user = await getUserByEmail (email);
   getHashedPassword (oldpass, user.salt, function (err, hash) {
@@ -414,6 +452,7 @@ async function changePassword (email, oldpass, newpass) {
   });
 }
 
+//Function to create a new account and generate a temporary password
 function genNewAccount (fname, lname, email) {
   var password = '';
   var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -445,6 +484,7 @@ function genNewAccount (fname, lname, email) {
     auth: email_creds
   });
 
+  //Email this user their new account information
   transporter.sendMail ({
     from: email_creds.user,
     to: email,
@@ -548,6 +588,10 @@ async function getAllMembers () {
   return {members: members};
 }
 
+/*
+ * Deletes a member from the database and removes them from all of
+ * the courses they are enrolled in
+ */
 async function deleteMember (email) {
   var courses = await getAllCourses ();
 
@@ -598,6 +642,10 @@ async function addMember (course, object) {
   await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
 }
 
+/*
+ * Updates this member's payment method and/or status in all classes they
+ * are enrolled in
+ */
 async function changeMemberPayment (email, paymentData) {
   var courses = await getAllCourses ();
   var members = [];

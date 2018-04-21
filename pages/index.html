@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/resources/css/index.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <title>Mueller Center</title>
+    <link rel="icon" type="image/jpg" href="/resources/img/mueller-logo.jpg">
+    <title>Mueller Center Fitness</title>
   </head>
   <body ng-controller="controller">
     <div id="header-container">
@@ -76,10 +77,10 @@
               </div>
               <div id="collapse{{class._id}}" class="collapse card-border" role="tabpanel" aria-labelledby="heading{{class._id}}">
                 <div class="card-block">
-                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name, class.instructor, class.room, print_time(class.frequency.start_time, class.frequency.end_time), print_days(class.frequency.days_of_week))">Sign Up</button>
+                  <button class='btn signup' data-toggle="modal" data-target="#sign-up" ng-click="classModal(class._id, class.name, class.instructor, class.room, print_time(class.frequency.start_time, class.frequency.end_time), print_days(class.frequency.days_of_week))" ng-disabled="!{{class.is_sign_up_able}}" title="{{ class.is_sign_up_able ? 'Sign up for this class!' : 'This class is currently closed.'}}">Sign Up</button>
                   <span class="mobile-show"><strong>Day(s):</strong> {{print_days(class.frequency.days_of_week)}}</span>
                   <span class="mobile-show"><strong>Time:</strong>  {{print_time(class.frequency.start_time, class.frequency.end_time)}}</span>
-				          <span><strong>Instructor:</strong><a href="/instructors#{{class.instructor| removeSpaces}}"> {{class.instructor}}</a></span>
+				  <span><strong>Instructor: </strong><a href="/instructors#{{class.instructor| removeSpaces}}">{{class.instructor}}</a></span>
                   <span><strong>Email:</strong> <a class="email" href="mailto:{{class.email}}">{{class.instructor_email}}</a></span>
                   <span><strong>Room:</strong> {{class.room}}</span>
                   <span><strong>Type:</strong> {{class.type}}</span>

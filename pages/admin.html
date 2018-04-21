@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/resources/css/admin.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <title>Mueller Center</title>
+    <link rel="icon" type="image/jpg" href="/resources/img/mueller-logo.jpg">
+    <title>Mueller Center Fitness</title>
   </head>
   <body ng-controller="controller">
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -134,8 +135,9 @@
               <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription" rows="6" cols="60">{{class.description}}</textarea>
             </div>
             <div class="btn-container">
-              <button class="btn btn-primary" ng-click="addOrEdit()">{{buttonState}}</button>
+              <button class="btn btn-success" ng-click="addOrEdit()">{{buttonState}}</button>
 <!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
+              <button class="btn btn-primary" ng-show="editing" ng-click="toggleRegistration()">{{toggleSignups}}</button>
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded"> {{classAddMessage}}</span>
               <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
