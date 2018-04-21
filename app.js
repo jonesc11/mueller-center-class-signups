@@ -188,7 +188,11 @@ app.get ('/is-instructor', function (req, res) {
 //Function to login
 app.post ('/login',
   passport.authenticate('local', { successRedirect: '/account',
-                                   failureRedirect: '/login' }));
+                                   failureRedirect: '/login-failure' }));
+
+app.get ('/login-failure', function (req, res) {
+  res.send ({ success: false });
+});
 
 //Function to log out
 app.get ('/logout',function(req,res) {
