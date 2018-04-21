@@ -332,6 +332,17 @@ app.post ('/add-account', function (req, res) {
   });
 });
 
+app.post ('/delete-account', function (req, res) {
+  userIsAdmin (req.user ? req.user : '').then (function (result) {
+    if (result) {
+      deleteUser (req.body.email);
+      res.send ({ success: true });
+    } else {
+      res.send ({ success: false });
+    }
+  });
+});
+
 //Function to update an account's information
 app.post ('/update-info', function (req, res) {
   if (req.user) {
@@ -884,10 +895,10 @@ async function createUser (object) {
 }
 
 /**
- * Deletes a user given an objectId
+ * Deletes a user given an email
  */
-function deleteUser (objectId) {
-  accountsCollection.deleteOne ({ _id: objectId });
+function deleteUser (email) {
+  accountsCollection.deleteOne ({ email: email });
 }
 
 app.listen(3000, () => console.log('Server listening on port 3000.'));

@@ -17,13 +17,16 @@ app.controller('controller', function ($scope, $http) {
   
   //Server call to get admin accounts
   $scope.admin_accounts = [];
-  $http({
-    url: '/get-admins',
-    method: 'GET'
-  }).then (function (response) {
-    $scope.admin_accounts = response.data;
-  });
-  
+  $scope.getAdmins = function () {
+    $http({
+      url: '/get-admins',
+      method: 'GET'
+    }).then (function (response) {
+      $scope.admin_accounts = response.data;
+    });
+  }
+  $scope.getAdmins();
+ 
   //Server call to get member information
   $scope.member_accounts = [];
   $http({
@@ -487,7 +490,21 @@ app.controller('controller', function ($scope, $http) {
   
   //Function to delete an instructor account
   $scope.deleteAccount = function() {
-    //TODO - Delete instructor account (also delete their information form the courses they are listed under? Or do we just assume that they'll know to change it)
+    $http({
+      url: '/delete-account',
+      method: 'POST',
+      data: {
+        email: $scope.delete_email
+      }
+    }).then (function (success) {
+      if (success.data.success) {
+        $scope.instructorSuccess = 'User deleted successfully.';
+        $scope.getAdmins();
+        $scope.getInstructors();
+      } else {
+        $scope.instructorError = 'User delete failed.';
+      }
+    });
   }
   
   //Function to toggle the registration status of a class

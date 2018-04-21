@@ -148,6 +148,8 @@
       </div>
     </div>
     <div id="instructors" class="container tab" ng-show="instructors">
+      <div class="alert alert-danger" ng-show="instructorError">{{instructorError}}</div>
+      <div class="alert alert-success" ng-show="instructorSuccess">{{instructorSuccess}}</div>
       <h1>Instructor Accounts</h1>
       <button class="btn btn-primary add-inst" data-toggle="modal" data-target="#add-account">Create New Instructor Account</button>
       <div class='account row border' ng-repeat='account in instructor_accounts'>
@@ -158,7 +160,7 @@
           <ul class='inst-classes'>
             <li ng-repeat='class in account.classes'>{{class.name}}</li>
           </ul>
-          <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-acc" ng-click="setDelete(account.email, account._id)">Delete Account</button>
+          <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-acc" ng-click="setDelete(account.email)">Delete Account</button>
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
           <strong>Bio: </strong>
@@ -331,6 +333,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
+            <div class="alert alert-danger" ng-show="deleteError">{{deleteError}}</div>
             <div class="message mt-2 mb-4">
               Are you sure you want to delete the account for the email {{delete_email}}? This action cannot be undone.
             </div>
