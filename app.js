@@ -583,7 +583,22 @@ async function getAllArchivedCourses () {
  * Returns all non archived class objects
  */
 async function getAllNonArchivedCourses () {
-  return await classesCollection.find({ is_archived: false }).toArray();
+  var courses = await classesCollection.find({ is_archived: false}).toArray();
+
+  for (var i = 0; i < courses.length; ++i) {
+    var instructor = await getUserById (courses[i].instructor);
+    if (instructor && instructor !== null) {
+      courses[i].instructor = instructor.first_name + " " + instructor.last_name;
+      courses[i].instructor_email = instructor.email;
+      courses[i].instructor_id = instructor._id.toString();
+    } else {
+      courses[i].instructor = "";
+      courses[i].instructor_email = "";
+      courses[i].instructor_id = "";
+    }
+  }
+
+  return courses;
 }
 
 /**

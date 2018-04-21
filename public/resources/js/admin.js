@@ -314,8 +314,8 @@ app.controller('controller', function ($scope, $http) {
             description: $scope.classDescription,
             type: $scope.classType,
             semester: {
-              term: classTerm,
-              year: classYear
+              term: $scope.classTerm,
+              year: $scope.classYear
             }
           }
         }

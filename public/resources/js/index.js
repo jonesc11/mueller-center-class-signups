@@ -135,7 +135,7 @@ app.controller('controller', function ($scope, $http) {
   $scope.class_information = [];
   $http({
     method: 'GET',
-    url: '/get-courses'
+    url: '/get-nonarchived-courses'
   }).then(function successCallback (response) {
     $scope.class_information = response.data;
   });
