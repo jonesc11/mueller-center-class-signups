@@ -208,6 +208,16 @@ app.controller('controller', function ($scope, $http) {
     });
   };
   
+  //Function to check whether a value exists in an array
+  $scope.checkArray = function(arr, val) {
+    for(var i in arr) {
+      if(arr[i]==val) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   //Function to add or edit a class
   $scope.alertList = [];
   $scope.verifyAdded = false;
