@@ -89,8 +89,12 @@ app.controller('controller', function ($scope, $http) {
         }
       }
     }).then (function (response) { //on success
-      $('#sign-up').modal('toggle');
-      $('#success').modal('toggle');
+      if (response.data.success) {
+        $('#sign-up').modal('toggle');
+        $('#success').modal('toggle');
+      } else {
+        $scope.signUpErrors.push ('Member with that email address already signed up for this course.');
+      }
     }).catch(function (response) { //on failure
       $('#error').modal('toggle');
     });

@@ -104,24 +104,28 @@ app.get ('/account', function (req, res) {
 //Function to enroll a user in a class
 app.post ('/enroll', function (req, res) {
   //Call to add member to this class
-  addMember (req.body.course.course_id, req.body.person);
-  
-  //Create an email and send it to the user confirming they signed up for the class
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: email_creds
+  addMember (req.body.course.course_id, req.body.person).then (function (response) {
+    if (response) {
+      //Create an email and send it to the user confirming they signed up for the class
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: email_creds
+      });
+      
+      transporter.sendMail ({
+        from: email_creds.user,
+        to: req.body.person.email,
+        subject: 'You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness!',
+        html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px"><h1 align="center">You have signed up for ' +  req.body.course.course_name +' at Mueller Center Fitness!</h1><h3 style="margin-bottom:0">Class details:</h3><div>Instructor: ' + req.body.course.instructor + '<br/>Days: ' + req.body.course.days +'<br/>Time: ' + req.body.course.time +'<br/>Room: ' + req.body.course.room +'</div><p>If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union Administration Office. You have three weeks from the beginning of classes to request a full refund.</p><p>If you wish to be removed from this class, please email Donna Sutton at <a href="mailto:suttoa@rpi.edu">suttoa@rpi.edu</a> with your name, RIN (if applicable), and the class you wish to be removed from.</p><div align="center"><img style="width:200px;" src="https://poly.rpi.edu/wp-content/uploads/2018/03/Union-Logo-Design-WebLeveled.jpg"><br/>Contact the Mueller Center at: (518)-276-2874</div>'
+      }, function (err, info) {
+        if (err)
+          throw err;
+      });
+      res.send ({ success: true });
+    } else {
+      res.send ({ success: false });
+    }
   });
-  
-  transporter.sendMail ({
-    from: email_creds.user,
-    to: req.body.person.email,
-    subject: 'You have signed up for ' + req.body.course.course_name + ' at Mueller Center Fitness!',
-    html: '<div style="width:100%;height:50px;font-size:30px;background-color:#e2231b;text-align:center;line-height:50px;"><a style="color:white;" href="https://union.rpi.edu/content/mueller-center">Mueller Center Fitness</a></div><div style="padding:16px"><h1 align="center">You have signed up for ' +  req.body.course.course_name +' at Mueller Center Fitness!</h1><h3 style="margin-bottom:0">Class details:</h3><div>Instructor: ' + req.body.course.instructor + '<br/>Days: ' + req.body.course.days +'<br/>Time: ' + req.body.course.time +'<br/>Room: ' + req.body.course.room +'</div><p>If you are paying with a check, please bring it to the Mueller Center. If you are paying with cash or card, please bring it to the Union Administration Office. You have three weeks from the beginning of classes to request a full refund.</p><p>If you wish to be removed from this class, please email Donna Sutton at <a href="mailto:suttoa@rpi.edu">suttoa@rpi.edu</a> with your name, RIN (if applicable), and the class you wish to be removed from.</p><div align="center"><img style="width:200px;" src="https://poly.rpi.edu/wp-content/uploads/2018/03/Union-Logo-Design-WebLeveled.jpg"><br/>Contact the Mueller Center at: (518)-276-2874</div>'
-  }, function (err, info) {
-    if (err)
-      throw err;
-  });
-  res.send ({success: true});
 });
 
 //Function to email an entire class
@@ -662,7 +666,16 @@ async function createClass (object) {
  * paid is whether or not the person we are adding has paid
  */
 async function addMember (course, object) {
-  await classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
+  var users = await getClass (course);
+
+  for (var i = 0; i < users.persons_enrolled.length; ++i) {
+    if (users.persons_enrolled[i].email == object.email)
+      return false;
+  }
+
+  classesCollection.updateOne ({ _id: new ObjectID(course) }, { $push: { persons_enrolled: object } });
+
+  return true;
 }
 
 /*
