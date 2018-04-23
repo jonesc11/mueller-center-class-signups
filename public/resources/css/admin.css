@@ -226,6 +226,8 @@ textarea {
 }
 
 .add-class {
+  max-width: 155px;
+  height: 38px;
   float: right;
 }
 
@@ -250,6 +252,7 @@ textarea {
     width: 265px!important;
     margin-right: 15px;
   }
+  
 }
 
 @media screen and (max-width: 768px) {
@@ -260,6 +263,21 @@ textarea {
   }
   
   .add-inst {
+    float: none;
+    margin-bottom: 10px;
+  }
+  
+  .form-control {
+    width: 300px;
+  }
+  
+  .edit-class {
+    width: 190px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .add-class {
     float: none;
     margin-bottom: 10px;
   }

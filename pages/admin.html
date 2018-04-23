@@ -42,8 +42,8 @@
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
       <div class="alert alert-danger" ng-repeat="alert in alertList">{{alert}}</div>
-      <div>
-        <form id="instDropdown" ng-submit="submitEditClass()">
+      <div class="row">
+        <form id="instDropdown" ng-submit="submitEditClass()" class="col-sm-8 col-md-8 col-lg-10">
           <div class="form-group">
             <select ng-model="editClass" name='edit' class='form-control edit-class'>
               <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
@@ -51,7 +51,9 @@
             <input type="submit" class="btn btn-primary" value="Edit Class">
           </div>
         </form>
-        <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
+        <div class="col-sm-4 col-md-4 col-lg-2">
+          <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
+        </div>
       </div>
       <div>
         <div class="card">
