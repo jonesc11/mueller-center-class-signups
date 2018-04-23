@@ -429,6 +429,7 @@ app.controller('controller', function ($scope, $http) {
         }
       }).then (function (response) {
         $('#add-account').modal('toggle');
+        $scope.getInstructors();
       });
     }
   };
