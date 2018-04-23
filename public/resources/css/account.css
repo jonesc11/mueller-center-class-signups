@@ -151,6 +151,7 @@ header {
 .right-info {
 	width:40%;
 	float:right;
+	margin-bottom: 10px;
 }
 
 .edit-right-info {
@@ -160,10 +161,12 @@ header {
 }
 
 #bio {
-	overflow:auto;
+	overflow:scroll;
 	height:250px;
 	padding-right:5%;
 	margin-bottom: 10px;
+	width:100%;
+	float:left;
 }
 
 textarea[name=bio] {
