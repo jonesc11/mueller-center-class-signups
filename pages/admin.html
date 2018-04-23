@@ -136,8 +136,8 @@
             </div>
             <div class="btn-container">
               <button class="btn btn-success" ng-click="addOrEdit()">{{buttonState}}</button>
-<!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
               <button class="btn btn-primary" ng-show="editing" ng-click="toggleRegistration()">{{toggleSignups}}</button>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded"> {{classAddMessage}}</span>
               <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
@@ -195,8 +195,8 @@
     </div>
     <div id="members" class="container tab" ng-show="members">
       <h1>Members</h1>
-      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
-      <div class="account row border" ng-repeat="member in member_accounts">
+<!--      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>-->
+      <div class="account row border" ng-repeat="member in member_accounts | orderBy: 'last_name'">
         <div class="col-sm-12 col-md-4 col-lg-5">
           <div><strong>Name: </strong>{{member.first_name}} {{member.last_name}}</div>
           <div><strong>Email: </strong>{{member.email}}</div>
@@ -228,8 +228,8 @@
           <strong>Classes Enrolled:</strong>
           <form class="member-classes">
             <div class="form-group classes" ng-repeat="class in member.classes">
+              <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">X</button>
               <label for="{{class._id}}">{{class.name}}</label>
-              <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">Remove</button>
             </div>
           </form>
         </div>
