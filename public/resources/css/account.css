@@ -161,7 +161,7 @@ header {
 }
 
 #bio {
-	overflow:scroll;
+	overflow:auto;
 	height:250px;
 	padding-right:5%;
 	margin-bottom: 10px;
