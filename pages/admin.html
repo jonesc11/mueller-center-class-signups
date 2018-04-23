@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en" ng-app="mueller-sign-up">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/resources/css/admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="/resources/img/mueller-logo.jpg">
+    <title>Mueller Center Fitness</title>
+  </head>
+  <body ng-controller="controller">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">Mueller Center Admin Panel</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/account">My Account</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="/logout">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <nav class="second nav nav-pills nav-fill">
+      <div class="nav-item nav-link active" ng-model="classes" ng-click="changeTab($event, 'c')">Classes</div>
+      <div class="nav-item nav-link" ng-model="instructors" ng-click="changeTab($event, 'i')">Instructors</div>
+      <div class="nav-item nav-link" ng-model="members" ng-click="changeTab($event, 'm')">Members</div>
+    </nav>
+    <div id="classes" class="container tab" ng-show="classes">
+      <h1>Classes</h1>
+      <div class="alert alert-danger" ng-repeat="alert in alertList">{{alert}}</div>
+      <div>
+        <form id="instDropdown" ng-submit="submitEditClass()">
+          <div class="form-group">
+            <select ng-model="editClass" name='edit' class='form-control edit-class'>
+              <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
+            </select>
+            <input type="submit" class="btn btn-primary" value="Edit Class">
+          </div>
+        </form>
+        <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
+      </div>
+      <div>
+        <div class="card">
+          <form class="card-block">
+            <div class="form-group">
+              <label for="class-name" class="form-control-label">Class:</label>
+              <input type="text" class="form-control" id="class-name" name="class-name" ng-model="className">
+            </div>
+            <div class="form-group">
+              <label for="instructor-name" class="form-control-label">Instructor:</label>
+              <select ng-model="instructorName" name='instructor' class='form-control'>
+                <option class="form-control" ng-repeat="instructor in instructor_accounts" value="{{instructor._id}}">{{instructor.first_name}} {{instructor.last_name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="room" class="form-control-label">Room:</label>
+              <input type="text" class="form-control" id="room" name="room" ng-model="classRoom">
+            </div>
+            <br/>
+            <div class="form-group">
+              <label for="start-time" class="form-control-label">Start Time:</label>
+              <input type="time" class="form-control" id="start-time" name="start-time" ng-model="classStart" placeholder="HH:mm">
+            </div>
+            <div class="form-group">
+              <label for="end-time" class="form-control-label">End Time:</label>
+              <input type="time" class="form-control" id="end-time" name="end-time" ng-model="classEnd" placeholder="HH:mm">
+            </div>
+            <div class="form-group">
+              <label for="class-type" class="form-control-label">Type:</label>
+              <select ng-model="classType" name='class-type' class='form-control'>
+                <option class="form-control" value="Fitness">Fitness</option>
+                <option class="form-control" value="Enrichment">Enrichment</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <strong>Day(s):</strong><br/>
+              <div class="day">
+                <input type="checkbox" value="Monday" name="monday" ng-model="monday">
+                <label for="monday">Monday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Tuesday" name="tuesday" ng-model="tuesday">
+                <label for="tuesday">Tuesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Wednesday" name="wednesday" ng-model="wednesday">
+                <label for="wednesday">Wednesday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Thursday" name="thursday" ng-model="thursday">
+                <label for="thursday">Thursday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Friday" name="friday" ng-model="friday">
+                <label for="friday">Friday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Saturday" name="saturday" ng-model="saturday">
+                <label for="saturday">Saturday</label>
+              </div>
+              <div class="day">
+                <input type="checkbox" value="Sunday" name="sunday" ng-model="sunday">
+                <label for="sunday">Sunday</label>
+              </div>
+            </div>
+            <br/>
+            <div class="form-group">
+              <label class="form-control-label">Term:</label>
+              <select id="term" name="term" class="form-control" ng-model="classTerm" ng-disabled="editing">
+                <option value="Fall">Fall</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Year:</label>
+              <input type="number" id="year" name="year" class="form-control" ng-model="classYear" min="2018" max="2050" placeholder="2018" ng-disabled="editing">
+            </div>
+            <div class="form-group col-sm-12 col-md-8 col-lg-8 pl-0">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea type="text" class="form-control" id="description" name="description" ng-model="classDescription" rows="6" cols="60">{{class.description}}</textarea>
+            </div>
+            <div class="btn-container">
+              <button class="btn btn-success" ng-click="addOrEdit()">{{buttonState}}</button>
+              <button class="btn btn-primary" ng-show="editing" ng-click="toggleRegistration()">{{toggleSignups}}</button>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
+              <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
+              <span ng-show="verifyAdded"> {{classAddMessage}}</span>
+              <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
+              <span ng-show="verifyDelete"> {{classDeleteMessage}}</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="instructors" class="container tab" ng-show="instructors">
+      <div class="alert alert-danger" ng-show="instructorError">{{instructorError}}</div>
+      <div class="alert alert-success" ng-show="instructorSuccess">{{instructorSuccess}}</div>
+      <h1>Instructor Accounts</h1>
+      <button class="btn btn-primary add-inst" data-toggle="modal" data-target="#add-account">Create New Instructor Account</button>
+      <div class='account row border' ng-repeat='account in instructor_accounts'>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <div><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
+          <div><strong>Email: </strong>{{account.email}}</div>
+          <strong>Classes:</strong>
+          <ul class='inst-classes'>
+            <li ng-repeat='class in account.classes'>{{class.name}}</li>
+          </ul>
+          <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-acc" ng-click="setDelete(account.email)">Delete Account</button>
+        </div>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <strong>Bio: </strong>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == false">Flag Bio</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagBio($index, 'instructor_accounts')" ng-show="account.bio_is_flagged == true">Unflag Bio</button>
+          <p>{{account.biography}}</p>
+          <strong>Image: </strong>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == false">Flag Image</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagImg($index, 'instructor_accounts')" ng-show="account.img_is_flagged == true">Unflag Image</button>
+          <br/>
+          <img src="{{account.profile_image}}" class='image'>
+        </div>
+      </div>
+      <h1>Admin Accounts</h1>
+      <div class='account row border' ng-repeat='account in admin_accounts'>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <div><strong>Name: </strong>{{account.first_name}} {{account.last_name}}</div>
+          <div><strong>Email: </strong>{{account.email}}</div>
+        </div>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+          <strong>Bio: </strong>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagBio($index, 'admin_accounts')" ng-show="account.bio_is_flagged == false">Flag Bio</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagBio($index, 'admin_accounts')" ng-show="account.bio_is_flagged == true">Unflag Bio</button>
+          <p>{{account.biography}}</p>
+          <strong>Image: </strong>
+          <button class="btn btn-sm btn-warning flag" ng-click="flagImg($index, 'admin_accounts')" ng-show="account.img_is_flagged == false">Flag Image</button>
+          <button class="btn btn-sm btn-warning flag" ng-click="unflagImg($index, 'admin_accounts')" ng-show="account.img_is_flagged == true">Unflag Image</button>
+          <br/>
+          <img src="{{account.profile_image}}" class='image'>
+        </div>
+      </div>
+    </div>
+    <div id="members" class="container tab" ng-show="members">
+      <h1>Members</h1>
+<!--      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>-->
+      <div class="account row border" ng-repeat="member in member_accounts | orderBy: 'last_name'">
+        <div class="col-sm-12 col-md-4 col-lg-5">
+          <div><strong>Name: </strong>{{member.first_name}} {{member.last_name}}</div>
+          <div><strong>Email: </strong>{{member.email}}</div>
+          <div><strong>RIN: </strong>{{member.rin}}</div>
+          <div><strong>Phone: </strong>{{member.phone}}</div>
+          <div><strong>Affiliation: </strong>{{member.affiliation}}</div>
+          <div>
+            <strong>Payment Method: </strong>
+            <div class='form-group'>
+              <select ng-model="member.payment_method" name='method' class='dropdown form-control' ng-change="onMemberChange('payment_method')">
+                <option class="form-control" value="cash">Cash</option>
+                <option class="form-control" value="check">Check</option>
+                <option class="form-control" value="credit">Credit</option>
+                <option class="form-control" value="bursar" ng-show="member.affiliation=='ug-student' || member.affiliation == 'g-student'">Bursar</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <strong>Payment Status: </strong>
+            <div class='form-group'>
+              <select ng-model="member.paid" name='payment' class='dropdown form-control' ng-change="onMemberChange('paid')">
+                <option class="form-control" value="false">Unpaid</option>
+                <option class="form-control" value="true">Paid</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-5">
+          <strong>Classes Enrolled:</strong>
+          <form class="member-classes">
+            <div class="form-group classes" ng-repeat="class in member.classes">
+              <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">X</button>
+              <label for="{{class._id}}">{{class.name}}</label>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-2">
+          <div class="float"><button class="btn btn-sm btn-danger" ng-click="deleteObject(member.email)" data-toggle="modal" data-target="#confirm-delete-mem">Delete</button></div>
+          <div class="float"><button class="btn btn-sm btn-secondary" ng-click="emailMemberModal(member.email)" data-toggle="modal" data-target="#email-member-modal">Email member</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <!--  Create Account Modal  -->
+    <div class="modal fade" id="add-account">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create new Instructor Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="error in createAcctErrs">{{error}}</div>
+            <form id="sign-up-form">
+              <div class="form-group">
+                <label for="first-name" class="form-control-label">First Name:</label>
+                <input type="text" class="form-control input-text" id="first-name" name="first-name" ng-model="createAcctFName">
+              </div>
+              <div class="form-group">
+                <label for="last-name" class="form-control-label">Last Name:</label>
+                <input type="text" class="form-control input-text" id="last-name" name="last-name" ng-model="createAcctLName">
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-control-label">Email:</label>
+                <input type="email" class="form-control input-text" id="email" name="email" ng-model="createAcctEmail">
+              </div>
+              <div class="form-group">
+                <div class="day">
+                  <input type="checkbox" name="is_admin" id="is_admin" ng-model="createAdminCheck">
+                  <label for="is_admin">This user is an admin</label>
+                </div>
+                <div class="day">
+                  <input type="checkbox" name="is_instructor" id="is_admin" ng-model="createInstructorCheck">
+                  <label for="is_instructor">This user is an instructor</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary signup" ng-click="createAccount()" id="login-submit">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Send Email to Individual Modal  -->
+    <div class="modal fade" id="email-member-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Send an Email</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-repeat="warning in emailWarnings">{{warning}}</div>
+            <div class="alert alert-success" ng-show="emailSuccess">Email successfully sent.</div>
+            <form>
+              <div id="individualEmail" class="message">
+                <strong>Subject: </strong><br/>
+                <input type="text" ng-model="indSubject" class="form-control" />
+                <strong>Message: </strong><br/>
+                <textarea ng-model="indMessage" class="form-control" rows="8" cols="60"></textarea>
+              </div>
+            </form>
+            <div id="individualSubmit" class="modal-footer">
+              <button type="button" class="btn btn-primary" ng-click="emailInd()">Send Email</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Delete Modal  -->
+    <div class="modal fade" id="confirm-delete">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete {{className}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteCourse()">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Account Delete Modal  -->
+    <!--  Confirm Delete Modal  -->
+    <div class="modal fade" id="confirm-delete-acc">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="alert alert-danger" ng-show="deleteError">{{deleteError}}</div>
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete the account for the email {{delete_email}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteAccount(delete_id)">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Member Delete Modal  -->
+    <div class="modal fade" id="confirm-delete-mem">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to delete {{delete_object}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteMember()">Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Archive Modal  -->
+    <div class="modal fade" id="confirm-archive">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to archive {{className}}? This action cannot be undone.
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="archiveCourse()">Archive</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Confirm Remove User from Class  -->
+    <div class="modal fade" id="confirm-remove-mem">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="message mt-2 mb-4">
+              Are you sure you want to remove {{removeName}} from {{removeClass}}?
+            </div>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeMember()">Remove</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery, Bootstrap JS, angular -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+    <script src="/resources/js/admin.js"></script>
+  </body>
+</html>

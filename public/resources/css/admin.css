@@ -1,0 +1,262 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+header {
+  background-color: #e2231b;
+  color: white;
+  text-align: center;
+  font-size: 30px;
+}
+
+.navbar-brand {
+  font-size:25px; 
+}
+
+.navbar {
+  background-color: #e2231b;
+  color:white;
+}
+
+.nav-buttons {
+  width:100%;
+  margin-top: 0px;
+  margin:10px;
+  float:left;
+  margin-right:30px;
+}
+
+.nav-buttons a {
+  margin-right:20px;
+  width:120px;
+  height:40px;
+  padding:6px;
+}
+
+#logout {
+  margin-right:50px;
+  float:right;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #383838;
+  color: white;
+}
+
+.second .nav-item {
+  background-color: #e8e8e8;
+  border: 1px solid grey;
+  border-left: none;
+  margin-bottom: 10px;
+}
+
+.nav-pills .nav-link {
+  color: black;
+  border-radius: 0px;
+}
+
+.second .nav-link:hover {
+  background-color: #adadad;
+  text-decoration: underline;
+  color: black;
+  border-radius: 0px;
+}
+
+.add, .add-inst {
+  float: right;
+}
+
+h1 {
+  display: inline-block;
+}
+
+.panel-title > a:before {
+  padding: .75rem 1.25rem;
+  float: right !important;
+  font-family: FontAwesome;
+  content: "\f068";
+  padding-left: 0px;
+  padding-right: 10px;
+}
+
+.panel-title > a.collapsed:before {
+  float: right !important;
+  content: "\f067";
+}
+
+.card {
+  margin-bottom: 10px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08),0 1px 5px 0 rgba(0,0,0,0.06)!important;
+  border: 1px solid rgba(0, 0, 0, .25);
+  background-color: #e8e8e8;
+}
+
+.card-border {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+  padding: 0px;
+  border-bottom: none;
+  background-color: #e8e8e8;
+  border-radius: .25rem!important;
+}
+
+.card-header .row{
+  padding: .75rem 1.25rem;
+}
+
+.card-header:hover {
+  background-color: #adadad;
+}
+
+.card-header a {
+  color: black;
+}
+
+.card-header a:hover {
+  text-decoration: none;
+}
+
+.card-block {
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+
+.class-info-header {
+  display: inline-block;
+}
+
+textarea {
+  resize: none;
+}
+
+.form-group {
+  display: inline-table;
+}
+
+.form-control {
+  width: 230px;
+  margin-right: 20px;
+}
+
+.day {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.description {
+  display: block;
+}
+
+#description {
+  width: 100%;
+}
+
+.modal-body .form-control {
+  width: 100%;
+}
+
+.modal-body .form-group {
+  display: block;
+}
+
+.form-control-label {
+  font-weight: bold;
+}
+
+.account {
+  background-color:#f7f7f7;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+  min-height: 230px;
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  margin-top: 5px;
+}
+
+.flag {
+  float: right;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.float {
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+.classes {
+  display: block!important;
+  margin: 0px;
+}
+
+.desc-container {
+  width: 100%;
+}
+
+
+.dropdown {
+  width: 100%;
+}
+
+#confirm-delete, #confirm-archive {
+  top: 100px;
+}
+
+.edit-class {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+#instDropdown {
+  display: inline-block;
+}
+
+.add-class {
+  float: right;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+@media screen and (min-width: 676px) {
+  .modal-dialog {
+    max-width: 600px;
+  }
+  
+  .modal-body .form-group {
+    display: inline-block;
+  }
+  
+  .input-text {
+    width: 265px!important;
+    margin-right: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .float {
+    text-align: left;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  
+  .add-inst {
+    float: none;
+    margin-bottom: 10px;
+  }
+}

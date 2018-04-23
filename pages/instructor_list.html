@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/resources/css/index.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <title>Mueller Center</title>
+    <link rel="icon" type="image/jpg" href="/resources/img/mueller-logo.jpg">
+    <title>Mueller Center Fitness</title>
   </head>
   <body ng-controller="controller">
     <div id="header-container">
-      <img id="banner" src="/resources/img/banner.jpg"/>
       <nav class="header">
+        <a id="logo-container" href="https://union.rpi.edu"><img id="header-logo" src="/resources/img/union-logo-circle.png"/></a>
         <a href="https://union.rpi.edu/content/mueller-center">
           Mueller Center Fitness
         </a>
@@ -28,20 +29,25 @@
         <h3 class="align-center">Spring 2018 Classes</h3>
         <h5 class="align-center">New Classes Every Semester!<br/>Open to the public.</h5>
         <p id="sidebar-info">
-        <strong>13-Week Class Sessions:</strong>
+        <strong>13-Week Class Sessions:</strong><br/>
         February 5, 2018 - May 4, 2018 <br/>
         &nbsp;&nbsp;$40 for one class a week<br/>
-        &nbsp;&nbsp;$80 for two classes a week<br/><br/>
+        &nbsp;&nbsp;$80 for two classes a week<br/>
+        Full refund available within three weeks of the start of classes<br/>
         <a href="/" class="link">Back to Classes</a><br/>
         <strong>Questions?</strong><br/>
         Contact Donna Sutton at:<br/>
-        &nbsp;&nbsp;Email: <a href="mailto:sutta@rpi.edu">sutta@rpi.edu</a><br/>
+        &nbsp;&nbsp;Email: <a href="mailto:suttoa@rpi.edu">suttoa@rpi.edu</a><br/>
         &nbsp;&nbsp;Phone: (518) 276-2874<br/><br/>
         Classes are taught by professional instructors. Room assignments are subject to change. ALL classes are subject to cancellation due to low participation numbers and are subject to change in class format, instructor, and class time as needed.
         </p>
         <div id="links">
-          <a href="#" class="link">Instructor Sign In</a>
+          <div ng-if="is_admin==true"><a href="/admin">Admin Panel</a></div>
+          <div ng-if="is_admin==true || is_instructor==true"><a href="/account">My Account</a></div>
+          <div ng-if="is_admin==true || is_instructor==true"><a href="/logout">Log Out</a></div>
+          <div ng-if="is_admin==false && is_instructor==false"><a href="/login" class="link">Sign In</a></div>
         </div>
+        <a href="https://union.rpi.edu"><img id="union-logo" src="/resources/img/union-logo.jpg"/></a>
         <div id="social">
           <a class='social-icons fa fa-facebook' href='https://www.facebook.com/muellercenter'></a>
           <a class='social-icons fa fa-twitter' href='https://twitter.com/RPIMuellerCent'></a>
@@ -51,44 +57,25 @@
       </aside>
       <div id="content">
         <div id="instructors">
-
-          <div class="row border instructor">
-            <div class="col-3"><img class="instructor_img" src="/resources/img/i1.jpg"/></div>
-            <div class="col-8 i_info">
-              <div class="i_name"><strong>Bill Bustamove</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:bill@gmail.com">bill@gmail.com</a></div>
+          <div class="row border instructor" ng-repeat="instructor in instructor_accounts" id="{{instructor.first_name}}{{instructor.last_name}}" post-repeat="instructorListRendered">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container" ng-show="instructor.img_is_flagged == false"><img class="instructor_img" src="{{instructor.profile_image}}"/></div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 i_image_container" ng-show="instructor.img_is_flagged == true"><img class="instructor_img" src="/resources/img/default.png"/></div>
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9 i_info">
+              <div class="i_name"><strong>{{instructor.first_name}} {{instructor.last_name}}</strong></div>
+              <div><strong>Contact &nbsp;&nbsp;</strong> <a class="email" href="mailto:{{instructor.email}}">{{instructor.email}}</a></div>
               <div><strong>About Me</strong></div>
-              <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <div class="i_bio" ng-show="instructor.bio_is_flagged == false">
+                {{instructor.biography}}
               </div>
+              <div class="i_bio" ng-show="instructor.bio_is_flagged == true">
+                No biography.
+              </div>
+              <div><strong>Classes I Teach</strong></div>
+              <ul>
+                <li ng-repeat="class in instructor.classes">{{class.name}}</li>
+              </ul>
             </div>
           </div>
-
-          <div class="row border instructor">
-            <div class="col-sm-3 col-md-3 col-lg-3"><img class="instructor_img" src="/resources/img/i2.jpg"/></div>
-            <div class="col-sm-8 col-md-8 col-lg-8 i_info">
-              <div class="i_name"><strong>Sally Sweatsalot</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:sally@gmail.com">sally@gmail.com</a></div>
-              <div><strong>About Me</strong></div>
-              <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-            </div>
-          </div>
-
-          <div class="row border instructor">
-            <div class="col-3"><img class="instructor_img" src="/resources/img/i3.jpg"/></div>
-            <div class="col-8 i_info">
-              <div class="i_name"><strong>Joe Jumpingjacks</strong></div>
-              <div><strong>Contact &nbsp;&nbsp;</strong> <a href="mailto:joe@gmail.com">joe@gmail.com</a></div>
-              <div><strong>About Me</strong></div>
-              <div class="i_bio">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-            </div>
-          </div>
-
-
         </div>
       </div>
 

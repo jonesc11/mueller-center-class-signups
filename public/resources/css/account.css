@@ -1,0 +1,244 @@
+body,html {
+  font-family: 'Raleway', sans-serif;
+
+}
+
+header {
+  background-color: #e2231b;
+  color: white;
+  text-align: center;
+  font-size: 30px;
+}
+
+.navbar-brand {
+  font-size:25px; 
+}
+
+.navbar {
+  background-color: #e2231b;
+  color:white;
+}
+
+.thumb {
+    width:200px;
+    height:200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uploader {
+    clear:both;
+}
+
+#img {
+	display: block;
+	margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modalb {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cancelb {
+	float:right;
+}
+
+#passwordModal input {
+	width:250px;
+	margin:10px;
+}
+
+#passwordModal label {
+	width:190px;
+}
+
+#passwordModal button {
+	margin-top:30px;
+	margin-right:20px;
+}
+
+.error {
+	color:maroon;
+	font-size:13px;
+}
+
+.success {
+	color:darkgreen;
+	font-size:13px;
+}
+
+
+.container {
+	margin-top: 20px;
+}
+
+.acc-info {
+	width: 48%;
+	float: left;
+	background-color:#f7f7f7;
+  	border-radius: 5px;
+  	margin-right: 2%;
+  	font-size:19px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.acc-info button {
+	margin-top:10px;
+	margin-left:15px;
+}
+
+.right-info button {
+	margin-top:10px;
+	margin-left: 30px;
+}
+
+.left-info button {
+	margin-top:3px;
+	margin-bottom: 10px;
+}
+
+.left-info input {
+	width:80%;
+}
+
+#all-classes {
+	width: 48%;
+	float:right;
+	margin-left: 2%;
+	height:600px;
+}
+
+#all-classes input {
+	width:400px;
+}
+
+.class-info {
+	background-color:#f7f7f7;
+  	border-radius: 5px;
+  	display: block;
+  	margin:0 auto;
+  	padding:10px;
+  	margin-top:10px;
+}
+
+.email {
+	display: block;
+	margin: 0 auto;
+}
+
+.image {
+  width: 90%;
+  margin-top: 5px;
+}
+
+.info {
+	margin-top:7px;
+}
+
+.left-info {
+	margin-top:30px;
+	padding-left:5%;
+	width:60%;
+	float:left;
+}
+
+.right-info {
+	width:40%;
+	float:right;
+	margin-bottom: 10px;
+}
+
+.edit-right-info {
+	width:40%;
+	float:right;
+	height:200px;
+}
+
+#bio {
+	overflow:auto;
+	height:250px;
+	padding-right:5%;
+	margin-bottom: 10px;
+	width:100%;
+	float:left;
+}
+
+textarea[name=bio] {
+    resize: none;
+    width:100%;
+    height: 150px;
+}
+
+.bottom-info {
+	display: inline-block;
+	padding-left:5%;
+}
+
+#edit-bottom-info {
+	display: inline-block;
+	padding-left:5%;
+	width:95%;
+
+}
+
+#edit-bottom-info button {
+	margin-top: 20px;
+}
+
+.message {
+	margin-left:20px;
+	margin-right: 20px;
+}
+
+.nav-buttons {
+  width:100%;
+  margin-top: 0px;
+  margin:10px;
+  float:left;
+  margin-right:30px;
+}
+
+.nav-buttons a {
+  margin-right:20px;
+  width:120px;
+  height:40px;
+  padding:6px;
+}
+
+#logout {
+  margin-right:50px;
+  float:right;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 700px) {
+	.acc-info {
+		width: 100%;
+		margin-bottom:20px;
+	}
+
+	#all-classes {
+		width: 100%;
+	}
+
+	.right-info button {
+		margin-left:0px;
+	}
+
+	.acc-info button {
+		margin-left:0px;
+	}
+
+	#upload {
+		width:135px;
+	}
+}
