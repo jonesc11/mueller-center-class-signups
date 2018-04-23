@@ -62,8 +62,10 @@
             </div>
             <div class="form-group">
               <label for="instructor-name" class="form-control-label">Instructor:</label>
+              <button id="add_inst" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#add-account">Add</button>
               <select ng-model="instructorName" name='instructor' class='form-control'>
                 <option class="form-control" ng-repeat="instructor in instructor_accounts" value="{{instructor._id}}">{{instructor.first_name}} {{instructor.last_name}}</option>
+<!--                <button data-toggle="modal" data-target="#add-account">Add a new instructor</button>-->
               </select>
             </div>
             <div class="form-group">

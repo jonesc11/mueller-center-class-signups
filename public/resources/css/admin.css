@@ -233,6 +233,10 @@ textarea {
   text-decoration: underline;
 }
 
+#add_inst {
+  margin-left: 5px;
+}
+
 @media screen and (min-width: 676px) {
   .modal-dialog {
     max-width: 600px;
