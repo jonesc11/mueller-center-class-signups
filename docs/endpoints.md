@@ -54,7 +54,7 @@ This request requires no parameters and a JSON object that looks like this:
 
 * `is_admin` is true if the sender is an administrator, and false otherwise.
 
-**NOTE:** This should not be used for securing pages or resource from a user. Primarily, we use it to hide certain links to
+`NOTE:` This should not be used for securing pages or resource from a user. Primarily, we use it to hide certain links to
 pages that are protected by other means. Use caution when using this page.
 
 ### /is-instructor
@@ -150,33 +150,33 @@ returns a JSON object that looks like this:
 ]
 ```
 
-* **_id** is the ObjectId of the course.
-* **name** is the name of the course.
-* **instructor** is the name of the instructor teaching the course.
-* **instructor_email** is the email of the instructor teaching the course.
-* **instructor_id** is the stringified ObjectId of the instructor teaching the course.
-* **room** is the room where the class is held.
-* **frequency** is the frequency of the class, which has the following attributes:
-  * **start_time** is a string of the time that the class starts formatted "hh:mm"
-  * **end_time** is a string of the time that the class ends formatted "hh:mm"
-  * **days_of_week** is a list of strings that contains the days of the week that the course is offered.
-* **description** is a string that has the description of the course.
-* **type** is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
-* **is_archived** is true if the course is archived, false otherwise. In this call, is_archived will always be false.
-* **is_sign_up_able** is true if the course is still open for registration, and false otherwise. In this call, is_sign_up_able
+* `_id` is the ObjectId of the course.
+* `name` is the name of the course.
+* `instructor` is the name of the instructor teaching the course.
+* `instructor_email` is the email of the instructor teaching the course.
+* `instructor_id` is the stringified ObjectId of the instructor teaching the course.
+* `room` is the room where the class is held.
+* `frequency` is the frequency of the class, which has the following attributes:
+  * `start_time` is a string of the time that the class starts formatted "hh:mm"
+  * `end_time` is a string of the time that the class ends formatted "hh:mm"
+  * `days_of_week` is a list of strings that contains the days of the week that the course is offered.
+* `description` is a string that has the description of the course.
+* `type` is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
+* `is_archived` is true if the course is archived, false otherwise. In this call, is_archived will always be false.
+* `is_sign_up_able` is true if the course is still open for registration, and false otherwise. In this call, is_sign_up_able
 will always be true.
-* **persons_enrolled** is a list of all of the members enrolled in this course.
-  * **first_name** is the first name of the person enrolled in the course.
-  * **last_name** is the last name of the person enrolled in the course.
-  * **email** is the email address of the person enrolled in the course.
-  * **phone** is the phone number of the person enrolled in the course.
-  * **affiliation** is the affiliation that the person has with the school and / or community.
-  * **payment_method** is how the user said they would pay for the course.
-  * **rin** is the RIN of the person taking the course if the affiliation is not "community".
-  * **paid** is a boolean that is true if the person has paid for the course.
-* **semester** is the semester in which the course is offered which has the following values:
-  * **term** is the term (Fall, Spring, Summer) that the course is offered.
-  * **year** is the year that the course is offered.
+* `persons_enrolled` is a list of all of the members enrolled in this course.
+  * `first_name` is the first name of the person enrolled in the course.
+  * `last_name` is the last name of the person enrolled in the course.
+  * `email` is the email address of the person enrolled in the course.
+  * `phone` is the phone number of the person enrolled in the course.
+  * `affiliation` is the affiliation that the person has with the school and / or community.
+  * `payment_method` is how the user said they would pay for the course.
+  * `rin` is the RIN of the person taking the course if the affiliation is not "community".
+  * `paid` is a boolean that is true if the person has paid for the course.
+* `semester` is the semester in which the course is offered which has the following values:
+  * `term` is the term (Fall, Spring, Summer) that the course is offered.
+  * `year` is the year that the course is offered.
   
 ### /get-nonarchived-courses
 
@@ -225,32 +225,32 @@ like this:
 ]
 ```
 
-* **_id** is the ObjectId of the course.
-* **name** is the name of the course.
-* **instructor** is the name of the instructor teaching the course.
-* **instructor_email** is the email of the instructor teaching the course.
-* **instructor_id** is the stringified ObjectId of the instructor teaching the course.
-* **room** is the room where the class is held.
-* **frequency** is the frequency of the class, which has the following attributes:
-  * **start_time** is a string of the time that the class starts formatted "hh:mm"
-  * **end_time** is a string of the time that the class ends formatted "hh:mm"
-  * **days_of_week** is a list of strings that contains the days of the week that the course is offered.
-* **description** is a string that has the description of the course.
-* **type** is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
-* **is_archived** is true if the course is archived, false otherwise. In this call, is_archived will always be false.
-* **is_sign_up_able** is true if the course is still open for registration, and false otherwise.
-* **persons_enrolled** is a list of all of the members enrolled in this course.
-  * **first_name** is the first name of the person enrolled in the course.
-  * **last_name** is the last name of the person enrolled in the course.
-  * **email** is the email address of the person enrolled in the course.
-  * **phone** is the phone number of the person enrolled in the course.
-  * **affiliation** is the affiliation that the person has with the school and / or community.
-  * **payment_method** is how the user said they would pay for the course.
-  * **rin** is the RIN of the person taking the course if the affiliation is not "community".
-  * **paid** is a boolean that is true if the person has paid for the course.
-* **semester** is the semester in which the course is offered which has the following values:
-  * **term** is the term (Fall, Spring, Summer) that the course is offered.
-  * **year** is the year that the course is offered.
+* `_id` is the ObjectId of the course.
+* `name` is the name of the course.
+* `instructor` is the name of the instructor teaching the course.
+* `instructor_email` is the email of the instructor teaching the course.
+* `instructor_id` is the stringified ObjectId of the instructor teaching the course.
+* `room` is the room where the class is held.
+* `frequency` is the frequency of the class, which has the following attributes:
+  * `start_time` is a string of the time that the class starts formatted "hh:mm"
+  * `end_time` is a string of the time that the class ends formatted "hh:mm"
+  * `days_of_week` is a list of strings that contains the days of the week that the course is offered.
+* `description` is a string that has the description of the course.
+* `type` is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
+* `is_archived` is true if the course is archived, false otherwise. In this call, is_archived will always be false.
+* `is_sign_up_able` is true if the course is still open for registration, and false otherwise.
+* `persons_enrolled` is a list of all of the members enrolled in this course.
+  * `first_name` is the first name of the person enrolled in the course.
+  * `last_name` is the last name of the person enrolled in the course.
+  * `email` is the email address of the person enrolled in the course.
+  * `phone` is the phone number of the person enrolled in the course.
+  * `affiliation` is the affiliation that the person has with the school and / or community.
+  * `payment_method` is how the user said they would pay for the course.
+  * `rin` is the RIN of the person taking the course if the affiliation is not "community".
+  * `paid` is a boolean that is true if the person has paid for the course.
+* `semester` is the semester in which the course is offered which has the following values:
+  * `term` is the term (Fall, Spring, Summer) that the course is offered.
+  * `year` is the year that the course is offered.
   
 The difference between this call and `/get-courses` is that this returns the course whether it's open for registration or not,
 whereas the other call returns only courses where is_sign_up_able is true.
@@ -286,17 +286,17 @@ returns an empty JSON object.
 ]
 ```
 
-* **first_name** is the first name of the person enrolled in the course.
-* **last_name** is the last name of the person enrolled in the course.
-* **email** is the email address of the person enrolled in the course.
-* **phone** is the phone number of the person enrolled in the course.
-* **affiliation** is the affiliation that the person has with the school and / or community.
-* **payment_method** is how the user said they would pay for the course.
-* **rin** is the RIN of the person taking the course if the affiliation is not "community".
-* **paid** is a boolean that is true if the person has paid for the course.
-* **classes** is a list of the classes that the user is taking with the following attributes:
-  * **name** is the name of the course the student is enrolled in.
-  * **_id** is the stringified ObjectId of the course.
+* `first_name` is the first name of the person enrolled in the course.
+* `last_name` is the last name of the person enrolled in the course.
+* `email` is the email address of the person enrolled in the course.
+* `phone` is the phone number of the person enrolled in the course.
+* `affiliation` is the affiliation that the person has with the school and / or community.
+* `payment_method` is how the user said they would pay for the course.
+* `rin` is the RIN of the person taking the course if the affiliation is not "community".
+* `paid` is a boolean that is true if the person has paid for the course.
+* `classes` is a list of the classes that the user is taking with the following attributes:
+  * `name` is the name of the course the student is enrolled in.
+  * `_id` is the stringified ObjectId of the course.
 
 ### /get-instructors
 
@@ -323,16 +323,16 @@ This request requires no parameters and returns a list of all of the instructor 
 ]
 ```
 
-* **_id** is the ObjectId of the instructor.
-* **email** is the email address of the instructor.
-* **is_admin** is true if the user is an administrator, false otherwise.
-* **is_instructor** is true if the user is an instructor, false otherwise. In this call, this attribute will always be true.
-* **profile_image** is the URL of the profile image of this instructor (i.e. /resources/img/default.png).
-* **first_name** is the first name of the instructor.
-* **last_name** is the last name of the instructor.
-* **biography** is the biography of the instructor.
-* **img_is_flagged** is true if the instructor's image is flagged by an administrator, false otherwise.
-* **bio_is_flagged** is true if the instructor's bio is flagged by an administrator, false otherwise.
+* `_id` is the ObjectId of the instructor.
+* `email` is the email address of the instructor.
+* `is_admin` is true if the user is an administrator, false otherwise.
+* `is_instructor` is true if the user is an instructor, false otherwise. In this call, this attribute will always be true.
+* `profile_image` is the URL of the profile image of this instructor (i.e. /resources/img/default.png).
+* `first_name` is the first name of the instructor.
+* `last_name` is the last name of the instructor.
+* `biography` is the biography of the instructor.
+* `img_is_flagged` is true if the instructor's image is flagged by an administrator, false otherwise.
+* `bio_is_flagged` is true if the instructor's bio is flagged by an administrator, false otherwise.
 
 ### /get-admins
 
@@ -359,16 +359,16 @@ This request requires no parameters and returns a list of all admin objects with
 ]
 ```
 
-* **_id** is the ObjectId of the user.
-* **email** is the email address of the user.
-* **is_admin** is true if the user is an administrator, false otherwise. In this call, this attribute will always be true.
-* **is_instructor** is true if the user is an instructor, false otherwise.
-* **profile_image** is the URL of the profile image of this user (i.e. /resources/img/default.png).
-* **first_name** is the first name of the user.
-* **last_name** is the last name of the user.
-* **biography** is the biography of the user.
-* **img_is_flagged** is true if the user's image is flagged by an administrator, false otherwise.
-* **bio_is_flagged** is true if the user's bio is flagged by an administrator, false otherwise.
+* `_id` is the ObjectId of the user.
+* `email` is the email address of the user.
+* `is_admin` is true if the user is an administrator, false otherwise. In this call, this attribute will always be true.
+* `is_instructor` is true if the user is an instructor, false otherwise.
+* `profile_image` is the URL of the profile image of this user (i.e. /resources/img/default.png).
+* `first_name` is the first name of the user.
+* `last_name` is the last name of the user.
+* `biography` is the biography of the user.
+* `img_is_flagged` is true if the user's image is flagged by an administrator, false otherwise.
+* `bio_is_flagged` is true if the user's bio is flagged by an administrator, false otherwise.
 
 ### /get-account-info
 
@@ -394,16 +394,16 @@ user without the password and salt fields. If the user is not logged in, an empt
 }
 ```
 
-* **_id** is the ObjectId of the user.
-* **email** is the email address of the user.
-* **is_admin** is true if the user is an administrator, false otherwise.
-* **is_instructor** is true if the user is an instructor, false otherwise.
-* **profile_image** is the URL of the profile image of this user (i.e. /resources/img/default.png).
-* **first_name** is the first name of the user.
-* **last_name** is the last name of the user.
-* **biography** is the biography of the user.
-* **img_is_flagged** is true if the user's image is flagged by an administrator, false otherwise.
-* **bio_is_flagged** is true if the user's bio is flagged by an administrator, false otherwise.
+* `_id` is the ObjectId of the user.
+* `email` is the email address of the user.
+* `is_admin` is true if the user is an administrator, false otherwise.
+* `is_instructor` is true if the user is an instructor, false otherwise.
+* `profile_image` is the URL of the profile image of this user (i.e. /resources/img/default.png).
+* `first_name` is the first name of the user.
+* `last_name` is the last name of the user.
+* `biography` is the biography of the user.
+* `img_is_flagged` is true if the user's image is flagged by an administrator, false otherwise.
+* `bio_is_flagged` is true if the user's bio is flagged by an administrator, false otherwise.
 
 ## POST Requests
 
@@ -463,34 +463,34 @@ This request requires the following parameters:
 }
 ```
 
-* **person** is a then person we are trying to enroll in the course.
-  * **first_name** is the first name of the person enrolled in the course.
-  * **last_name** is the last name of the person enrolled in the course.
-  * **email** is the email address of the person enrolled in the course.
-  * **phone** is the phone number of the person enrolled in the course.
-  * **affiliation** is the affiliation that the person has with the school and / or community.
-  * **payment_method** is how the user said they would pay for the course.
-  * **rin** is the RIN of the person taking the course if the affiliation is not "community".
-  * **paid** is a boolean that is true if the person has paid for the course.
-* **course** is the course object that we are trying to enroll the user in:
-  * **_id** is the ObjectId of the course.
-  * **name** is the name of the course.
-  * **instructor** is the name of the instructor teaching the course.
-  * **instructor_email** is the email of the instructor teaching the course.
-  * **instructor_id** is the stringified ObjectId of the instructor teaching the course.
-  * **room** is the room where the class is held.
-  * **frequency** is the frequency of the class, which has the following attributes:
-    * **start_time** is a string of the time that the class starts formatted "hh:mm"
-    * **end_time** is a string of the time that the class ends formatted "hh:mm"
-    * **days_of_week** is a list of strings that contains the days of the week that the course is offered.
-  * **description** is a string that has the description of the course.
-  * **type** is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
-  * **is_archived** is true if the course is archived, false otherwise. In this call, is_archived will always be false.
-  * **is_sign_up_able** is true if the course is still open for registration, and false otherwise. In this call, is_sign_up_able
+* `person` is a then person we are trying to enroll in the course.
+  * `first_name` is the first name of the person enrolled in the course.
+  * `last_name` is the last name of the person enrolled in the course.
+  * `email` is the email address of the person enrolled in the course.
+  * `phone` is the phone number of the person enrolled in the course.
+  * `affiliation` is the affiliation that the person has with the school and / or community.
+  * `payment_method` is how the user said they would pay for the course.
+  * `rin` is the RIN of the person taking the course if the affiliation is not "community".
+  * `paid` is a boolean that is true if the person has paid for the course.
+* `course` is the course object that we are trying to enroll the user in:
+  * `_id` is the ObjectId of the course.
+  * `name` is the name of the course.
+  * `instructor` is the name of the instructor teaching the course.
+  * `instructor_email` is the email of the instructor teaching the course.
+  * `instructor_id` is the stringified ObjectId of the instructor teaching the course.
+  * `room` is the room where the class is held.
+  * `frequency` is the frequency of the class, which has the following attributes:
+    * `start_time` is a string of the time that the class starts formatted "hh:mm"
+    * `end_time` is a string of the time that the class ends formatted "hh:mm"
+    * `days_of_week` is a list of strings that contains the days of the week that the course is offered.
+  * `description` is a string that has the description of the course.
+  * `type` is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
+  * `is_archived` is true if the course is archived, false otherwise. In this call, is_archived will always be false.
+  * `is_sign_up_able` is true if the course is still open for registration, and false otherwise. In this call, is_sign_up_able
   will always be true.
-  * **semester** is the semester in which the course is offered which has the following values:
-    * **term** is the term (Fall, Spring, Summer) that the course is offered.
-    * **year** is the year that the course is offered.
+  * `semester` is the semester in which the course is offered which has the following values:
+    * `term` is the term (Fall, Spring, Summer) that the course is offered.
+    * `year` is the year that the course is offered.
 
 This request returns the following object:
 
@@ -500,7 +500,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the person was enrolled, false otherwise. Often, a user is not enrolled if that email address is
+* `success` is true if the person was enrolled, false otherwise. Often, a user is not enrolled if that email address is
 already enrolled in the course.
 
 ### /email-class
@@ -520,10 +520,10 @@ This request requires the following parameters:
 }
 ```
 
-* **class_id** is the stringified ObjectId of the class we are emailing.
-* **class_name** is the name of the class that we are emailing.
-* **subject** is the subject of the email.
-* **body** is the body of the email. This can be HTML formatted with all styles inline.
+* `class_id` is the stringified ObjectId of the class we are emailing.
+* `class_name` is the name of the class that we are emailing.
+* `subject` is the subject of the email.
+* `body` is the body of the email. This can be HTML formatted with all styles inline.
 
 This request returns the following object:
 
@@ -533,7 +533,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the email sending was successful, false otherwise. Success will be false and the email will not be 
+* `success` is true if the email sending was successful, false otherwise. Success will be false and the email will not be 
 sent if the user is not an instructor.
 
 ### /email/ind
@@ -552,9 +552,9 @@ This request requires the following parameters:
 }
 ```
 
-* **email** is the email address to send the email to.
-* **subject** is the subject of the email.
-* **message** is the body off the email. This can be HTML formatted with all styles inline.
+* `email` is the email address to send the email to.
+* `subject` is the subject of the email.
+* `message` is the body off the email. This can be HTML formatted with all styles inline.
 
 This request returns the following object:
 
@@ -564,7 +564,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the email sending was successful, false otherwise. Success will be false and the email will not be 
+* `success` is true if the email sending was successful, false otherwise. Success will be false and the email will not be 
 sent if the user is not an administrator.
 
 ### /login
@@ -606,21 +606,21 @@ This request requires the following parameters:
 }
 ```
 
-* **name** is the name of the course.
-* **instructor** is the stringified ObjectId of the instructor teaching the course.
-* **room** is the room where the class is held.
-* **frequency** is the frequency of the class, which has the following attributes:
-  * **start_time** is a string of the time that the class starts formatted "hh:mm"
-  * **end_time** is a string of the time that the class ends formatted "hh:mm"
-  * **days_of_week** is a list of strings that contains the days of the week that the course is offered.
-* **description** is a string that has the description of the course.
-* **type** is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
-* **is_archived** is true if the course is archived, false otherwise.
-* **is_sign_up_able** is true if the course is still open for registration, and false otherwise.
-* **semester** is the semester in which the course is offered which has the following values:
-  * **term** is the term (Fall, Spring, Summer) that the course is offered.
-  * **year** is the year that the course is offered.
-* **persons_enrolled** must be an empty list. Otherwise, the entire website will have undefined behavior.
+* `name` is the name of the course.
+* `instructor` is the stringified ObjectId of the instructor teaching the course.
+* `room` is the room where the class is held.
+* `frequency` is the frequency of the class, which has the following attributes:
+  * `start_time` is a string of the time that the class starts formatted "hh:mm"
+  * `end_time` is a string of the time that the class ends formatted "hh:mm"
+  * `days_of_week` is a list of strings that contains the days of the week that the course is offered.
+* `description` is a string that has the description of the course.
+* `type` is the type of course that is being offered. Valid values are "Fitness" or "Enrichment".
+* `is_archived` is true if the course is archived, false otherwise.
+* `is_sign_up_able` is true if the course is still open for registration, and false otherwise.
+* `semester` is the semester in which the course is offered which has the following values:
+  * `term` is the term (Fall, Spring, Summer) that the course is offered.
+  * `year` is the year that the course is offered.
+* `persons_enrolled` must be an empty list. Otherwise, the entire website will have undefined behavior.
 
 This request returns the following object:
 
@@ -630,7 +630,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the class was successfully created, false otherwise. Success is false and the course is not created
+* `success` is true if the class was successfully created, false otherwise. Success is false and the course is not created
 if the user is not an administrator.
 
 ### /delete-course
@@ -647,7 +647,7 @@ This request requires the following parameters:
 }
 ```
 
-* **course** is the stringified ObjectId of the course we are deleting.
+* `course` is the stringified ObjectId of the course we are deleting.
 
 This request returns the following object:
 
@@ -657,7 +657,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the class was successfully deleted, false otherwise. Success is false and the course is not deleted
+* `success` is true if the class was successfully deleted, false otherwise. Success is false and the course is not deleted
 if the user is not an administrator.
 
 ### /archive-course
@@ -674,7 +674,7 @@ This request requires the following parameters:
 }
 ```
 
-* **course** is the stringified ObjectId of the course we are archiving.
+* `course` is the stringified ObjectId of the course we are archiving.
 
 This request returns the following object:
 
@@ -684,7 +684,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the class was successfully archived, false otherwise. Success is false and the course is not archived
+* `success` is true if the class was successfully archived, false otherwise. Success is false and the course is not archived
 if the user is not an administrator.
 
 ### /edit-course
@@ -704,8 +704,8 @@ This request requires the following parameters:
 }
 ```
 
-* **course** is the stringified ObjectId of the course we are updating.
-* **update** is an object where <key> is the attribute of the course being updated and <value> is the value we are changing
+* `course` is the stringified ObjectId of the course we are updating.
+* `update` is an object where <key> is the attribute of the course being updated and <value> is the value we are changing
 it to.
 
 This request returns the following object:
@@ -716,7 +716,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the class was successfully modified, false otherwise. Success is false and the course is not modified
+* `success` is true if the class was successfully modified, false otherwise. Success is false and the course is not modified
 if the user is not an administrator.
 
 ### /delete-member
@@ -733,7 +733,7 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the member we are deleting.
+* `email` is the email of the member we are deleting.
 
 This request returns an empty JSON object. It removes a person with the given email address from all courses that this member
 is enrolled in if the sender is an administrator.
@@ -753,8 +753,8 @@ This request requires the following object:
 }
 ```
 
-* **course** is the stringified ObjectId of the course that we are removing.
-* **email** is the email of the person we are removing from the course.
+* `course` is the stringified ObjectId of the course that we are removing.
+* `email` is the email of the person we are removing from the course.
 
 This request returns an empty object. It removes a single person from a single class if the sender is an administrator.
 
@@ -814,7 +814,7 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the account we are deleting.
+* `email` is the email of the account we are deleting.
 
 This request returns the following object:
 
@@ -824,7 +824,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the deletion was successful, false otherwise. If the user is not an administrator, the request is
+* `success` is true if the deletion was successful, false otherwise. If the user is not an administrator, the request is
 denied.
 
 ### /update-info
@@ -843,9 +843,9 @@ This request requires the following object:
 }
 ```
 
-* **fname** is what we are changing the first name of the user to.
-* **lname** is what we are changing the last name of the user to.
-* **biography** is what we are changing the biography to.
+* `fname` is what we are changing the first name of the user to.
+* `lname` is what we are changing the last name of the user to.
+* `biography` is what we are changing the biography to.
 
 This request returns the following object:
 
@@ -855,7 +855,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the user was updated, false otherwise.
+* `success` is true if the user was updated, false otherwise.
 
 ### /change-password
 
@@ -872,8 +872,8 @@ This request requires the following object:
 }
 ```
 
-* **oldpass** is the string of the old password of the user.
-* **newpass** is the new password that the user is trying to change it to.
+* `oldpass` is the string of the old password of the user.
+* `newpass` is the new password that the user is trying to change it to.
 
 This request returns the following object:
 
@@ -883,7 +883,7 @@ This request returns the following object:
 }
 ```
 
-* **success** is true if the user's password was changed successfully. If the old password was incorrect, then the password
+* `success` is true if the user's password was changed successfully. If the old password was incorrect, then the password
 is unchanged and returns false.
 
 ### /change-image
@@ -898,7 +898,7 @@ This request requires the following files:
 newimage
 ```
 
-* **newimage** is the image that we are uploading
+* `newimage` is the image that we are uploading
 
 This request returns nothing but redirects the user to the account page upon success, and redirects the user to the home page
 upon failure.
@@ -917,7 +917,7 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the user that we are flagging the bio of.
+* `email` is the email of the user that we are flagging the bio of.
 
 This request returns nothing.
 
@@ -935,7 +935,7 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the user that we are flagging the image of.
+* `email` is the email of the user that we are flagging the image of.
 
 This request returns nothing.
 
@@ -953,7 +953,7 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the user that we are unflagging the bio of.
+* `email` is the email of the user that we are unflagging the bio of.
 
 This request returns nothing.
 
@@ -971,6 +971,6 @@ This request requires the following object:
 }
 ```
 
-* **email** is the email of the user that we are unflagging the image of.
+* `email` is the email of the user that we are unflagging the image of.
 
 This request returns nothing.
