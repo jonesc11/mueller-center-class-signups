@@ -226,11 +226,17 @@ textarea {
 }
 
 .add-class {
+  max-width: 155px;
+  height: 38px;
   float: right;
 }
 
 .nav-link:hover {
   text-decoration: underline;
+}
+
+#add_inst {
+  margin-left: 5px;
 }
 
 @media screen and (min-width: 676px) {
@@ -246,6 +252,7 @@ textarea {
     width: 265px!important;
     margin-right: 15px;
   }
+  
 }
 
 @media screen and (max-width: 768px) {
@@ -256,6 +263,21 @@ textarea {
   }
   
   .add-inst {
+    float: none;
+    margin-bottom: 10px;
+  }
+  
+  .form-control {
+    width: 300px;
+  }
+  
+  .edit-class {
+    width: 190px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .add-class {
     float: none;
     margin-bottom: 10px;
   }

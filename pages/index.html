@@ -63,7 +63,7 @@
             <div class='class-info-header align-right mobile-hide col-sm-4 col-md-4 col-lg-4'>Time</div>
           </div>
           <div id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="card" ng-repeat="class in class_information">
+            <div class="card" ng-repeat="class in class_information | orderBy: 'name'">
               <div class="card-header" role="tab" id="heading{{class._id}}">
                 <h5 class="mb-0 panel-title">
                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{class._id}}" aria-expanded="false" aria-controls="collapse{{class._id}}">

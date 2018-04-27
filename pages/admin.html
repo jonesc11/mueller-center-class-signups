@@ -42,8 +42,8 @@
     <div id="classes" class="container tab" ng-show="classes">
       <h1>Classes</h1>
       <div class="alert alert-danger" ng-repeat="alert in alertList">{{alert}}</div>
-      <div>
-        <form id="instDropdown" ng-submit="submitEditClass()">
+      <div class="row">
+        <form id="instDropdown" ng-submit="submitEditClass()" class="col-sm-8 col-md-8 col-lg-10">
           <div class="form-group">
             <select ng-model="editClass" name='edit' class='form-control edit-class'>
               <option class="form-control" ng-repeat="class in class_information" value="{{$index}}" name="{{class.name}}">{{class.name}}</option>
@@ -51,7 +51,9 @@
             <input type="submit" class="btn btn-primary" value="Edit Class">
           </div>
         </form>
-        <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
+        <div class="col-sm-4 col-md-4 col-lg-2">
+          <button class="add-class btn btn-primary" ng-click="setAddState()">Add New Class</button>
+        </div>
       </div>
       <div>
         <div class="card">
@@ -62,8 +64,10 @@
             </div>
             <div class="form-group">
               <label for="instructor-name" class="form-control-label">Instructor:</label>
+              <button id="add_inst" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#add-account">Add</button>
               <select ng-model="instructorName" name='instructor' class='form-control'>
                 <option class="form-control" ng-repeat="instructor in instructor_accounts" value="{{instructor._id}}">{{instructor.first_name}} {{instructor.last_name}}</option>
+<!--                <button data-toggle="modal" data-target="#add-account">Add a new instructor</button>-->
               </select>
             </div>
             <div class="form-group">
@@ -136,8 +140,8 @@
             </div>
             <div class="btn-container">
               <button class="btn btn-success" ng-click="addOrEdit()">{{buttonState}}</button>
-<!--              <button class="btn btn-warning" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>-->
               <button class="btn btn-primary" ng-show="editing" ng-click="toggleRegistration()">{{toggleSignups}}</button>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#confirm-archive" ng-show="editing">Archive</button>
               <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" ng-show="editing">Delete</button>
               <span ng-show="verifyAdded"> {{classAddMessage}}</span>
               <span ng-show="verifyUpdated"> {{classUpdateMessage}}</span>
@@ -195,8 +199,8 @@
     </div>
     <div id="members" class="container tab" ng-show="members">
       <h1>Members</h1>
-      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>
-      <div class="account row border" ng-repeat="member in member_accounts">
+<!--      <button class="btn btn-primary add" data-toggle="modal" data-target="#print-sheet">Print Bursar Sheet</button>-->
+      <div class="account row border" ng-repeat="member in member_accounts | orderBy: 'last_name'">
         <div class="col-sm-12 col-md-4 col-lg-5">
           <div><strong>Name: </strong>{{member.first_name}} {{member.last_name}}</div>
           <div><strong>Email: </strong>{{member.email}}</div>
@@ -228,8 +232,8 @@
           <strong>Classes Enrolled:</strong>
           <form class="member-classes">
             <div class="form-group classes" ng-repeat="class in member.classes">
+              <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">X</button>
               <label for="{{class._id}}">{{class.name}}</label>
-              <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#confirm-remove-mem" ng-click="setRemoveMember(member.email, member.first_name, member.last_name, class.name, class._id, $index)">Remove</button>
             </div>
           </form>
         </div>

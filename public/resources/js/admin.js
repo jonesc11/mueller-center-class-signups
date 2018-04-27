@@ -314,8 +314,8 @@ app.controller('controller', function ($scope, $http) {
             description: $scope.classDescription,
             type: $scope.classType,
             semester: {
-              term: classTerm,
-              year: classYear
+              term: $scope.classTerm,
+              year: $scope.classYear
             }
           }
         }
@@ -360,15 +360,18 @@ app.controller('controller', function ($scope, $http) {
   };
  
 // Function to archive a course  
-//  $scope.archiveCourse = function () {
-//    $http({
-//      method: 'POST',
-//      url: '/archive-course',
-//      data: {
-//        course: $scope.class_information[$scope.editClass]._id
-//      }
-//    }).then (function (response) {});
-//  };
+  $scope.archiveCourse = function () {
+    $http({
+      method: 'POST',
+      url: '/archive-course',
+      data: {
+        course: $scope.class_information[$scope.editClass]._id
+      }
+    }).then (function (response) {
+      $scope.getClasses();
+      $scope.setAddState();
+    });
+  };
   
   //Function to populate the information for a class when this class is set to be edited
   $scope.submitEditClass = function() {
@@ -392,6 +395,8 @@ app.controller('controller', function ($scope, $http) {
     $scope.sunday = $scope.checkArray($scope.class_information[$scope.editClass].frequency.days_of_week, "Sunday");
     $scope.classDescription = $scope.class_information[$scope.editClass].description;
     $scope.classType = $scope.class_information[$scope.editClass].type;
+    $scope.classTerm = $scope.class_information[$scope.editClass].semester.term;
+    $scope.classYear = $scope.class_information[$scope.editClass].semester.year;
     if($scope.class_information[$scope.editClass].is_sign_up_able)
       $scope.toggleSignups = "Close Registration";
     else
@@ -424,6 +429,7 @@ app.controller('controller', function ($scope, $http) {
         }
       }).then (function (response) {
         $('#add-account').modal('toggle');
+        $scope.getInstructors();
       });
     }
   };
